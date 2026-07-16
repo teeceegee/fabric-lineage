@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"name": "nb_silver_maintenance",
+			"path": "../../../Local Work Folder/fd69ffc7-af08-44c8-848d-4039c47162d7/SynapseNotebook/122b85a9-cab4-4150-9912-ab935f672dad/nb_silver_maintenance"
+		},
+		{
+			"path": "../.."
+		}
+	],
+	"settings": {
+		"chat.agentSkillsLocations": {
+			".agents/skills": true,
+			".github/skills": true,
+			".claude/skills": true,
+			"~/.agents/skills": true,
+			"~/.copilot/skills": true,
+			"~/.claude/skills": true,
+			"~/.vscode/extensions/synapsevscode.synapse-1.25.0/copilot/skills": true
+		}
+	}
+}

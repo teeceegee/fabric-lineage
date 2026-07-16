@@ -1,0 +1,526 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fabric Pipeline Dashboard - Table View</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1e1e1e;
+            color: #d4d4d4;
+        }
+        #header {
+            background: #2d2d30;
+            padding: 15px 20px;
+            border-bottom: 1px solid #3e3e42;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        h1 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #4fc3f7;
+        }
+        #controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 6px 14px;
+            border: 1px solid #3e3e42;
+            background: #252526;
+            color: #d4d4d4;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.2s;
+        }
+        .filter-btn:hover { background: #1177bb; }
+        .filter-btn.active { background: #007acc; box-shadow: 0 0 10px rgba(0,122,204,0.5); }
+        #search {
+            padding: 6px 12px;
+            border: 1px solid #3e3e42;
+            background: #252526;
+            color: #d4d4d4;
+            border-radius: 4px;
+            font-size: 12px;
+            width: 300px;
+        }
+        #container {
+            display: flex;
+            height: calc(100vh - 120px);
+        }
+        #table-container {
+            flex: 1;
+            overflow: auto;
+            padding: 20px;
+        }
+        #sidebar {
+            width: 380px;
+            background: #252526;
+            padding: 20px;
+            overflow-y: auto;
+            border-left: 1px solid #3e3e42;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #252526;
+        }
+        thead {
+            position: sticky;
+            top: 0;
+            background: #1e1e1e;
+            z-index: 10;
+        }
+        th {
+            padding: 12px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            color: #ffffff;
+            background: #1e1e1e;
+            text-transform: uppercase;
+            border-bottom: 2px solid #007acc;
+            cursor: pointer;
+            user-select: none;
+        }
+        th:hover {
+            background: #2d2d30;
+            color: #4fc3f7;
+        }
+        th.sortable::after {
+            content: '';
+            opacity: 0.5;
+            font-size: 10px;
+            margin-left: 4px;
+        }
+        th.sort-asc::after {
+            content: ' ASC';
+            opacity: 1;
+            color: #4fc3f7;
+        }
+        th.sort-desc::after {
+            content: ' DESC';
+            opacity: 1;
+            color: #4fc3f7;
+        }
+        td {
+            padding: 10px 12px;
+            font-size: 13px;
+            border-bottom: 1px solid #3e3e42;
+        }
+        tr.pipeline-row {
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        tr.pipeline-row:hover {
+            background: #2d2d30;
+        }
+        tr.pipeline-row.expanded {
+            background: #094771;
+        }
+        tr.activity-row {
+            background: #1e1e1e;
+            display: none;
+        }
+        tr.activity-row.visible {
+            display: table-row;
+        }
+        tr.activity-row {
+            cursor: pointer;
+        }
+        tr.activity-row td {
+            padding: 8px 12px 8px 50px;
+            font-size: 12px;
+            color: #b0b0b0;
+            border-bottom: 1px solid #2d2d30;
+        }
+        tr.activity-row:hover {
+            background: #252526;
+        }
+        tr.activity-row.selected-activity {
+            background: #2d4a5e;
+        }
+        .expand-icon {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            color: #858585;
+            font-weight: bold;
+            text-align: center;
+            line-height: 16px;
+            font-family: monospace;
+        }
+        .expand-icon.collapsed::before {
+            content: '+';
+            font-size: 16px;
+        }
+        .expand-icon.expanded::before {
+            content: '-';
+            font-size: 16px;
+        }
+        .activity-row-number {
+            color: #ffeb3b;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        .activity-row-name {
+            color: #4fc3f7;
+        }
+        .activity-row-deps {
+            color: #9575cd;
+            font-size: 10px;
+            font-style: italic;
+            display: block;
+            margin-top: 4px;
+            padding-left: 24px;
+        }
+        .notebook-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            background: #0e639c;
+            color: #fff;
+            border-radius: 3px;
+            font-size: 10px;
+            margin-left: 8px;
+        }
+        .category-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .cat-orchestrator { background: #ff6b6b; color: #fff; }
+        .cat-bronze { background: #cd7f32; color: #fff; }
+        .cat-silver { background: #c0c0c0; color: #000; }
+        .cat-gold { background: #ffd700; color: #000; }
+        .cat-extract { background: #9b59b6; color: #fff; }
+        .cat-utility { background: #95a5a6; color: #fff; }
+        .schedule-text {
+            font-size: 11px;
+            color: #858585;
+        }
+        .info-section {
+            margin-bottom: 20px;
+        }
+        .info-label {
+            color: #858585;
+            font-size: 11px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        .info-value {
+            color: #d4d4d4;
+            font-size: 14px;
+        }
+        #stats {
+            margin-left: auto;
+            font-size: 12px;
+            color: #858585;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>[PIPELINES] Fabric Pipeline Dashboard - dev-prescriptions-process</h1>
+        <div id="controls">
+            <input type="text" id="search" placeholder="Search by name...">
+            <button class="filter-btn active" data-category="all">All</button>
+            <button class="filter-btn" data-category="orchestrator">Orchestrators</button>
+            <button class="filter-btn" data-category="bronze">Bronze</button>
+            <button class="filter-btn" data-category="silver">Silver</button>
+            <button class="filter-btn" data-category="gold">Gold</button>
+            <button class="filter-btn" data-category="extract">Extracts</button>
+            <button class="filter-btn" data-category="utility">Utilities</button>
+            <span id="stats">Showing: <span id="stat-visible">0</span> / <span id="stat-total">0</span></span>
+        </div>
+    </div>
+    <div id="container">
+        <div id="table-container">
+            <table id="pipeline-table">
+                <thead>
+                    <tr>
+                        <th class="sortable" data-sort="name">Pipeline Name</th>
+                        <th class="sortable" data-sort="category">Category</th>
+                        <th class="sortable" data-sort="activityCount">Activities</th>
+                        <th class="sortable" data-sort="pipelineCallCount">Calls</th>
+                        <th class="sortable" data-sort="schedule">Schedule</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                </tbody>
+            </table>
+        </div>
+        <div id="sidebar">
+            <h2>Information</h2>
+            <div id="sidebar-content">
+                <div class="info-section">
+                    <div class="info-label">How to Use</div>
+                    <div class="info-value" style="font-size: 12px; line-height: 1.6;">
+                        <p style="margin-bottom: 10px;">* <strong>Click pipeline rows</strong> to expand/collapse activities</p>
+                        <p style="margin-bottom: 10px;">* <strong>Click activity rows</strong> to see details here</p>
+                        <p style="margin-bottom: 10px;">* <strong>Click column headers</strong> to sort</p>
+                        <p style="margin-bottom: 10px;">* <strong>Use search</strong> to filter by name</p>
+                        <p style="margin-bottom: 10px;">* <strong>Category buttons</strong> filter by type</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const pipelines = [{"id":"02d408ee-40b3-42f3-b12f-a695c8dad41d","name":"BAU CIP daily schema extract","activities":[{"name":"get_table_list","dependsOn":[["Transfer all_tab_columns from lakehouse to SQL db"]],"type":"TridentNotebook"},{"name":"Copy_tables_over_gateway","dependsOn":[["get_table_list"]],"type":"ForEach"},{"name":"transfer_all_tab_columns_from_oracle","dependsOn":[[]],"type":"Copy"},{"name":"Transfer all_tab_columns from lakehouse to SQL db","dependsOn":[["Truncate all_tab_columns"]],"type":"Copy"},{"name":"Log whole run complete_retries","dependsOn":[["Copy_tables_over_gateway_pick_up_errors"]],"type":"Script"},{"name":"Truncate all_tab_columns","dependsOn":[["transfer_all_tab_columns_from_oracle"]],"type":"Script"},{"name":"get_table_list_pick_up_errors","dependsOn":[["Copy_tables_over_gateway"]],"type":"TridentNotebook"},{"name":"Copy_tables_over_gateway_pick_up_errors","dependsOn":[["get_table_list_pick_up_errors"]],"type":"ForEach"},{"name":"Log whole run complete","dependsOn":[["Copy_tables_over_gateway"]],"type":"Script"}],"pipelineCallCount":0,"schedule":{"enabled":true,"jobType":"Execute","configuration":{"type":"Weekly","startDateTime":"2026-04-22T00:00:00","endDateTime":"2031-10-22T23:59:00","localTimeZoneId":"GMT Standard Time","times":["04:00"],"weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"activityCount":9,"category":"extract"},{"id":"7822fe2d-efaf-4527-b3c8-f18523260bc9","name":"BAU CIP monthly schema extract OLD","activities":[{"name":"get_table_list","dependsOn":[["transfer_all_tab_columns_from_oracle"]],"type":"TridentNotebook"},{"name":"Copy_tables_over_gateway","dependsOn":[["get_table_list"]],"type":"ForEach"},{"name":"transfer_all_tab_columns_from_oracle","dependsOn":[[]],"type":"Copy"},{"name":"Log table transfer run complete","dependsOn":[["Copy_tables_over_gateway"]],"type":"TridentNotebook"}],"pipelineCallCount":0,"schedule":{"enabled":false,"jobType":"Execute","configuration":{"type":"Weekly","startDateTime":"2026-03-16T00:00:00","endDateTime":"2026-03-20T23:59:00","localTimeZoneId":"GMT Standard Time","times":["01:00"],"weekdays":["Thursday"]}},"activityCount":4,"category":"extract"},{"id":"0cf551ca-559c-4f06-80a4-7bf8415c0335","name":"BAU CIP monthly schema extract","activities":[{"name":"get_table_list","dependsOn":[["Transfer all_tab_columns from lakehouse to SQL db"]],"type":"TridentNotebook"},{"name":"Copy_tables_over_gateway","dependsOn":[["get_table_list"]],"type":"ForEach"},{"name":"transfer_all_tab_columns_from_oracle","dependsOn":[[]],"type":"Copy"},{"name":"Transfer all_tab_columns from lakehouse to SQL db","dependsOn":[["Truncate all_tab_columns"]],"type":"Copy"},{"name":"Log whole run complete_retries","dependsOn":[["Copy_tables_over_gateway_pick_up_errors"]],"type":"Script"},{"name":"Truncate all_tab_columns","dependsOn":[["transfer_all_tab_columns_from_oracle"]],"type":"Script"},{"name":"get_table_list_pick_up_errors","dependsOn":[["Copy_tables_over_gateway"]],"type":"TridentNotebook"},{"name":"Copy_tables_over_gateway_pick_up_errors","dependsOn":[["get_table_list_pick_up_errors"]],"type":"ForEach"},{"name":"Log whole run complete","dependsOn":[["Copy_tables_over_gateway"]],"type":"Script"}],"pipelineCallCount":0,"schedule":null,"activityCount":9,"category":"extract"},{"id":"cd53b062-1b5e-48d7-9bd5-76f3b12cb1b6","name":"BAU DPC daily schema extract","activities":[{"name":"get_table_list","dependsOn":[["Transfer all_tab_columns from lakehouse to SQL db"]],"type":"TridentNotebook"},{"name":"Copy_tables_over_gateway","dependsOn":[["get_table_list"]],"type":"ForEach"},{"name":"transfer_all_tab_columns_from_oracle","dependsOn":[[]],"type":"Copy"},{"name":"Transfer all_tab_columns from lakehouse to SQL db","dependsOn":[["Truncate all_tab_columns"]],"type":"Copy"},{"name":"Log whole run complete_retries","dependsOn":[["Copy_tables_over_gateway_pick_up_errors"]],"type":"Script"},{"name":"Truncate all_tab_columns","dependsOn":[["transfer_all_tab_columns_from_oracle"]],"type":"Script"},{"name":"get_table_list_pick_up_errors","dependsOn":[["Copy_tables_over_gateway"]],"type":"TridentNotebook"},{"name":"Copy_tables_over_gateway_pick_up_errors","dependsOn":[["get_table_list_pick_up_errors"]],"type":"ForEach"},{"name":"Log whole run complete","dependsOn":[["Copy_tables_over_gateway"]],"type":"Script"}],"pipelineCallCount":0,"schedule":{"enabled":true,"jobType":"Execute","configuration":{"type":"Weekly","startDateTime":"2026-04-22T00:00:00","endDateTime":"2035-11-22T23:59:00","localTimeZoneId":"GMT Standard Time","times":["04:30"],"weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"activityCount":9,"category":"extract"},{"id":"33d3cec9-855f-4236-87eb-111cecc10073","name":"BAU DPC monthly schema extract","activities":[{"name":"get_table_list","dependsOn":[["Transfer all_tab_columns from lakehouse to SQL db"]],"type":"TridentNotebook"},{"name":"Copy_tables_over_gateway","dependsOn":[["get_table_list"]],"type":"ForEach"},{"name":"transfer_all_tab_columns_from_oracle","dependsOn":[[]],"type":"Copy"},{"name":"Transfer all_tab_columns from lakehouse to SQL db","dependsOn":[["Truncate all_tab_columns"]],"type":"Copy"},{"name":"Log whole run complete_retries","dependsOn":[["Copy_tables_over_gateway_pick_up_errors"]],"type":"Script"},{"name":"Truncate all_tab_columns","dependsOn":[["transfer_all_tab_columns_from_oracle"]],"type":"Script"},{"name":"get_table_list_pick_up_errors","dependsOn":[["Copy_tables_over_gateway"]],"type":"TridentNotebook"},{"name":"Copy_tables_over_gateway_pick_up_errors","dependsOn":[["get_table_list_pick_up_errors"]],"type":"ForEach"},{"name":"Log whole run complete","dependsOn":[["Copy_tables_over_gateway"]],"type":"Script"}],"pipelineCallCount":0,"schedule":null,"activityCount":9,"category":"extract"},{"id":"534dcc61-3fe9-43ed-9c0b-89b838195b5d","name":"BAU HOT monthly schema extract","activities":[{"name":"get_table_list","dependsOn":[["Transfer all_tab_columns from lakehouse to SQL db"]],"type":"TridentNotebook"},{"name":"Copy_tables_over_gateway","dependsOn":[["get_table_list"]],"type":"ForEach"},{"name":"transfer_all_tab_columns_from_oracle","dependsOn":[[]],"type":"Copy"},{"name":"Transfer all_tab_columns from lakehouse to SQL db","dependsOn":[["Truncate all_tab_columns"]],"type":"Copy"},{"name":"Log whole run complete","dependsOn":[["Copy_tables_over_gateway_pick_up_errors"]],"type":"Script"},{"name":"Truncate all_tab_columns","dependsOn":[["transfer_all_tab_columns_from_oracle"]],"type":"Script"},{"name":"get_table_list_pick_up_errors","dependsOn":[["Copy_tables_over_gateway"]],"type":"TridentNotebook"},{"name":"Copy_tables_over_gateway_pick_up_errors","dependsOn":[["get_table_list_pick_up_errors"]],"type":"ForEach"}],"pipelineCallCount":0,"schedule":null,"activityCount":8,"category":"extract"},{"id":"3b40d73b-5bf8-44cd-ad1f-1be89480d3ed","name":"BAU PCD monthly schema extract","activities":[{"name":"get_table_list","dependsOn":[["Transfer all_tab_columns from lakehouse to SQL db"]],"type":"TridentNotebook"},{"name":"Copy_tables_over_gateway","dependsOn":[["get_table_list"]],"type":"ForEach"},{"name":"transfer_all_tab_columns_from_oracle","dependsOn":[[]],"type":"Copy"},{"name":"Transfer all_tab_columns from lakehouse to SQL db","dependsOn":[["Truncate all_tab_columns"]],"type":"Copy"},{"name":"Log whole run complete_retries","dependsOn":[["Copy_tables_over_gateway_pick_up_errors"]],"type":"Script"},{"name":"Truncate all_tab_columns","dependsOn":[["transfer_all_tab_columns_from_oracle"]],"type":"Script"},{"name":"get_table_list_pick_up_errors","dependsOn":[["Copy_tables_over_gateway"]],"type":"TridentNotebook"},{"name":"Copy_tables_over_gateway_pick_up_errors","dependsOn":[["get_table_list_pick_up_errors"]],"type":"ForEach"},{"name":"Log whole run complete","dependsOn":[["Copy_tables_over_gateway"]],"type":"Script"}],"pipelineCallCount":0,"schedule":null,"activityCount":9,"category":"extract"},{"id":"e5eac4cb-a14d-4e69-902a-598a44b38276","name":"BAU PHA daily schema extract","activities":[{"name":"get_table_list","dependsOn":[["Transfer all_tab_columns from lakehouse to SQL db"]],"type":"TridentNotebook"},{"name":"Copy_tables_over_gateway","dependsOn":[["get_table_list"]],"type":"ForEach"},{"name":"transfer_all_tab_columns_from_oracle","dependsOn":[[]],"type":"Copy"},{"name":"Transfer all_tab_columns from lakehouse to SQL db","dependsOn":[["Truncate all_tab_columns"]],"type":"Copy"},{"name":"Log whole run complete_retries","dependsOn":[["Copy_tables_over_gateway_pick_up_errors"]],"type":"Script"},{"name":"Truncate all_tab_columns","dependsOn":[["transfer_all_tab_columns_from_oracle"]],"type":"Script"},{"name":"get_table_list_pick_up_errors","dependsOn":[["Copy_tables_over_gateway"]],"type":"TridentNotebook"},{"name":"Copy_tables_over_gateway_pick_up_errors","dependsOn":[["get_table_list_pick_up_errors"]],"type":"ForEach"},{"name":"Log whole run complete","dependsOn":[["Copy_tables_over_gateway"]],"type":"Script"}],"pipelineCallCount":0,"schedule":{"enabled":true,"jobType":"Execute","configuration":{"type":"Weekly","startDateTime":"2026-04-22T00:00:00","endDateTime":"2027-04-22T00:00:00","localTimeZoneId":"GMT Standard Time","times":["04:45"],"weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"activityCount":9,"category":"extract"},{"id":"6a810d9e-12db-4756-9ad9-366ff702801c","name":"Data Gateway extract pipeline ETP","activities":[{"name":"get_table_list","dependsOn":[["Copy lakehouse all_tab_columns to SQL database"]],"type":"TridentNotebook"},{"name":"Copy_tables_over_gateway","dependsOn":[["get_table_list"]],"type":"ForEach"},{"name":"transfer_all_tab_columns_from_oracle","dependsOn":[[]],"type":"Copy"},{"name":"Truncate SQL database all_tab_columns","dependsOn":[["transfer_all_tab_columns_from_oracle"]],"type":"Script"},{"name":"Copy lakehouse all_tab_columns to SQL database","dependsOn":[["Truncate SQL database all_tab_columns"]],"type":"Copy"},{"name":"Log whole run complete","dependsOn":[["Copy_tables_over_gateway"]],"type":"Script"},{"name":"get_table_list_retries","dependsOn":[["Copy_tables_over_gateway"]],"type":"TridentNotebook"},{"name":"Copy_tables_over_gateway_retries","dependsOn":[["get_table_list_retries"]],"type":"ForEach"},{"name":"Log whole run complete_retries","dependsOn":[["Copy_tables_over_gateway_retries"]],"type":"Script"}],"pipelineCallCount":0,"schedule":{"enabled":true,"jobType":"Execute","configuration":{"type":"Weekly","startDateTime":"2026-04-01T00:00:00","endDateTime":"2027-04-01T00:00:00","localTimeZoneId":"GMT Standard Time","times":["01:30"],"weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"activityCount":9,"category":"extract"},{"id":"67a594ba-edde-425b-8df0-f8f40e6ad1e5","name":"eps_process_all","activities":[{"name":"eps_process_bronze","dependsOn":[[]],"type":"ExecutePipeline"},{"name":"eps_process_silver","dependsOn":[["eps_process_bronze"]],"type":"ExecutePipeline"},{"name":"eps_process_gold","dependsOn":[["eps_process_silver"]],"type":"ExecutePipeline"}],"pipelineCallCount":3,"schedule":{"enabled":true,"jobType":"Execute","configuration":{"type":"Daily","startDateTime":"2026-05-26T00:00:00","endDateTime":"9999-12-31T23:59:00","localTimeZoneId":"GMT Standard Time","times":["08:00"]}},"activityCount":3,"category":"orchestrator"},{"id":"16290c10-7a20-46c2-9957-058c0d7c7a94","name":"eps_process_bronze","activities":[{"name":"Create or amend all tables","dependsOn":[["Start Email"]],"type":"TridentNotebook"},{"name":"List Serial_Load_1 Job Names","dependsOn":[["Create or amend all tables"]],"type":"TridentNotebook"},{"name":"Serial_Load_1","dependsOn":[["List Serial_Load_1 Job Names"]],"type":"ForEach"},{"name":"List Parallel_Load_1 Job Names","dependsOn":[["Serial_Load_1"]],"type":"TridentNotebook"},{"name":"Parallel_Load_1","dependsOn":[["List Parallel_Load_1 Job Names"]],"type":"ForEach"},{"name":"List Serial_Load_2 Job Names","dependsOn":[["If Parallel_Load_1"]],"type":"TridentNotebook"},{"name":"If Parallel_Load_1","dependsOn":[["Parallel_Load_1"]],"type":"IfCondition"},{"name":"End of Pipeline Verification checks","dependsOn":[["Serial_Load_2","If Parallel_Load_1"]],"type":"TridentNotebook"},{"name":"End of Pipeline Verification checks email","dependsOn":[["End of Pipeline Verification checks"]],"type":"IfCondition"},{"name":"LFIS1 Veri fail email","dependsOn":[["Serial_Load_1"]],"type":"Office365Outlook"},{"name":"LFIS1 Fail","dependsOn":[["LFIS1 Veri fail email"]],"type":"Fail"},{"name":"Serial_Load_2","dependsOn":[["List Serial_Load_2 Job Names"]],"type":"ForEach"},{"name":"LFIS3 Veri fail email","dependsOn":[["Serial_Load_2"]],"type":"Office365Outlook"},{"name":"LFIS2 Fail","dependsOn":[["LFIS3 Veri fail email"]],"type":"Fail"},{"name":"Start Email","dependsOn":[[]],"type":"Office365Outlook"},{"name":"pl1_fail","dependsOn":[["If Parallel_Load_1"]],"type":"Fail"},{"name":"pipe_fail","dependsOn":[["End of Pipeline Verification checks email"]],"type":"Fail"}],"pipelineCallCount":0,"schedule":{"enabled":false,"jobType":"Execute","configuration":{"type":"Daily","startDateTime":"2026-02-05T00:00:00","endDateTime":"9999-12-31T23:59:00","localTimeZoneId":"GMT Standard Time","times":["08:00"]}},"activityCount":17,"category":"bronze"},{"id":"72fcba30-0e7e-4000-abca-e2e00d332f95","name":"eps_process_bronze_copy2","activities":[{"name":"Create or amend all tables","dependsOn":[["Start Email"]],"type":"TridentNotebook"},{"name":"List Serial_Load_1 Job Names","dependsOn":[["Create or amend all tables"]],"type":"TridentNotebook"},{"name":"Serial_Load_1","dependsOn":[["List Serial_Load_1 Job Names"]],"type":"ForEach"},{"name":"List Parallel_Load_1 Job Names","dependsOn":[["Serial_Load_1"]],"type":"TridentNotebook"},{"name":"Parallel_Load_1","dependsOn":[["List Parallel_Load_1 Job Names"]],"type":"ForEach"},{"name":"List Serial_Load_2 Job Names","dependsOn":[["If Parallel_Load_1"]],"type":"TridentNotebook"},{"name":"If Parallel_Load_1","dependsOn":[["Parallel_Load_1"]],"type":"IfCondition"},{"name":"End of Pipeline Verification checks","dependsOn":[["Serial_Load_2","If Parallel_Load_1"]],"type":"TridentNotebook"},{"name":"End of Pipeline Verification checks email","dependsOn":[["End of Pipeline Verification checks"]],"type":"IfCondition"},{"name":"LFIS1 Veri fail email","dependsOn":[["Serial_Load_1"]],"type":"Office365Outlook"},{"name":"LFIS1 Fail","dependsOn":[["LFIS1 Veri fail email"]],"type":"Fail"},{"name":"Serial_Load_2","dependsOn":[["List Serial_Load_2 Job Names"]],"type":"ForEach"},{"name":"LFIS3 Veri fail email","dependsOn":[["Serial_Load_2"]],"type":"Office365Outlook"},{"name":"LFIS2 Fail","dependsOn":[["LFIS3 Veri fail email"]],"type":"Fail"},{"name":"Start Email","dependsOn":[[]],"type":"Office365Outlook"},{"name":"pl1_fail","dependsOn":[["If Parallel_Load_1"]],"type":"Fail"},{"name":"pipe_fail","dependsOn":[["End of Pipeline Verification checks email"]],"type":"Fail"}],"pipelineCallCount":0,"schedule":{"enabled":false,"jobType":"Execute","configuration":{"type":"Daily","startDateTime":"2026-03-19T00:00:00","endDateTime":"9999-12-31T23:59:00","localTimeZoneId":"GMT Standard Time","times":["08:00"]}},"activityCount":17,"category":"bronze"},{"id":"0311bc10-d8e8-48d5-be2c-71d493dd90b6","name":"eps_process_gold","activities":[{"name":"Create or amend all tables","dependsOn":[["Start Email"]],"type":"TridentNotebook"},{"name":"List Serial_Load_1 Job Names","dependsOn":[["Create or amend all tables"]],"type":"TridentNotebook"},{"name":"Serial_Load_1","dependsOn":[["List Serial_Load_1 Job Names"]],"type":"ForEach"},{"name":"List Parallel_Load_1 Job Names","dependsOn":[["Serial_Load_1"]],"type":"TridentNotebook"},{"name":"Parallel_Load_1","dependsOn":[["List Parallel_Load_1 Job Names"]],"type":"ForEach"},{"name":"List Serial_Load_2 Job Names","dependsOn":[["If Parallel_Load_1"]],"type":"TridentNotebook"},{"name":"If Parallel_Load_1","dependsOn":[["Parallel_Load_1"]],"type":"IfCondition"},{"name":"End of Pipeline Verification checks","dependsOn":[["Serial_Load_2","If Parallel_Load_1"]],"type":"TridentNotebook"},{"name":"End of Pipeline Verification checks email","dependsOn":[["End of Pipeline Verification checks"]],"type":"IfCondition"},{"name":"LFIS1 Veri fail email","dependsOn":[["Serial_Load_1"]],"type":"Office365Outlook"},{"name":"LFIS1 Fail","dependsOn":[["LFIS1 Veri fail email"]],"type":"Fail"},{"name":"Serial_Load_2","dependsOn":[["List Serial_Load_2 Job Names"]],"type":"ForEach"},{"name":"LFIS3 Veri fail email","dependsOn":[["Serial_Load_2"]],"type":"Office365Outlook"},{"name":"LFIS2 Fail","dependsOn":[["LFIS3 Veri fail email"]],"type":"Fail"},{"name":"Start Email","dependsOn":[[]],"type":"Office365Outlook"},{"name":"pl1_fail","dependsOn":[["If Parallel_Load_1"]],"type":"Fail"},{"name":"pipe_fail","dependsOn":[["End of Pipeline Verification checks email"]],"type":"Fail"}],"pipelineCallCount":0,"schedule":null,"activityCount":17,"category":"gold"},{"id":"be6e1f3e-6128-4467-a068-ca9d787462a7","name":"eps_process_silver","activities":[{"name":"Create or amend all tables","dependsOn":[["Start Email"]],"type":"TridentNotebook"},{"name":"List Serial_Load_1 Job Names","dependsOn":[["Create or amend all tables"]],"type":"TridentNotebook"},{"name":"Serial_Load_1","dependsOn":[["List Serial_Load_1 Job Names"]],"type":"ForEach"},{"name":"List Parallel_Load_1 Job Names","dependsOn":[["Serial_Load_1"]],"type":"TridentNotebook"},{"name":"Parallel_Load_1","dependsOn":[["List Parallel_Load_1 Job Names"]],"type":"ForEach"},{"name":"List Serial_Load_2 Job Names","dependsOn":[["If Parallel_Load_2"]],"type":"TridentNotebook"},{"name":"If Parallel_Load_1","dependsOn":[["Parallel_Load_1"]],"type":"IfCondition"},{"name":"End of Pipeline Verification checks","dependsOn":[["If Parallel_Load_3","ERD Top 10 Monthly Fact"]],"type":"TridentNotebook"},{"name":"End of Pipeline Verification checks email","dependsOn":[["End of Pipeline Verification checks"]],"type":"IfCondition"},{"name":"LFIS1 Veri fail email","dependsOn":[["Serial_Load_1"]],"type":"Office365Outlook"},{"name":"LFIS1 Fail","dependsOn":[["LFIS1 Veri fail email"]],"type":"Fail"},{"name":"Serial_Load_2","dependsOn":[["List Serial_Load_2 Job Names"]],"type":"ForEach"},{"name":"LFIS3 Veri fail email","dependsOn":[["Serial_Load_2"]],"type":"Office365Outlook"},{"name":"LFIS2 Fail","dependsOn":[["LFIS3 Veri fail email"]],"type":"Fail"},{"name":"Start Email","dependsOn":[[]],"type":"Office365Outlook"},{"name":"pipe_fail","dependsOn":[["End of Pipeline Verification checks email"]],"type":"Fail"},{"name":"pl1_fail","dependsOn":[["If Parallel_Load_1"]],"type":"Fail"},{"name":"List Parallel_Load_2 Job Names","dependsOn":[["If Individual_Load_1"]],"type":"TridentNotebook"},{"name":"Parallel_Load_2","dependsOn":[["List Parallel_Load_2 Job Names"]],"type":"ForEach"},{"name":"If Parallel_Load_2","dependsOn":[["Parallel_Load_2"]],"type":"IfCondition"},{"name":"pl2_fail","dependsOn":[["If Parallel_Load_2"]],"type":"Fail"},{"name":"List Individual_Load_1 Job Names","dependsOn":[["If Parallel_Load_1"]],"type":"TridentNotebook"},{"name":"Load Files in Sequence IL1","dependsOn":[["List Individual_Load_1 Job Names"]],"type":"TridentNotebook"},{"name":"If Individual_Load_1","dependsOn":[["Load Files in Sequence IL1"]],"type":"IfCondition"},{"name":"il1_fail","dependsOn":[["If Individual_Load_1"]],"type":"Fail"},{"name":"List Parallel_Load_3 Job Names","dependsOn":[["Serial_Load_2"]],"type":"TridentNotebook"},{"name":"Parallel_Load_3","dependsOn":[["List Parallel_Load_3 Job Names"]],"type":"ForEach"},{"name":"If Parallel_Load_3","dependsOn":[["Parallel_Load_3"]],"type":"IfCondition"},{"name":"pl3_fail","dependsOn":[["If Parallel_Load_3"]],"type":"Fail"},{"name":"ERD Top 10 Monthly Fact","dependsOn":[["Serial_Load_2"]],"type":"TridentNotebook"}],"pipelineCallCount":0,"schedule":null,"activityCount":30,"category":"silver"},{"id":"b7dbee0b-a511-48fe-a603-6e6895e09cb6","name":"mys_process_gold","activities":[{"name":"Create or amend all tables","dependsOn":[["Start Email"]],"type":"TridentNotebook"},{"name":"List Serial_Load_1 Job Names","dependsOn":[["Create or amend all tables"]],"type":"TridentNotebook"},{"name":"Serial_Load_1","dependsOn":[["List Serial_Load_1 Job Names"]],"type":"ForEach"},{"name":"List Parallel_Load_1 Job Names","dependsOn":[["Serial_Load_1"]],"type":"TridentNotebook"},{"name":"Parallel_Load_1","dependsOn":[["List Parallel_Load_1 Job Names"]],"type":"ForEach"},{"name":"List Serial_Load_2 Job Names","dependsOn":[["If Parallel_Load_1"]],"type":"TridentNotebook"},{"name":"If Parallel_Load_1","dependsOn":[["Parallel_Load_1"]],"type":"IfCondition"},{"name":"End of Pipeline Verification checks","dependsOn":[["Serial_Load_2","If Parallel_Load_1"]],"type":"TridentNotebook"},{"name":"End of Pipeline Verification checks email","dependsOn":[["End of Pipeline Verification checks"]],"type":"IfCondition"},{"name":"LFIS1 Veri fail email","dependsOn":[["Serial_Load_1"]],"type":"Office365Outlook"},{"name":"LFIS1 Fail","dependsOn":[["LFIS1 Veri fail email"]],"type":"Fail"},{"name":"Serial_Load_2","dependsOn":[["List Serial_Load_2 Job Names"]],"type":"ForEach"},{"name":"LFIS3 Veri fail email","dependsOn":[["Serial_Load_2"]],"type":"Office365Outlook"},{"name":"LFIS2 Fail","dependsOn":[["LFIS3 Veri fail email"]],"type":"Fail"},{"name":"Start Email","dependsOn":[[]],"type":"Office365Outlook"},{"name":"pl1_fail","dependsOn":[["If Parallel_Load_1"]],"type":"Fail"},{"name":"pipe_fail","dependsOn":[["End of Pipeline Verification checks email"]],"type":"Fail"}],"pipelineCallCount":0,"schedule":null,"activityCount":17,"category":"gold"},{"id":"9bec8d13-5743-4811-bcbf-d47ad4ada9a8","name":"mys_process_silver","activities":[{"name":"Create or amend all tables","dependsOn":[["Start Email"]],"type":"TridentNotebook"},{"name":"List Serial_Load_1 Job Names","dependsOn":[["Create or amend all tables"]],"type":"TridentNotebook"},{"name":"Serial_Load_1","dependsOn":[["List Serial_Load_1 Job Names"]],"type":"ForEach"},{"name":"List Parallel_Load_1 Job Names","dependsOn":[["Serial_Load_1"]],"type":"TridentNotebook"},{"name":"Parallel_Load_1","dependsOn":[["List Parallel_Load_1 Job Names"]],"type":"ForEach"},{"name":"List Serial_Load_2 Job Names","dependsOn":[["If Parallel_Load_1"]],"type":"TridentNotebook"},{"name":"If Parallel_Load_1","dependsOn":[["Parallel_Load_1"]],"type":"IfCondition"},{"name":"End of Pipeline Verification checks","dependsOn":[["Serial_Load_2","If Parallel_Load_1"]],"type":"TridentNotebook"},{"name":"End of Pipeline Verification checks email","dependsOn":[["End of Pipeline Verification checks"]],"type":"IfCondition"},{"name":"LFIS1 Veri fail email","dependsOn":[["Serial_Load_1"]],"type":"Office365Outlook"},{"name":"LFIS1 Fail","dependsOn":[["LFIS1 Veri fail email"]],"type":"Fail"},{"name":"Serial_Load_2","dependsOn":[["List Serial_Load_2 Job Names"]],"type":"ForEach"},{"name":"LFIS3 Veri fail email","dependsOn":[["Serial_Load_2"]],"type":"Office365Outlook"},{"name":"LFIS2 Fail","dependsOn":[["LFIS3 Veri fail email"]],"type":"Fail"},{"name":"Start Email","dependsOn":[[]],"type":"Office365Outlook"},{"name":"pl1_fail","dependsOn":[["If Parallel_Load_1"]],"type":"Fail"},{"name":"pipe_fail","dependsOn":[["End of Pipeline Verification checks email"]],"type":"Fail"}],"pipelineCallCount":0,"schedule":null,"activityCount":17,"category":"silver"},{"id":"dddd8a04-17e9-4d90-bf94-75b0af78f0cd","name":"pl_cip_bronze_monthly","activities":[{"name":"Notebook_Start","dependsOn":[[]],"type":"TridentNotebook"},{"name":"LookupBronzeJobs","dependsOn":[["Notebook_Start"]],"type":"Lookup"},{"name":"ForEachBronzeJobs","dependsOn":[["LookupBronzeJobs"]],"type":"ForEach"},{"name":"NotebookEnd","dependsOn":[["ForEachBronzeJobs"]],"type":"TridentNotebook"},{"name":"NotebookBronzeFailure","dependsOn":[["ForEachBronzeJobs"]],"type":"TridentNotebook"},{"name":"SetMessageFromBronzeFailure","dependsOn":[["NotebookBronzeFailure"]],"type":"SetVariable"}],"pipelineCallCount":0,"schedule":null,"activityCount":6,"category":"bronze"},{"id":"b5052907-f097-4bd8-ab44-4161f48e22ba","name":"Pl_Cip_Bronze_Monthly_Loader","activities":[],"pipelineCallCount":0,"schedule":null,"activityCount":0,"category":"bronze"},{"id":"88427e21-52e0-499b-97c5-804bb5debf1c","name":"pl_cip_silver_layer_monthly","activities":[{"name":"Notebook_Start","dependsOn":[[]],"type":"TridentNotebook"},{"name":"LookupSilverJobs","dependsOn":[["Notebook_Start"]],"type":"Lookup"},{"name":"ForEachSilverJobs","dependsOn":[["LookupSilverJobs"]],"type":"ForEach"},{"name":"NotebookEnd","dependsOn":[["ForEachSilverJobs"]],"type":"TridentNotebook"},{"name":"NotebookSilverFailure","dependsOn":[["ForEachSilverJobs"]],"type":"TridentNotebook"},{"name":"SetMessageFromSilverFailure","dependsOn":[["NotebookSilverFailure"]],"type":"SetVariable"}],"pipelineCallCount":0,"schedule":null,"activityCount":6,"category":"silver"},{"id":"37f907f4-3ade-4a2f-952d-cff6187f87b0","name":"pl_csv_to_parquet","activities":[],"pipelineCallCount":0,"schedule":null,"activityCount":0,"category":"utility"},{"id":"15c23efb-bacc-49e4-9f2a-3abb14d76c98","name":"pl_epact_monthly_master","activities":[{"name":"NotebookStart","dependsOn":[[]],"type":"TridentNotebook"},{"name":"Invoke llf silver pipeline","dependsOn":[["Invoke llf bronze pipeline"]],"type":"InvokePipeline"},{"name":"Invoke llf gold pipeline","dependsOn":[["Invoke llf silver pipeline"]],"type":"InvokePipeline"},{"name":"Office 365 Outlook monthly completion","dependsOn":[["NotebookEnd"]],"type":"Office365Outlook"},{"name":"Invoke llf bronze pipeline","dependsOn":[["NotebookStart"]],"type":"InvokePipeline"},{"name":"Invoke Sow4 pipeline","dependsOn":[["Invoke llf gold pipeline"]],"type":"InvokePipeline"},{"name":"NotebookEnd","dependsOn":[["Invoke Sow4 pipeline"]],"type":"TridentNotebook"}],"pipelineCallCount":4,"schedule":null,"activityCount":7,"category":"orchestrator"},{"id":"e13712d0-7aed-44ab-911a-ebed2e7e001b","name":"pl_etp_bronze_daily","activities":[{"name":"Notebook_Start","dependsOn":[[]],"type":"TridentNotebook"},{"name":"LookupBronzeJobs","dependsOn":[["Notebook_Start"]],"type":"Lookup"},{"name":"ForEachBronzeJobs","dependsOn":[["LookupBronzeJobs"]],"type":"ForEach"},{"name":"NotebookEnd","dependsOn":[["ForEachBronzeJobs"]],"type":"TridentNotebook"},{"name":"NotebookBronzeFailure","dependsOn":[["ForEachBronzeJobs"]],"type":"TridentNotebook"},{"name":"SetMessageFromBronzeFailure","dependsOn":[["NotebookBronzeFailure"]],"type":"SetVariable"}],"pipelineCallCount":0,"schedule":{"enabled":false,"jobType":"Execute","configuration":{"type":"Daily","startDateTime":"2025-09-04T00:00:00","endDateTime":"2099-12-31T23:59:00","localTimeZoneId":"GMT Standard Time","times":["08:31"]}},"activityCount":6,"category":"bronze"},{"id":"0b8fc312-b8b4-4bce-916b-52bd48338985","name":"pl_etp_bronze_daily_load","activities":[{"name":"Notebook_Start","dependsOn":[[]],"type":"TridentNotebook"},{"name":"LookupBronzeJobs","dependsOn":[["Notebook_Start"]],"type":"Lookup"},{"name":"ForEachBronzeJobs","dependsOn":[["LookupBronzeJobs"]],"type":"ForEach"},{"name":"NotebookEnd","dependsOn":[["ForEachBronzeJobs"]],"type":"TridentNotebook"},{"name":"NotebookBronzeFailure","dependsOn":[["ForEachBronzeJobs"]],"type":"TridentNotebook"},{"name":"SetMessageFromBronzeFailure","dependsOn":[["NotebookBronzeFailure"]],"type":"SetVariable"}],"pipelineCallCount":0,"schedule":null,"activityCount":6,"category":"bronze"},{"id":"1fc17ed3-2418-4284-8a67-e30ec502b2ce","name":"pl_finance_bronze_load","activities":[{"name":"LookupBronzeJobs","dependsOn":[[]],"type":"Lookup"},{"name":"ForEachBronzeJobs","dependsOn":[["LookupBronzeJobs"]],"type":"ForEach"},{"name":"NotebookBronzeFailure","dependsOn":[["ForEachBronzeJobs"]],"type":"TridentNotebook"},{"name":"Office 365 Outlook Bronze failed message","dependsOn":[["SetMessageFromBronzeFailure"]],"type":"Office365Outlook"},{"name":"SetMessageFromBronzeFailure","dependsOn":[["NotebookBronzeFailure"]],"type":"SetVariable"},{"name":"NotebookEnd","dependsOn":[["ForEachBronzeJobs"]],"type":"TridentNotebook"},{"name":"Set bronze return variable","dependsOn":[["NotebookEnd"]],"type":"SetVariable"}],"pipelineCallCount":0,"schedule":null,"activityCount":7,"category":"bronze"},{"id":"7eb34e07-29ff-4980-b0eb-546a165fbc11","name":"pl_finance_bronze_load_test","activities":[{"name":"NotebookStart","dependsOn":[[]],"type":"TridentNotebook"},{"name":"NotebookEnd","dependsOn":[["NotebookStart"]],"type":"TridentNotebook"}],"pipelineCallCount":0,"schedule":null,"activityCount":2,"category":"bronze"},{"id":"c8d8466e-0225-4f3c-8602-c42fb56c2061","name":"pl_finance_daily","activities":[{"name":"LookupBronzeJobs","dependsOn":[["NotebookStart"]],"type":"Lookup"},{"name":"ForEachBronzeJobs","dependsOn":[["LookupBronzeJobs"]],"type":"ForEach"},{"name":"NotebookBronzeFailure","dependsOn":[["ForEachBronzeJobs"]],"type":"TridentNotebook"},{"name":"Office 365 Outlook Bronze failed message","dependsOn":[["SetMessageFromBronzeFailure"]],"type":"Office365Outlook"},{"name":"SetMessageFromBronzeFailure","dependsOn":[["NotebookBronzeFailure"]],"type":"SetVariable"},{"name":"NotebookStart","dependsOn":[[]],"type":"TridentNotebook"},{"name":"NotebookEnd","dependsOn":[["ForEachBronzeJobs"]],"type":"TridentNotebook"},{"name":"If Monthly Runnable Yes No","dependsOn":[["NotebookEnd"]],"type":"IfCondition"}],"pipelineCallCount":0,"schedule":null,"activityCount":8,"category":"utility"},{"id":"a77e191b-bc0a-4bca-840c-5f506b0e86b1","name":"pl_finance_daily_master","activities":[{"name":"NotebookStart","dependsOn":[[]],"type":"TridentNotebook"},{"name":"Invoke finance bronze pipeline","dependsOn":[["NotebookStart"]],"type":"InvokePipeline"},{"name":"If monthly runnable Yes No","dependsOn":[["Invoke finance bronze pipeline"]],"type":"IfCondition"},{"name":"Office 365 Outlook daily completion","dependsOn":[["Invoke finance bronze pipeline"]],"type":"Office365Outlook"}],"pipelineCallCount":1,"schedule":null,"activityCount":4,"category":"orchestrator"},{"id":"168342b0-ea22-432e-9587-8c05a3b5b764","name":"pl_finance_end_to_end","activities":[{"name":"LookupBronzeJobs","dependsOn":[["NotebookStart"]],"type":"Lookup"},{"name":"ForEachBronzeJobs","dependsOn":[["LookupBronzeJobs"]],"type":"ForEach"},{"name":"LookupSilverJobs","dependsOn":[["ForEachBronzeJobs"]],"type":"Lookup"},{"name":"ForEachSilverJobs","dependsOn":[["LookupSilverJobs"]],"type":"ForEach"},{"name":"LookupGoldJobs","dependsOn":[["ForEachSilverJobs"]],"type":"Lookup"},{"name":"ForEachGoldJobs","dependsOn":[["LookupGoldJobs"]],"type":"ForEach"},{"name":"NotebookBronzeFailure","dependsOn":[["ForEachBronzeJobs"]],"type":"TridentNotebook"},{"name":"Office 365 Outlook Bronze failed message","dependsOn":[["SetMessageFromBronzeFailure"]],"type":"Office365Outlook"},{"name":"NotebookSilverFailure","dependsOn":[["ForEachSilverJobs"]],"type":"TridentNotebook"},{"name":"NotebookGoldFailure","dependsOn":[["ForEachGoldJobs"]],"type":"TridentNotebook"},{"name":"SetMessageFromBronzeFailure","dependsOn":[["NotebookBronzeFailure"]],"type":"SetVariable"},{"name":"SetMessageFromSilverFailure","dependsOn":[["NotebookSilverFailure"]],"type":"SetVariable"},{"name":"SetMessageFromGoldFailure","dependsOn":[["NotebookGoldFailure"]],"type":"SetVariable"},{"name":"NotebookStart","dependsOn":[[]],"type":"TridentNotebook"},{"name":"NotebookEnd","dependsOn":[["ForEachGoldJobs"]],"type":"TridentNotebook"},{"name":"Office 365 Outlook Silver failed message","dependsOn":[["SetMessageFromSilverFailure"]],"type":"Office365Outlook"},{"name":"Office 365 Outlook Gold failed message","dependsOn":[["SetMessageFromGoldFailure"]],"type":"Office365Outlook"}],"pipelineCallCount":0,"schedule":null,"activityCount":17,"category":"utility"},{"id":"6c5f7d7a-77f8-422d-82dd-9574e53480cf","name":"pl_finance_gold_load","activities":[{"name":"LookupGoldJobs","dependsOn":[[]],"type":"Lookup"},{"name":"ForEachGoldJobs","dependsOn":[["LookupGoldJobs"]],"type":"ForEach"},{"name":"NotebookGoldFailure","dependsOn":[["ForEachGoldJobs"]],"type":"TridentNotebook"},{"name":"SetMessageFromGoldFailure","dependsOn":[["NotebookGoldFailure"]],"type":"SetVariable"},{"name":"NotebookEnd","dependsOn":[["ForEachGoldJobs"]],"type":"TridentNotebook"},{"name":"Office 365 Outlook Gold failed message","dependsOn":[["SetMessageFromGoldFailure"]],"type":"Office365Outlook"},{"name":"Set goldl return variable","dependsOn":[["NotebookEnd"]],"type":"SetVariable"}],"pipelineCallCount":0,"schedule":null,"activityCount":7,"category":"gold"},{"id":"e4469e1b-469f-46e1-8ffc-d8ef7b67d064","name":"pl_finance_monthly","activities":[{"name":"LookupSilverJobs","dependsOn":[["NotebookStart"]],"type":"Lookup"},{"name":"ForEachSilverJobs","dependsOn":[["LookupSilverJobs"]],"type":"ForEach"},{"name":"LookupGoldJobs","dependsOn":[["ForEachSilverJobs"]],"type":"Lookup"},{"name":"ForEachGoldJobs","dependsOn":[["LookupGoldJobs"]],"type":"ForEach"},{"name":"NotebookSilverFailure","dependsOn":[["ForEachSilverJobs"]],"type":"TridentNotebook"},{"name":"NotebookGoldFailure","dependsOn":[["ForEachGoldJobs"]],"type":"TridentNotebook"},{"name":"SetMessageFromSilverFailure","dependsOn":[["NotebookSilverFailure"]],"type":"SetVariable"},{"name":"SetMessageFromGoldFailure","dependsOn":[["NotebookGoldFailure"]],"type":"SetVariable"},{"name":"NotebookStart","dependsOn":[[]],"type":"TridentNotebook"},{"name":"NotebookEnd","dependsOn":[["ForEachGoldJobs"]],"type":"TridentNotebook"},{"name":"Office 365 Outlook Silver failed message","dependsOn":[["SetMessageFromSilverFailure"]],"type":"Office365Outlook"},{"name":"Office 365 Outlook Gold failed message","dependsOn":[["SetMessageFromGoldFailure"]],"type":"Office365Outlook"}],"pipelineCallCount":0,"schedule":null,"activityCount":12,"category":"utility"},{"id":"90819cdd-e94f-4f66-9c5d-592671e7eb2e","name":"pl_finance_monthly_master","activities":[{"name":"NotebookStart","dependsOn":[[]],"type":"TridentNotebook"},{"name":"Invoke silver pipeline","dependsOn":[["NotebookStart"]],"type":"InvokePipeline"},{"name":"Invoke gold pipeline","dependsOn":[["Invoke silver pipeline"]],"type":"InvokePipeline"},{"name":"Office 365 Outlook monthly completion","dependsOn":[["Invoke gold pipeline"]],"type":"Office365Outlook"}],"pipelineCallCount":2,"schedule":null,"activityCount":4,"category":"orchestrator"},{"id":"ce547c3d-8a19-42cc-a2e6-a89583141c78","name":"pl_finance_silver_load","activities":[{"name":"LookupSilverJobs","dependsOn":[[]],"type":"Lookup"},{"name":"ForEachSilverJobs","dependsOn":[["LookupSilverJobs"]],"type":"ForEach"},{"name":"NotebookSilverFailure","dependsOn":[["ForEachSilverJobs"]],"type":"TridentNotebook"},{"name":"SetMessageFromSilverFailure","dependsOn":[["NotebookSilverFailure"]],"type":"SetVariable"},{"name":"Office 365 Outlook Silver failed message","dependsOn":[["SetMessageFromSilverFailure"]],"type":"Office365Outlook"}],"pipelineCallCount":0,"schedule":null,"activityCount":5,"category":"silver"},{"id":"fcccb6bf-0dcc-435a-b900-9e6d43a7f3e4","name":"pl_finance_test","activities":[{"name":"LookupBronzeJobs","dependsOn":[[]],"type":"Lookup"},{"name":"ForEachBronzeJobs","dependsOn":[["LookupBronzeJobs"]],"type":"ForEach"},{"name":"LookupSilverJobs","dependsOn":[["ForEachBronzeJobs"]],"type":"Lookup"},{"name":"ForEachSilverJobs","dependsOn":[["LookupSilverJobs"]],"type":"ForEach"},{"name":"LookupGoldJobs","dependsOn":[["ForEachSilverJobs"]],"type":"Lookup"},{"name":"ForEachGoldJobs","dependsOn":[["LookupGoldJobs"]],"type":"ForEach"}],"pipelineCallCount":0,"schedule":null,"activityCount":6,"category":"utility"},{"id":"1ca2e836-4b3c-4c37-aa04-2902018cf34a","name":"pl_finance_test2","activities":[{"name":"LookupBronzeJobs","dependsOn":[[]],"type":"Lookup"},{"name":"ForEachBronzeJobs","dependsOn":[["LookupBronzeJobs"]],"type":"ForEach"},{"name":"NotebookBronzeVerificationCheck","dependsOn":[["ForEachBronzeJobs"]],"type":"TridentNotebook"},{"name":"NotebookBronzeFailure","dependsOn":[["ForEachBronzeJobs"]],"type":"TridentNotebook"},{"name":"SetMessageFromBronzeFailure","dependsOn":[["NotebookBronzeFailure"]],"type":"SetVariable"},{"name":"Office 365 Outlook1","dependsOn":[["SetMessageFromBronzeFailure"]],"type":"Office365Outlook"},{"name":"SetMessageFromBronzeVercheck","dependsOn":[["NotebookBronzeVerificationCheck"]],"type":"SetVariable"}],"pipelineCallCount":0,"schedule":null,"activityCount":7,"category":"utility"},{"id":"371ceba8-6c45-4c69-9877-0f0793e95f0f","name":"pl_llf_bronze_load","activities":[{"name":"LookupBronzeJobs","dependsOn":[[]],"type":"Lookup"},{"name":"ForEachBronzeJobs","dependsOn":[["LookupBronzeJobs"]],"type":"ForEach"},{"name":"NotebookBronzeFailure","dependsOn":[["ForEachBronzeJobs"]],"type":"TridentNotebook"},{"name":"Office 365 Outlook Bronze failed message","dependsOn":[["SetMessageFromBronzeFailure"]],"type":"Office365Outlook"},{"name":"SetMessageFromBronzeFailure","dependsOn":[["NotebookBronzeFailure"]],"type":"SetVariable"}],"pipelineCallCount":0,"schedule":null,"activityCount":5,"category":"bronze"},{"id":"3e586a50-4557-4d13-96ad-550fb0e1e9dc","name":"pl_llf_gold_load","activities":[{"name":"LookupGoldJobs","dependsOn":[[]],"type":"Lookup"},{"name":"ForEachGoldJobs","dependsOn":[["LookupGoldJobs"]],"type":"ForEach"},{"name":"NotebookGoldFailure","dependsOn":[["ForEachGoldJobs"]],"type":"TridentNotebook"},{"name":"SetMessageFromGoldFailure","dependsOn":[["NotebookGoldFailure"]],"type":"SetVariable"},{"name":"Office 365 Outlook Gold failed message","dependsOn":[["SetMessageFromGoldFailure"]],"type":"Office365Outlook"}],"pipelineCallCount":0,"schedule":null,"activityCount":5,"category":"gold"},{"id":"da8a3054-3049-4127-a1a5-c384c437652c","name":"pl_llf_silver_load","activities":[{"name":"LookupSilverJobs","dependsOn":[[]],"type":"Lookup"},{"name":"ForEachSilverJobs","dependsOn":[["LookupSilverJobs"]],"type":"ForEach"},{"name":"NotebookSilverFailure","dependsOn":[["ForEachSilverJobs"]],"type":"TridentNotebook"},{"name":"SetMessageFromSilverFailure","dependsOn":[["NotebookSilverFailure"]],"type":"SetVariable"},{"name":"Office 365 Outlook Silver failed message","dependsOn":[["SetMessageFromSilverFailure"]],"type":"Office365Outlook"}],"pipelineCallCount":0,"schedule":null,"activityCount":5,"category":"silver"},{"id":"b8a3d4c1-01e8-4326-bd2a-2e195eeea91c","name":"pl_sow4_gold_load","activities":[{"name":"LookupSow4Jobs","dependsOn":[[]],"type":"Lookup"},{"name":"ForEachSow4Jobs","dependsOn":[["LookupSow4Jobs"]],"type":"ForEach"},{"name":"NotebookSow4Failure","dependsOn":[["ForEachSow4Jobs"]],"type":"TridentNotebook"},{"name":"SetMessageFromSow4Failure","dependsOn":[["NotebookSow4Failure"]],"type":"SetVariable"},{"name":"Office 365 Outlook Sow4 failed message","dependsOn":[["SetMessageFromSow4Failure"]],"type":"Office365Outlook"}],"pipelineCallCount":0,"schedule":null,"activityCount":5,"category":"gold"},{"id":"9743e8c4-ae7d-4c4d-9298-dda8bd878c76","name":"Refresh semantic model","activities":[{"name":"Semantic model refresh - Epact form item element","dependsOn":[[]],"type":"PBISemanticModelRefresh"}],"pipelineCallCount":0,"schedule":null,"activityCount":1,"category":"utility"},{"id":"604623b4-b9fc-436c-a86a-52f936973b61","name":"sow11_create_semantic_model","activities":[{"name":"disable attribute hierachies","dependsOn":[[]],"type":"TridentNotebook"}],"pipelineCallCount":0,"schedule":null,"activityCount":1,"category":"utility"},{"id":"45d1ff03-161e-46fd-9912-c1b5bfe183ff","name":"sow11_epact_sm_creation_pipeline","activities":[{"name":"sm_creation","dependsOn":[[]],"type":"TridentNotebook"},{"name":"apply_standard_properties","dependsOn":[["sm_creation"]],"type":"TridentNotebook"},{"name":"apply_measures","dependsOn":[["apply_standard_properties"]],"type":"TridentNotebook"}],"pipelineCallCount":0,"schedule":null,"activityCount":3,"category":"utility"},{"id":"2e368a45-dbb3-4914-89f6-c0c1c741c375","name":"sow11_pipeline","activities":[{"name":"Create Models","dependsOn":[[]],"type":"TridentNotebook"},{"name":"Rename Models","dependsOn":[["Create Models"]],"type":"TridentNotebook"},{"name":"Add Measures to Models","dependsOn":[["Rename Models"]],"type":"ForEach"}],"pipelineCallCount":0,"schedule":null,"activityCount":3,"category":"utility"},{"id":"c193f9c9-b53d-4b72-a3f6-b25dc9de4d72","name":"sow11_pipeline_copy1","activities":[{"name":"Create Models","dependsOn":[[]],"type":"TridentNotebook"},{"name":"Rename Models","dependsOn":[["Create Models"]],"type":"TridentNotebook"},{"name":"Add Measures to Models","dependsOn":[["Rename Models"]],"type":"ForEach"}],"pipelineCallCount":0,"schedule":null,"activityCount":3,"category":"utility"},{"id":"789f6a1c-3742-440e-87e0-10eb82c79ed3","name":"Suture Run for 1.3","activities":[{"name":"Suture_Pipeline_Run","dependsOn":[[]],"type":"TridentNotebook"}],"pipelineCallCount":0,"schedule":null,"activityCount":1,"category":"utility"},{"id":"0452d601-f4cc-495a-896d-7c42451eac2b","name":"Table maintenance","activities":[{"name":"Run table maintenance","dependsOn":[[]],"type":"TridentNotebook"}],"pipelineCallCount":0,"schedule":null,"activityCount":1,"category":"utility"}];
+        
+        let currentFilter = 'all';
+        let currentSort = { column: 'name', direction: 'asc' };
+        let expandedPipelines = new Set();
+        let selectedActivityId = null;
+
+        const categoryColors = {
+            orchestrator: '#ff6b6b',
+            bronze: '#cd7f32',
+            silver: '#c0c0c0',
+            gold: '#ffd700',
+            extract: '#9b59b6',
+            utility: '#95a5a6'
+        };
+
+        // Extract all notebook names from pipelines
+        function extractNotebooks() {
+            const notebooks = new Set();
+            pipelines.forEach(p => {
+                if (p.activities) {
+                    p.activities.forEach(act => {
+                        if (act.type === 'TridentNotebook') {
+                            notebooks.add(act.name);
+                        }
+                    });
+                }
+            });
+            return Array.from(notebooks).sort();
+        }
+
+        const allNotebooks = extractNotebooks();
+
+        function renderTable() {
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            
+            // Filter pipelines
+            let filtered = pipelines.filter(p => {
+                const categoryMatch = currentFilter === 'all' || p.category === currentFilter;
+                const searchMatch = !searchTerm || p.name.toLowerCase().includes(searchTerm);
+                return categoryMatch && searchMatch;
+            });
+
+            // Sort pipelines
+            filtered.sort((a, b) => {
+                let aVal = a[currentSort.column];
+                let bVal = b[currentSort.column];
+                
+                if (currentSort.column === 'schedule') {
+                    aVal = a.schedule ? a.schedule.configuration.type : 'zzz';
+                    bVal = b.schedule ? b.schedule.configuration.type : 'zzz';
+                }
+                
+                if (typeof aVal === 'string') {
+                    return currentSort.direction === 'asc' ? 
+                        aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+                } else {
+                    return currentSort.direction === 'asc' ? aVal - bVal : bVal - aVal;
+                }
+            });
+
+            // Render rows
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
+            
+            filtered.forEach(p => {
+                const isExpanded = expandedPipelines.has(p.id);
+                
+                // Main pipeline row
+                const tr = document.createElement('tr');
+                tr.className = 'pipeline-row' + (isExpanded ? ' expanded' : '');
+                tr.dataset.pipelineId = p.id;
+                
+                const scheduleText = p.schedule ? 
+                    p.schedule.configuration.type + (p.schedule.configuration.times ? ' ' + p.schedule.configuration.times.join(', ') : '') :
+                    'Manual';
+                
+                tr.innerHTML = '<td><span class="expand-icon ' + (isExpanded ? 'expanded' : 'collapsed') + '"></span>' + p.name + '</td>' +
+                    '<td><span class="category-badge cat-' + p.category + '">' + p.category + '</span></td>' +
+                    '<td>' + p.activityCount + '</td>' +
+                    '<td>' + p.pipelineCallCount + '</td>' +
+                    '<td class="schedule-text">' + scheduleText + '</td>';
+                
+                tr.addEventListener('click', () => togglePipeline(p.id));
+                tbody.appendChild(tr);
+                
+                // Activity rows
+                if (p.activities && p.activities.length > 0) {
+                    p.activities.forEach((act, idx) => {
+                        const actRow = document.createElement('tr');
+                        const activityId = p.id + '_' + idx;
+                        actRow.className = 'activity-row' + (isExpanded ? ' visible' : '') + (selectedActivityId === activityId ? ' selected-activity' : '');
+                        actRow.dataset.parentId = p.id;
+                        actRow.dataset.activityId = activityId;
+                        
+                        const deps = Array.isArray(act.dependsOn) ? act.dependsOn : (act.dependsOn ? [act.dependsOn] : []);
+                        const depsText = deps.length > 0 ? '<div class="activity-row-deps">Depends on: ' + deps.join(', ') + '</div>' : '';
+                        
+                        const notebookBadge = act.type === 'TridentNotebook' ? '<span class="notebook-badge">NOTEBOOK</span>' : '';
+                        
+                        actRow.innerHTML = '<td colspan="5">' +
+                            '<span class="activity-row-number">#' + (idx + 1) + '</span>' +
+                            '<span class="activity-row-name">' + act.name + '</span>' +
+                            notebookBadge +
+                            '<span style="color: #858585; margin-left: 15px;">(' + act.type + ')</span>' +
+                            depsText +
+                            '</td>';
+                        
+                        actRow.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            selectActivity(activityId, act, p);
+                        });
+                        
+                        tbody.appendChild(actRow);
+                    });
+                }
+            });
+
+            // Update stats
+            document.getElementById('stat-visible').textContent = filtered.length;
+            document.getElementById('stat-total').textContent = pipelines.length;
+        }
+
+        function togglePipeline(pipelineId) {
+            if (expandedPipelines.has(pipelineId)) {
+                expandedPipelines.delete(pipelineId);
+            } else {
+                expandedPipelines.add(pipelineId);
+            }
+            renderTable();
+        }
+
+        function selectActivity(activityId, activity, pipeline) {
+            selectedActivityId = activityId;
+            renderTable();
+            
+            const sidebar = document.getElementById('sidebar-content');
+            const deps = Array.isArray(activity.dependsOn) ? activity.dependsOn : (activity.dependsOn ? [activity.dependsOn] : []);
+            
+            let content = '<div class="info-section">' +
+                '<div class="info-label">Activity Details</div>' +
+                '<h3 style="color: #4fc3f7; margin: 10px 0;">' + activity.name + '</h3>' +
+                '</div>';
+            
+            content += '<div class="info-section">' +
+                '<div class="info-label">Type</div>' +
+                '<div class="info-value">' + activity.type + '</div>' +
+                '</div>';
+            
+            content += '<div class="info-section">' +
+                '<div class="info-label">Pipeline</div>' +
+                '<div class="info-value" style="font-size: 12px;">' + pipeline.name + '</div>' +
+                '</div>';
+            
+            if (deps.length > 0) {
+                content += '<div class="info-section">' +
+                    '<div class="info-label">Dependencies</div>' +
+                    '<div class="info-value" style="font-size: 12px;">';
+                deps.forEach(dep => {
+                    content += '<div style="margin-bottom: 5px; color: #9575cd;">' + dep + '</div>';
+                });
+                content += '</div></div>';
+            }
+            
+            if (activity.type === 'TridentNotebook') {
+                content += '<div class="info-section">' +
+                    '<div class="info-label">Notebook Information</div>' +
+                    '<div class="info-value" style="font-size: 12px;">' +
+                    '<p style="margin-bottom: 10px;">This activity executes a Fabric Notebook.</p>' +
+                    '<p style="color: #4fc3f7;"><strong>' + activity.name + '</strong></p>' +
+                    '</div></div>';
+                
+                // Find other pipelines using this notebook
+                const otherUsages = [];
+                pipelines.forEach(p => {
+                    if (p.id !== pipeline.id && p.activities) {
+                        p.activities.forEach(a => {
+                            if (a.type === 'TridentNotebook' && a.name === activity.name) {
+                                otherUsages.push(p.name);
+                            }
+                        });
+                    }
+                });
+                
+                if (otherUsages.length > 0) {
+                    content += '<div class="info-section">' +
+                        '<div class="info-label">Also Used By</div>' +
+                        '<div class="info-value" style="font-size: 11px;">';
+                    otherUsages.forEach(usage => {
+                        content += '<div style="margin-bottom: 3px; color: #858585;">' + usage + '</div>';
+                    });
+                    content += '</div></div>';
+                }
+            }
+            
+            if (activity.type === 'InvokePipeline' || activity.type === 'ExecutePipeline') {
+                content += '<div class="info-section">' +
+                    '<div class="info-label">Pipeline Invocation</div>' +
+                    '<div class="info-value" style="font-size: 12px;">' +
+                    '<p>This activity calls another pipeline in the workspace.</p>' +
+                    '</div></div>';
+            }
+            
+            sidebar.innerHTML = content;
+        }
+
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.category;
+                renderTable();
+            });
+        });
+
+        // Search
+        document.getElementById('search').addEventListener('input', renderTable);
+
+        // Sort
+        document.querySelectorAll('th.sortable').forEach(th => {
+            th.addEventListener('click', () => {
+                const column = th.dataset.sort;
+                if (currentSort.column === column) {
+                    currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+                } else {
+                    currentSort.column = column;
+                    currentSort.direction = 'asc';
+                }
+                
+                // Update sort indicators
+                document.querySelectorAll('th.sortable').forEach(h => {
+                    h.classList.remove('sort-asc', 'sort-desc');
+                });
+                th.classList.add('sort-' + currentSort.direction);
+                
+                renderTable();
+            });
+        });
+
+        // Initial render
+        renderTable();
+    </script>
+</body>
+</html>

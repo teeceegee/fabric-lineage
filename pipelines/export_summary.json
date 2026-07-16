@@ -1,0 +1,235 @@
+﻿{
+    "totalPipelines":  45,
+    "workspaceId":  "e8c421cf-979f-450a-94b4-e2010e807479",
+    "successCount":  45,
+    "exportedAt":  "2026-07-14T09:52:01.1628054+01:00",
+    "results":  [
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\pl_csv_to_parquet.json",
+                        "pipeline":  "pl_csv_to_parquet"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\pl_finance_test.json",
+                        "pipeline":  "pl_finance_test"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\pl_finance_end_to_end.json",
+                        "pipeline":  "pl_finance_end_to_end"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\pl_finance_test2.json",
+                        "pipeline":  "pl_finance_test2"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\pl_finance_daily.json",
+                        "pipeline":  "pl_finance_daily"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\pl_finance_monthly.json",
+                        "pipeline":  "pl_finance_monthly"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\pl_finance_bronze_load_test.json",
+                        "pipeline":  "pl_finance_bronze_load_test"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\pl_etp_bronze_daily.json",
+                        "pipeline":  "pl_etp_bronze_daily"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\pl_finance_bronze_load.json",
+                        "pipeline":  "pl_finance_bronze_load"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\pl_finance_daily_master.json",
+                        "pipeline":  "pl_finance_daily_master"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\pl_finance_silver_load.json",
+                        "pipeline":  "pl_finance_silver_load"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\pl_finance_gold_load.json",
+                        "pipeline":  "pl_finance_gold_load"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\pl_finance_monthly_master.json",
+                        "pipeline":  "pl_finance_monthly_master"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\pl_epact_monthly_master.json",
+                        "pipeline":  "pl_epact_monthly_master"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\pl_llf_bronze_load.json",
+                        "pipeline":  "pl_llf_bronze_load"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\pl_llf_silver_load.json",
+                        "pipeline":  "pl_llf_silver_load"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\pl_llf_gold_load.json",
+                        "pipeline":  "pl_llf_gold_load"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\pl_sow4_gold_load.json",
+                        "pipeline":  "pl_sow4_gold_load"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\pl_etp_bronze_daily_load.json",
+                        "pipeline":  "pl_etp_bronze_daily_load"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\Table maintenance.json",
+                        "pipeline":  "Table maintenance"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\Refresh semantic model.json",
+                        "pipeline":  "Refresh semantic model"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\Suture Run for 1.3.json",
+                        "pipeline":  "Suture Run for 1.3"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\eps_process_bronze.json",
+                        "pipeline":  "eps_process_bronze"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\eps_process_silver.json",
+                        "pipeline":  "eps_process_silver"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\eps_process_gold.json",
+                        "pipeline":  "eps_process_gold"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\BAU CIP monthly schema extract OLD.json",
+                        "pipeline":  "BAU CIP monthly schema extract OLD"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\eps_process_bronze_copy2.json",
+                        "pipeline":  "eps_process_bronze_copy2"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\pl_cip_bronze_monthly.json",
+                        "pipeline":  "pl_cip_bronze_monthly"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\Pl_Cip_Bronze_Monthly_Loader.json",
+                        "pipeline":  "Pl_Cip_Bronze_Monthly_Loader"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\Data Gateway extract pipeline ETP.json",
+                        "pipeline":  "Data Gateway extract pipeline ETP"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\BAU CIP monthly schema extract.json",
+                        "pipeline":  "BAU CIP monthly schema extract"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\pl_cip_silver_layer_monthly.json",
+                        "pipeline":  "pl_cip_silver_layer_monthly"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\BAU CIP daily schema extract.json",
+                        "pipeline":  "BAU CIP daily schema extract"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\BAU PHA daily schema extract.json",
+                        "pipeline":  "BAU PHA daily schema extract"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\BAU PCD monthly schema extract.json",
+                        "pipeline":  "BAU PCD monthly schema extract"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\BAU DPC monthly schema extract.json",
+                        "pipeline":  "BAU DPC monthly schema extract"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\BAU DPC daily schema extract.json",
+                        "pipeline":  "BAU DPC daily schema extract"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\BAU HOT monthly schema extract.json",
+                        "pipeline":  "BAU HOT monthly schema extract"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\mys_process_silver.json",
+                        "pipeline":  "mys_process_silver"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\eps_process_all.json",
+                        "pipeline":  "eps_process_all"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\sow11_pipeline.json",
+                        "pipeline":  "sow11_pipeline"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\sow11_pipeline_copy1.json",
+                        "pipeline":  "sow11_pipeline_copy1"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\mys_process_gold.json",
+                        "pipeline":  "mys_process_gold"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\sow11_epact_sm_creation_pipeline.json",
+                        "pipeline":  "sow11_epact_sm_creation_pipeline"
+                    },
+                    {
+                        "status":  "Success",
+                        "file":  ".\\pipelines\\sow11_create_semantic_model.json",
+                        "pipeline":  "sow11_create_semantic_model"
+                    }
+                ],
+    "workspaceName":  "dev-prescriptions-process",
+    "failCount":  0
+}

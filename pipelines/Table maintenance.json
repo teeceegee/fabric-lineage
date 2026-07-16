@@ -1,0 +1,23 @@
+﻿{
+    "metadata":  {
+                     "exportedAt":  "2026-07-14T09:51:41.5857155+01:00",
+                     "workspaceId":  "e8c421cf-979f-450a-94b4-e2010e807479",
+                     "name":  "Table maintenance",
+                     "id":  "0452d601-f4cc-495a-896d-7c42451eac2b",
+                     "type":  "DataPipeline"
+                 },
+    "definition":  {
+                       "parts":  [
+                                     {
+                                         "path":  "pipeline-content.json",
+                                         "payload":  "ewogICJwcm9wZXJ0aWVzIjogewogICAgImFjdGl2aXRpZXMiOiBbCiAgICAgIHsKICAgICAgICAibmFtZSI6ICJSdW4gdGFibGUgbWFpbnRlbmFuY2UiLAogICAgICAgICJ0eXBlIjogIlRyaWRlbnROb3RlYm9vayIsCiAgICAgICAgImRlcGVuZHNPbiI6IFtdLAogICAgICAgICJwb2xpY3kiOiB7CiAgICAgICAgICAicmV0cnkiOiAwLAogICAgICAgICAgInJldHJ5SW50ZXJ2YWxJblNlY29uZHMiOiAzMCwKICAgICAgICAgICJzZWN1cmVPdXRwdXQiOiBmYWxzZSwKICAgICAgICAgICJzZWN1cmVJbnB1dCI6IGZhbHNlCiAgICAgICAgfSwKICAgICAgICAidHlwZVByb3BlcnRpZXMiOiB7CiAgICAgICAgICAibm90ZWJvb2tJZCI6ICI5ZmM0MGVkNi1hMDhmLTRmMTItODUwZS03MTA0ZDkwMzA0YmMiLAogICAgICAgICAgIndvcmtzcGFjZUlkIjogImU4YzQyMWNmLTk3OWYtNDUwYS05NGI0LWUyMDEwZTgwNzQ3OSIKICAgICAgICB9CiAgICAgIH0KICAgIF0KICB9Cn0=",
+                                         "payloadType":  "InlineBase64"
+                                     },
+                                     {
+                                         "path":  ".platform",
+                                         "payload":  "ewogICIkc2NoZW1hIjogImh0dHBzOi8vZGV2ZWxvcGVyLm1pY3Jvc29mdC5jb20vanNvbi1zY2hlbWFzL2ZhYnJpYy9naXRJbnRlZ3JhdGlvbi9wbGF0Zm9ybVByb3BlcnRpZXMvMi4wLjAvc2NoZW1hLmpzb24iLAogICJtZXRhZGF0YSI6IHsKICAgICJ0eXBlIjogIkRhdGFQaXBlbGluZSIsCiAgICAiZGlzcGxheU5hbWUiOiAiVGFibGUgbWFpbnRlbmFuY2UiCiAgfSwKICAiY29uZmlnIjogewogICAgInZlcnNpb24iOiAiMi4wIiwKICAgICJsb2dpY2FsSWQiOiAiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwIgogIH0KfQ==",
+                                         "payloadType":  "InlineBase64"
+                                     }
+                                 ]
+                   }
+}

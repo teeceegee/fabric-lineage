@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline Schedule — Swim Lane View — dev-prescriptions-process</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* HEADER */
+.page-header {
+    background: #2d2d30;
+    border-bottom: 2px solid #007acc;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.page-header h1 { color: #4fc3f7; font-size: 22px; font-weight: 300; }
+.page-header .meta { color: #858585; font-size: 12px; margin-top: 4px; }
+
+/* NAV TABS */
+.tab-nav {
+    background: #2d2d30;
+    padding: 0 24px;
+    border-bottom: 1px solid #3e3e42;
+    display: flex;
+}
+.tab-btn {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: #858585;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s;
+    margin-bottom: -1px;
+}
+.tab-btn:hover { color: #d4d4d4; }
+.tab-btn.active { color: #4fc3f7; border-bottom-color: #4fc3f7; }
+
+/* MAIN */
+.main { padding: 24px; max-width: 1500px; margin: 0 auto; }
+.section { margin-bottom: 40px; }
+.section-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #4fc3f7;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #3e3e42;
+}
+
+/* LEGEND */
+.legend {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    font-size: 12px;
+}
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-dot { width: 12px; height: 12px; border-radius: 2px; }
+
+/* ── TIMELINE ── */
+.timeline-wrapper {
+    background: #252526;
+    border: 1px solid #3e3e42;
+    border-radius: 6px;
+    overflow: hidden;
+}
+.time-axis-row {
+    display: flex;
+    border-bottom: 1px solid #3e3e42;
+    background: #1e1e1e;
+}
+.lane-label-cell {
+    width: 220px;
+    min-width: 220px;
+    padding: 6px 12px;
+    font-size: 11px;
+    color: #858585;
+    border-right: 1px solid #3e3e42;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.time-axis-track {
+    flex: 1;
+    position: relative;
+    height: 28px;
+}
+.time-tick {
+    position: absolute;
+    font-size: 10px;
+    color: #858585;
+    transform: translateX(-50%);
+    top: 7px;
+}
+.swim-lane {
+    display: flex;
+    border-bottom: 1px solid #3e3e42;
+    min-height: 56px;
+}
+.swim-lane:last-child { border-bottom: none; }
+.swim-lane:hover { background: rgba(255,255,255,0.02); }
+.lane-label-cell.domain {
+    gap: 3px;
+    padding: 8px 12px;
+    border-right: 1px solid #3e3e42;
+}
+.domain-name { font-size: 13px; font-weight: 600; }
+.domain-desc { font-size: 10px; color: #858585; line-height: 1.3; }
+.lane-track {
+    flex: 1;
+    position: relative;
+    overflow: visible;
+}
+.hour-line {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: #3e3e42;
+    opacity: 0.4;
+}
+.pipeline-block {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 34px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 8px;
+    cursor: default;
+    transition: filter 0.15s;
+    min-width: 24px;
+    overflow: hidden;
+    white-space: nowrap;
+    border-width: 1px;
+    border-style: solid;
+}
+.pipeline-block:hover { filter: brightness(1.25); z-index: 10; }
+.pipeline-block.orchestrator { border-width: 2px; }
+.p-name { font-size: 11px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; }
+.p-time { font-size: 10px; opacity: 0.75; }
+.no-auto {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 14px;
+    font-size: 11px;
+    color: #4a4a4a;
+    font-style: italic;
+}
+
+/* ── MONTHLY CARDS ── */
+.cadence-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 16px;
+}
+.cadence-card {
+    background: #252526;
+    border: 1px solid #3e3e42;
+    border-radius: 6px;
+    overflow: hidden;
+}
+.card-header {
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid #3e3e42;
+}
+.card-color-bar { width: 4px; height: 20px; border-radius: 2px; flex-shrink: 0; }
+.card-domain-name { font-size: 13px; font-weight: 600; }
+.card-body { padding: 10px 14px; }
+.pipeline-list { list-style: none; }
+.pipeline-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 5px 0;
+    font-size: 12px;
+    border-bottom: 1px solid #2d2d30;
+}
+.pipeline-list li:last-child { border-bottom: none; }
+.pl-info { flex: 1; }
+.pl-note { font-size: 10px; color: #858585; margin-top: 2px; line-height: 1.3; }
+.children-note { font-size: 10px; color: #858585; font-style: italic; margin-top: 2px; }
+.role-badge {
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: #3e3e42;
+    color: #858585;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+.role-badge.orchestrator { background: #1a3a5c; color: #4fc3f7; }
+.role-badge.extract      { background: #1a3a2a; color: #80cbc4; }
+.role-badge.bronze       { background: #3a2a1a; color: #cd7f32; }
+.role-badge.silver       { background: #2a2a3a; color: #c0c0c0; }
+.role-badge.gold         { background: #3a3a1a; color: #ffd700; }
+.role-badge.test         { background: #2a2a2a; color: #888; }
+.role-badge.maint        { background: #2a2a2a; color: #888; }
+.role-badge.utility      { background: #2a2a2a; color: #888; }
+.role-badge.semantic     { background: #2a1a3a; color: #ce93d8; }
+.role-badge.full         { background: #1a2a3a; color: #81d4fa; }
+
+/* ── OVERVIEW TABLE ── */
+.summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+.summary-table th {
+    background: #2d2d30;
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 500;
+    color: #858585;
+    border-bottom: 1px solid #3e3e42;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+.summary-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid #2d2d30;
+    vertical-align: top;
+}
+.summary-table tr:hover td { background: rgba(255,255,255,0.02); }
+.domain-pill { display: inline-flex; align-items: center; gap: 6px; }
+.domain-pill .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.tick-yes { color: #4caf50; font-weight: bold; }
+.tick-no  { color: #3e3e42; }
+.layers-list { display: flex; gap: 4px; flex-wrap: wrap; }
+.layer-chip {
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    background: #3e3e42;
+    white-space: nowrap;
+}
+.layer-chip.extract { background: #1a3a2a; color: #80cbc4; }
+.layer-chip.bronze  { background: #3a2a1a; color: #cd7f32; }
+.layer-chip.silver  { background: #2a2a3a; color: #c0c0c0; }
+.layer-chip.gold    { background: #3a3a1a; color: #ffd700; }
+.layer-chip.maint   { background: #2a2a2a; color: #888; }
+
+/* ── COLLAPSIBLE SECTIONS ── */
+details { margin-bottom: 8px; }
+details summary {
+    cursor: pointer;
+    padding: 9px 14px;
+    background: #252526;
+    border: 1px solid #3e3e42;
+    border-radius: 4px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    user-select: none;
+}
+details summary:hover { background: #2d2d30; }
+details[open] summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom-color: #2d2d30; }
+details .detail-table-wrap {
+    border: 1px solid #3e3e42;
+    border-top: none;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+/* ── TOOLTIP ── */
+.tooltip {
+    position: fixed;
+    background: #252526;
+    border: 1px solid #3e3e42;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 1000;
+    max-width: 300px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+    display: none;
+}
+.tooltip.visible { display: block; }
+.tooltip-title { font-weight: 600; margin-bottom: 6px; font-size: 13px; color: #e0e0e0; }
+.tooltip-row { display: flex; justify-content: space-between; gap: 12px; margin-top: 3px; font-size: 11px; }
+.tooltip-label { color: #858585; }
+.tooltip-value { font-weight: 500; }
+.tooltip-note { margin-top: 7px; font-size: 11px; color: #aaa; border-top: 1px solid #3e3e42; padding-top: 6px; line-height: 1.4; }
+.tooltip-children { margin-top: 5px; font-size: 10px; color: #7b9fd4; font-style: italic; }
+
+/* TAB PANELS */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.info-banner {
+    background: #1a2a3a;
+    border: 1px solid #2a4a6a;
+    border-radius: 4px;
+    padding: 8px 14px;
+    font-size: 12px;
+    color: #90caf9;
+    margin-bottom: 16px;
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <h1>Pipeline Schedule &mdash; Swim Lane View</h1>
+    <div class="meta">dev-prescriptions-process &nbsp;&middot;&nbsp; 45 pipelines across 9 domains &nbsp;&middot;&nbsp; Generated 2026-07-16</div>
+  </div>
+  <div style="text-align:right;font-size:11px;color:#555;line-height:1.8">
+    Workspace ID<br>e8c421cf-979f-450a-94b4-e2010e807479
+  </div>
+</div>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('timeline',this)">Daily Timeline</button>
+  <button class="tab-btn" onclick="showTab('monthly',this)">Monthly Cadence</button>
+  <button class="tab-btn" onclick="showTab('overview',this)">Domain Overview</button>
+  <button class="tab-btn" onclick="showTab('inventory',this)">Full Inventory</button>
+</nav>
+
+<div class="main">
+
+  <!-- ── TAB: DAILY TIMELINE ── -->
+  <div id="tab-timeline" class="tab-panel active">
+    <div class="section">
+      <div class="section-title">Automated Daily Schedule (GMT Standard Time)</div>
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#80cbc4;border:1px solid #80cbc4"></div>
+          Extract pipeline
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#4fc3f7;border:2px solid #4fc3f7"></div>
+          Orchestrator (calls child pipelines)
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#2a2a2a;border:1px dashed #555"></div>
+          Domain has no automated daily schedule
+        </div>
+      </div>
+      <div id="timeline-container" class="timeline-wrapper"></div>
+      <p style="font-size:11px;color:#555;margin-top:10px;line-height:1.6">
+        All automated pipelines run every day (Sun&ndash;Sat). Bar widths are illustrative estimated durations only &mdash;
+        actual run times will vary. Hover a pipeline block for details.
+        The downstream processing chain (Finance, CIP, EPACT etc.) is triggered manually after source data is confirmed.
+      </p>
+    </div>
+  </div>
+
+  <!-- ── TAB: MONTHLY CADENCE ── -->
+  <div id="tab-monthly" class="tab-panel">
+    <div class="section">
+      <div class="section-title">Monthly Pipeline Cadence</div>
+      <div class="info-banner">
+        These pipelines are triggered manually (or via an orchestrator) on a monthly basis, typically
+        after month-end source data has been validated and is available in the landing zone.
+      </div>
+      <div id="monthly-grid" class="cadence-grid"></div>
+    </div>
+  </div>
+
+  <!-- ── TAB: DOMAIN OVERVIEW ── -->
+  <div id="tab-overview" class="tab-panel">
+    <div class="section">
+      <div class="section-title">Domain Overview &mdash; Cadence &amp; Medallion Coverage</div>
+      <table class="summary-table" id="overview-table">
+        <thead>
+          <tr>
+            <th style="width:220px">Domain</th>
+            <th>Daily Auto</th>
+            <th>Monthly</th>
+            <th>On-Demand</th>
+            <th>Pipelines</th>
+            <th>Medallion Layers</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── TAB: FULL INVENTORY ── -->
+  <div id="tab-inventory" class="tab-panel">
+    <div class="section">
+      <div class="section-title">All Pipelines by Domain</div>
+      <div id="all-pipelines"></div>
+    </div>
+  </div>
+
+</div>
+
+<div id="tooltip" class="tooltip"></div>
+
+<script>
+// ─── CONSTANTS ────────────────────────────────────────────────────────────────
+const TL_START = 60;   // 01:00 in minutes from midnight
+const TL_END   = 660;  // 11:00 in minutes from midnight
+const TL_SPAN  = TL_END - TL_START; // 600 minutes displayed
+
+// ─── DOMAIN DATA ─────────────────────────────────────────────────────────────
+const DOMAINS = [
+  {
+    id: "etp",
+    name: "ETP / Data Gateway",
+    color: "#7b68ee",
+    description: "External Transfer Platform — daily gateway extract, bronze loading",
+    automated: [
+      {
+        name: "Data Gateway extract pipeline ETP",
+        time: "01:30", estDurMins: 40, role: "extract",
+        note: "Extracts ETP source data via data gateway. Runs every day. Schedule end: 2027-04-01.",
+        activityCount: 6
+      }
+    ],
+    monthly: [],
+    onDemand: [
+      { name: "pl_etp_bronze_daily_load", role: "bronze-load", note: "Loads ETP data to bronze layer. 7 activities." },
+      { name: "pl_etp_bronze_daily",      role: "bronze-load", note: "Bronze daily ETP — individual schedule disabled (orchestrator-driven). 8 activities." }
+    ],
+    layers: ["Extract", "Bronze"]
+  },
+  {
+    id: "bau",
+    name: "BAU Schema Extracts",
+    color: "#ff7043",
+    description: "Daily & monthly schema extractions from NHS source systems",
+    automated: [
+      { name: "BAU CIP daily schema extract", time: "04:00", estDurMins: 25, role: "extract",
+        note: "CIP daily schema extract. 9 activities. Runs every day.", activityCount: 9 },
+      { name: "BAU DPC daily schema extract", time: "04:30", estDurMins: 25, role: "extract",
+        note: "DPC daily schema extract. 9 activities. Runs every day.", activityCount: 9 },
+      { name: "BAU PHA daily schema extract", time: "04:45", estDurMins: 20, role: "extract",
+        note: "PHA daily schema extract. 9 activities. Runs every day.", activityCount: 9 }
+    ],
+    monthly: [
+      { name: "BAU CIP monthly schema extract", role: "extract",
+        note: "Monthly CIP schema extraction. 9 activities." },
+      { name: "BAU DPC monthly schema extract", role: "extract",
+        note: "Monthly DPC schema extraction. 9 activities." },
+      { name: "BAU HOT monthly schema extract", role: "extract",
+        note: "Monthly HOT schema extraction. 8 activities." },
+      { name: "BAU PCD monthly schema extract", role: "extract",
+        note: "Monthly PCD schema extraction. 9 activities." }
+    ],
+    onDemand: [
+      { name: "BAU CIP monthly schema extract OLD", role: "extract",
+        note: "Legacy CIP monthly extractor. DISABLED (Thursday 01:00 schedule). 4 activities." }
+    ],
+    layers: ["Extract"]
+  },
+  {
+    id: "eps",
+    name: "EPS",
+    color: "#4fc3f7",
+    description: "Electronic Prescription Service — fully automated Bronze → Silver → Gold",
+    automated: [
+      {
+        name: "eps_process_all",
+        time: "08:00", estDurMins: 90, role: "orchestrator",
+        children: ["eps_process_bronze (17 act.)", "eps_process_silver (8 act.)", "eps_process_gold (8 act.)"],
+        note: "Master daily orchestrator. Runs bronze → silver → gold in strict sequence (each waits for predecessor).",
+        activityCount: 3
+      }
+    ],
+    monthly: [],
+    onDemand: [
+      { name: "eps_process_bronze_copy2", role: "bronze-load",
+        note: "Backup/variant of EPS bronze load. Individual schedule disabled. 17 activities." }
+    ],
+    layers: ["Bronze", "Silver", "Gold"]
+  },
+  {
+    id: "finance",
+    name: "Finance",
+    color: "#81c784",
+    description: "Finance data processing — on-demand daily and monthly orchestrators",
+    automated: [],
+    monthly: [
+      {
+        name: "pl_finance_monthly_master", role: "orchestrator",
+        children: ["notebook start", "pl_finance_silver_load (10 act.)", "pl_finance_gold_load (11 act.)", "email notification"],
+        note: "Monthly finance master. 4 activities: notebook start → silver → gold → email."
+      }
+    ],
+    onDemand: [
+      {
+        name: "pl_finance_daily_master", role: "orchestrator",
+        children: ["notebook start", "pl_finance_bronze_load (18 act.)", "conditional monthly check", "email notification"],
+        note: "Daily finance master. 4 activities: notebook start → bronze → conditional monthly check → email."
+      },
+      { name: "pl_finance_bronze_load", role: "bronze-load",
+        note: "Finance bronze ingestion. 18 activities. Parallel loading with verification." },
+      { name: "pl_finance_silver_load", role: "silver-load",
+        note: "Finance silver layer. 10 activities." },
+      { name: "pl_finance_gold_load",   role: "gold-load",
+        note: "Finance gold layer. 11 activities. Uses ForEach loops." },
+      { name: "pl_finance_daily",   role: "bronze-load", note: "Finance daily pipeline. 8 activities." },
+      { name: "pl_finance_monthly", role: "silver-load", note: "Finance monthly pipeline. 8 activities." },
+      { name: "pl_finance_end_to_end", role: "orchestrator",
+        note: "End-to-end finance pipeline." },
+      { name: "pl_finance_test",             role: "test", note: "Finance test pipeline." },
+      { name: "pl_finance_test2",            role: "test", note: "Finance test pipeline variant." },
+      { name: "pl_finance_bronze_load_test", role: "test", note: "Test version of bronze load. 5 activities." }
+    ],
+    layers: ["Bronze", "Silver", "Gold"]
+  },
+  {
+    id: "cip",
+    name: "CIP",
+    color: "#ffb74d",
+    description: "Community Information Product — monthly Bronze and Silver processing",
+    automated: [],
+    monthly: [
+      { name: "pl_cip_bronze_monthly",       role: "bronze-load",
+        note: "CIP monthly bronze extraction and loading. 12 activities." },
+      { name: "Pl_Cip_Bronze_Monthly_Loader", role: "bronze-load",
+        note: "Alternative CIP bronze monthly loader. 6 activities." },
+      { name: "pl_cip_silver_layer_monthly",  role: "silver-load",
+        note: "CIP monthly silver transformation. 9 activities." }
+    ],
+    onDemand: [],
+    layers: ["Bronze", "Silver"]
+  },
+  {
+    id: "epact",
+    name: "EPACT / LLF / SOW4",
+    color: "#f06292",
+    description: "Monthly ePACT master orchestrating Latest Level Flat and SOW4 gold pipelines",
+    automated: [],
+    monthly: [
+      {
+        name: "pl_epact_monthly_master", role: "orchestrator",
+        children: [
+          "notebook orchestration",
+          "pl_llf_bronze_load (9 act.)",
+          "pl_llf_silver_load (9 act.)",
+          "pl_llf_gold_load (9 act.)",
+          "pl_sow4_gold_load (6 act.)",
+          "email notification"
+        ],
+        note: "Monthly EPACT orchestrator. 7 activities. Runs LLF bronze/silver/gold pipeline chain and SOW4 gold load."
+      }
+    ],
+    onDemand: [],
+    layers: ["Bronze", "Silver", "Gold"]
+  },
+  {
+    id: "mys",
+    name: "MYS",
+    color: "#ba68c8",
+    description: "Monthly Year Statistics — on-demand Silver and Gold layer processing",
+    automated: [],
+    monthly: [],
+    onDemand: [
+      { name: "mys_process_silver", role: "silver-load",
+        note: "MYS data silver transformation. 6 activities." },
+      { name: "mys_process_gold",   role: "gold-load",
+        note: "MYS data gold layer processing. 8 activities." }
+    ],
+    layers: ["Silver", "Gold"]
+  },
+  {
+    id: "sow11",
+    name: "SOW11",
+    color: "#4db6ac",
+    description: "SOW11 semantic model creation and full data pipeline processing",
+    automated: [],
+    monthly: [],
+    onDemand: [
+      { name: "sow11_pipeline",                   role: "full-pipeline",
+        note: "SOW11 main data processing workflow. 10 activities." },
+      { name: "sow11_pipeline_copy1",              role: "full-pipeline",
+        note: "Copy/development variant of SOW11 pipeline." },
+      { name: "sow11_create_semantic_model",       role: "semantic-model",
+        note: "Creates SOW11 semantic model in Fabric. 3 activities." },
+      { name: "sow11_epact_sm_creation_pipeline",  role: "semantic-model",
+        note: "SOW11 ePACT semantic model creation pipeline." }
+    ],
+    layers: ["Full pipeline", "Semantic model"]
+  },
+  {
+    id: "utility",
+    name: "Utility",
+    color: "#90a4ae",
+    description: "Maintenance, format conversion, and semantic model refresh operations",
+    automated: [],
+    monthly: [],
+    onDemand: [
+      { name: "Table maintenance",    role: "maint",
+        note: "Database table maintenance operations. 3 activities." },
+      { name: "Refresh semantic model", role: "semantic-model",
+        note: "Power BI / Fabric semantic model refresh. 1 activity." },
+      { name: "pl_csv_to_parquet",    role: "utility",
+        note: "CSV to Parquet file format conversion utility. 4 activities." },
+      { name: "Suture Run for 1.3",   role: "utility",
+        note: "Migration / suture run for platform version 1.3." }
+    ],
+    layers: ["Maintenance", "Utility"]
+  }
+];
+
+// ─── HELPERS ──────────────────────────────────────────────────────────────────
+function timeToMins(t) {
+  const [h, m] = t.split(':').map(Number);
+  return h * 60 + m;
+}
+function toPct(mins) {
+  return ((mins - TL_START) / TL_SPAN * 100).toFixed(2);
+}
+function roleBadgeHtml(role) {
+  const map = {
+    'orchestrator':  ['orchestrator', 'orchestrator'],
+    'extract':       ['extract',      'extract'],
+    'bronze-load':   ['bronze',       'bronze'],
+    'silver-load':   ['silver',       'silver'],
+    'gold-load':     ['gold',         'gold'],
+    'test':          ['test',         'dev/test'],
+    'maint':         ['maint',        'maintenance'],
+    'utility':       ['utility',      'utility'],
+    'semantic-model':['semantic',     'semantic model'],
+    'full-pipeline': ['full',         'full pipeline'],
+    'monthly-load':  ['silver',       'monthly-load'],
+    'daily-load':    ['bronze',       'daily-load'],
+  };
+  const [cls, label] = map[role] || ['', role];
+  return `<span class="role-badge ${cls}">${label}</span>`;
+}
+function layerChipHtml(layer) {
+  const cls = {
+    Bronze: 'bronze', Silver: 'silver', Gold: 'gold',
+    Extract: 'extract', Maintenance: 'maint', Utility: 'maint',
+    'Full pipeline': '', 'Semantic model': ''
+  }[layer] || '';
+  return `<span class="layer-chip ${cls}">${layer}</span>`;
+}
+
+// ─── BUILD TIMELINE ───────────────────────────────────────────────────────────
+function buildTimeline() {
+  const container = document.getElementById('timeline-container');
+  let html = '';
+
+  // Time axis
+  html += '<div class="time-axis-row">';
+  html += '<div class="lane-label-cell">Domain</div>';
+  html += '<div class="time-axis-track">';
+  for (let h = 1; h <= 11; h++) {
+    const pct = toPct(h * 60);
+    html += `<span class="time-tick" style="left:${pct}%">${String(h).padStart(2,'0')}:00</span>`;
+  }
+  html += '</div></div>';
+
+  // Swim lanes — one per domain
+  for (const d of DOMAINS) {
+    html += `<div class="swim-lane">`;
+    html += `<div class="lane-label-cell domain">
+      <div class="domain-name" style="color:${d.color}">${d.name}</div>
+      <div class="domain-desc">${d.description}</div>
+    </div>`;
+    html += `<div class="lane-track">`;
+
+    // Hour grid lines
+    for (let h = 1; h <= 11; h++) {
+      const pct = toPct(h * 60);
+      html += `<div class="hour-line" style="left:${pct}%"></div>`;
+    }
+
+    if (d.automated.length === 0) {
+      const hasMonthly  = d.monthly.length > 0;
+      const hasOnDemand = d.onDemand.length > 0;
+      let hint = '';
+      if (hasMonthly && hasOnDemand) hint = 'monthly + on-demand pipelines (see other tabs)';
+      else if (hasMonthly)           hint = 'monthly pipelines only (see Monthly Cadence tab)';
+      else if (hasOnDemand)          hint = 'on-demand pipelines only (see Full Inventory tab)';
+      html += `<div class="no-auto">No automated daily schedule &mdash; ${hint}</div>`;
+    } else {
+      for (const p of d.automated) {
+        const startMins = timeToMins(p.time);
+        const leftPct   = toPct(startMins);
+        const widthPct  = (p.estDurMins / TL_SPAN * 100).toFixed(2);
+        const isOrch    = p.role === 'orchestrator';
+        const childrenStr = p.children ? p.children.join(', ') : '';
+        const info = {
+          name: p.name, domain: d.name, time: p.time,
+          estDur: p.estDurMins + ' min (estimated)', role: p.role,
+          note: p.note || '', children: childrenStr,
+          activities: p.activityCount ? p.activityCount + ' activities' : ''
+        };
+        html += `<div class="pipeline-block${isOrch ? ' orchestrator' : ''}"
+          style="left:${leftPct}%;width:${widthPct}%;background:${d.color}1a;border-color:${d.color};color:${d.color};"
+          data-info="${encodeURIComponent(JSON.stringify(info))}"
+          onmouseenter="showTip(event,this)" onmouseleave="hideTip()">
+          <div class="p-name">${p.name}</div>
+          <div class="p-time">${p.time}${isOrch ? ' &darr; orchestrates' : ''}</div>
+        </div>`;
+      }
+    }
+
+    html += '</div></div>';
+  }
+
+  container.innerHTML = html;
+}
+
+// ─── BUILD MONTHLY GRID ───────────────────────────────────────────────────────
+function buildMonthlyGrid() {
+  const grid = document.getElementById('monthly-grid');
+  let html = '';
+  for (const d of DOMAINS) {
+    if (!d.monthly.length) continue;
+    html += `<div class="cadence-card">
+      <div class="card-header">
+        <div class="card-color-bar" style="background:${d.color}"></div>
+        <div>
+          <div class="card-domain-name">${d.name}</div>
+          <div style="font-size:10px;color:#858585;margin-top:1px">${d.description}</div>
+        </div>
+      </div>
+      <div class="card-body"><ul class="pipeline-list">`;
+    for (const p of d.monthly) {
+      html += `<li>
+        <div class="pl-info">
+          <div>${p.name}</div>
+          ${p.children ? `<div class="children-note">&#8594; ${p.children.join(' &#8594; ')}</div>` : ''}
+          ${p.note ? `<div class="pl-note">${p.note}</div>` : ''}
+        </div>
+        ${roleBadgeHtml(p.role)}
+      </li>`;
+    }
+    html += `</ul></div></div>`;
+  }
+  grid.innerHTML = html;
+}
+
+// ─── BUILD OVERVIEW TABLE ─────────────────────────────────────────────────────
+function buildOverviewTable() {
+  const tbody = document.querySelector('#overview-table tbody');
+  let html = '';
+  for (const d of DOMAINS) {
+    const aC = d.automated.length;
+    const mC = d.monthly.length;
+    const oC = d.onDemand.length;
+    const total = aC + mC + oC;
+
+    const autoCell = aC > 0
+      ? `<span class="tick-yes">&#10003;</span>&nbsp;${d.automated.map(p => `<small style="color:#858585">${p.time}</small>`).join(', ')}`
+      : `<span class="tick-no">&mdash;</span>`;
+
+    const monthCell = mC > 0
+      ? `<span class="tick-yes">&#10003;</span>&nbsp;<span style="font-size:12px;color:#858585">${mC} pipeline${mC > 1 ? 's' : ''}</span>`
+      : `<span class="tick-no">&mdash;</span>`;
+
+    const odCell = oC > 0
+      ? `<span class="tick-yes">&#10003;</span>&nbsp;<span style="font-size:12px;color:#858585">${oC} pipeline${oC > 1 ? 's' : ''}</span>`
+      : `<span class="tick-no">&mdash;</span>`;
+
+    html += `<tr>
+      <td>
+        <div class="domain-pill">
+          <div class="dot" style="background:${d.color}"></div>
+          <strong>${d.name}</strong>
+        </div>
+        <div style="font-size:11px;color:#858585;margin-top:3px;padding-left:15px">${d.description}</div>
+      </td>
+      <td>${autoCell}</td>
+      <td>${monthCell}</td>
+      <td>${odCell}</td>
+      <td style="color:#858585;font-size:13px">${total}</td>
+      <td><div class="layers-list">${d.layers.map(layerChipHtml).join('')}</div></td>
+    </tr>`;
+  }
+  tbody.innerHTML = html;
+}
+
+// ─── BUILD FULL INVENTORY ─────────────────────────────────────────────────────
+function buildInventory() {
+  const container = document.getElementById('all-pipelines');
+  let html = '';
+  for (const d of DOMAINS) {
+    const all = [
+      ...d.automated.map(p => ({ ...p, cadence: 'daily-auto' })),
+      ...d.monthly.map(p => ({ ...p, cadence: 'monthly' })),
+      ...d.onDemand.map(p => ({ ...p, cadence: 'on-demand' }))
+    ];
+    if (!all.length) continue;
+    html += `<details open>
+      <summary>
+        <div style="width:10px;height:10px;border-radius:50%;background:${d.color};flex-shrink:0"></div>
+        <strong style="color:${d.color}">${d.name}</strong>
+        <span style="color:#858585;font-size:11px;margin-left:6px">${all.length} pipeline${all.length > 1 ? 's' : ''}</span>
+        <span style="color:#555;font-size:11px;margin-left:auto">${d.description}</span>
+      </summary>
+      <div class="detail-table-wrap">
+        <table class="summary-table">
+          <thead>
+            <tr><th>Pipeline</th><th>Cadence</th><th>Role</th><th>Notes</th></tr>
+          </thead>
+          <tbody>`;
+    for (const p of all) {
+      const cadenceMap = {
+        'daily-auto': '<span style="color:#4caf50">&#9679;</span>&nbsp;Daily (automated)',
+        'monthly':    '<span style="color:#42a5f5">&#9679;</span>&nbsp;Monthly (manual trigger)',
+        'on-demand':  '<span style="color:#757575">&#9675;</span>&nbsp;On-demand'
+      };
+      const timeStr = p.time ? `&nbsp;<small style="color:#858585">@ ${p.time}</small>` : '';
+      html += `<tr>
+        <td>
+          <strong>${p.name}</strong>
+          ${p.activityCount ? `<small style="color:#555"> &mdash; ${p.activityCount} activities</small>` : ''}
+          ${p.children ? `<div class="children-note" style="font-size:10px;color:#858585;margin-top:2px">&#8594; ${p.children.join(' &nbsp;&#8594;&nbsp; ')}</div>` : ''}
+        </td>
+        <td style="font-size:12px;white-space:nowrap">${cadenceMap[p.cadence]}${timeStr}</td>
+        <td>${roleBadgeHtml(p.role)}</td>
+        <td style="font-size:11px;color:#858585">${p.note || ''}</td>
+      </tr>`;
+    }
+    html += `</tbody></table></div></details>`;
+  }
+  container.innerHTML = html;
+}
+
+// ─── TOOLTIP ─────────────────────────────────────────────────────────────────
+function showTip(e, el) {
+  const info = JSON.parse(decodeURIComponent(el.dataset.info));
+  const tt = document.getElementById('tooltip');
+  let html = `<div class="tooltip-title">${info.name}</div>`;
+  html += `<div class="tooltip-row"><span class="tooltip-label">Domain</span><span class="tooltip-value">${info.domain}</span></div>`;
+  html += `<div class="tooltip-row"><span class="tooltip-label">Scheduled</span><span class="tooltip-value">${info.time} GMT &mdash; every day</span></div>`;
+  html += `<div class="tooltip-row"><span class="tooltip-label">Est. duration</span><span class="tooltip-value">${info.estDur}</span></div>`;
+  html += `<div class="tooltip-row"><span class="tooltip-label">Role</span><span class="tooltip-value">${info.role}</span></div>`;
+  if (info.activities) {
+    html += `<div class="tooltip-row"><span class="tooltip-label">Activities</span><span class="tooltip-value">${info.activities}</span></div>`;
+  }
+  if (info.children) {
+    html += `<div class="tooltip-children">Calls: ${info.children}</div>`;
+  }
+  if (info.note) {
+    html += `<div class="tooltip-note">${info.note}</div>`;
+  }
+  tt.innerHTML = html;
+  tt.classList.add('visible');
+  moveTip(e);
+}
+function hideTip() {
+  document.getElementById('tooltip').classList.remove('visible');
+}
+document.addEventListener('mousemove', moveTip);
+function moveTip(e) {
+  const tt = document.getElementById('tooltip');
+  if (!tt.classList.contains('visible')) return;
+  let x = e.clientX + 18, y = e.clientY + 18;
+  if (x + 310 > window.innerWidth)  x = e.clientX - 318;
+  if (y + 260 > window.innerHeight) y = e.clientY - 260;
+  tt.style.left = x + 'px';
+  tt.style.top  = y + 'px';
+}
+
+// ─── TAB SWITCHING ────────────────────────────────────────────────────────────
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+buildTimeline();
+buildMonthlyGrid();
+buildOverviewTable();
+buildInventory();
+</script>
+</body>
+</html>

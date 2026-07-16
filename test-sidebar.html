@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Test Sidebar</title>
+    <style>
+        body { background: #1e1e1e; color: #d4d4d4; font-family: 'Segoe UI', sans-serif; padding: 20px; }
+        #sidebar { background: #252526; padding: 20px; border: 1px solid #3e3e42; }
+        button { background: #0e639c; color: white; padding: 10px 20px; border: none; cursor: pointer; margin: 10px; }
+        .info-section { margin-bottom: 20px; }
+        .info-label { color: #858585; font-size: 11px; text-transform: uppercase; }
+        .info-value { color: #d4d4d4; font-size: 14px; }
+        .activity-list { max-height: 400px; overflow-y: auto; margin-top: 10px; }
+        .activity-item { background: #2d2d30; padding: 10px; margin-bottom: 8px; border-radius: 4px; border-left: 3px solid #007acc; }
+        .activity-number { color: #ffeb3b; font-weight: bold; font-size: 12px; margin-right: 8px; }
+        .activity-name { color: #4fc3f7; font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+        .activity-type { color: #858585; font-size: 11px; }
+        .activity-deps { color: #9575cd; font-size: 10px; font-style: italic; }
+    </style>
+</head>
+<body>
+    <h1>Sidebar Test</h1>
+    <button onclick="testSidebar()">Click to Test Sidebar</button>
+    <button onclick="clearSidebar()">Clear Sidebar</button>
+    <div id="output"></div>
+    <hr>
+    <div id="sidebar">
+        <h2>Pipeline Details</h2>
+        <div>Click the test button above</div>
+    </div>
+
+    <script>
+        const testData = {
+            name: "pl_epact_monthly_master",
+            category: "orchestrator",
+            activityCount: 7,
+            activities: [
+                { name: "NotebookStart", type: "TridentNotebook", dependsOn: [] },
+                { name: "Invoke llf silver pipeline", type: "InvokePipeline", dependsOn: ["Invoke llf bronze pipeline"] },
+                { name: "Invoke llf gold pipeline", type: "InvokePipeline", dependsOn: ["Invoke llf silver pipeline"] },
+                { name: "Office 365 Outlook", type: "Office365Outlook", dependsOn: ["NotebookEnd"] },
+                { name: "Invoke llf bronze pipeline", type: "InvokePipeline", dependsOn: ["NotebookStart"] },
+                { name: "Invoke Sow4 pipeline", type: "InvokePipeline", dependsOn: ["Invoke llf gold pipeline"] },
+                { name: "NotebookEnd", type: "TridentNotebook", dependsOn: ["Invoke Sow4 pipeline"] }
+            ],
+            schedule: { configuration: { type: "Daily", times: ["08:00"] } }
+        };
+
+        function testSidebar() {
+            document.getElementById('output').innerHTML = '<p style="color: #4fc3f7;">Testing updateSidebar function...</p>';
+            
+            const sidebar = document.getElementById('sidebar');
+            const d = testData;
+            const scheduleText = d.schedule ? 
+                d.schedule.configuration.type + ' - ' + (d.schedule.configuration.times ? d.schedule.configuration.times.join(', ') : 'N/A') :
+                'No schedule';
+            const incoming = 0;
+            const outgoing = 4;
+            
+            // Build activities list HTML
+            let activitiesHtml = '';
+            if (d.activities && d.activities.length > 0) {
+                activitiesHtml = '<div class="info-section"><div class="info-label">Pipeline Activities</div><div class="activity-list">';
+                d.activities.forEach((act, idx) => {
+                    const depsText = act.dependsOn && act.dependsOn.length > 0 ? 
+                        '<div class="activity-deps">Depends on: ' + act.dependsOn.join(', ') + '</div>' : '';
+                    activitiesHtml += '<div class="activity-item">' +
+                        '<span class="activity-number">#' + (idx + 1) + '</span>' +
+                        '<div class="activity-name">' + act.name + '</div>' +
+                        '<div class="activity-type">Type: ' + act.type + '</div>' +
+                        depsText +
+                        '</div>';
+                });
+                activitiesHtml += '</div></div>';
+            }
+            
+            sidebar.innerHTML = 
+                '<h2>' + d.name + '</h2>' +
+                '<div class="info-section">' +
+                    '<div class="info-label">Category</div>' +
+                    '<div class="info-value" style="color: #ff6b6b">' + d.category.toUpperCase() + '</div>' +
+                '</div>' +
+                '<div class="info-section">' +
+                    '<div class="info-label">Summary</div>' +
+                    '<div class="info-value">' + d.activityCount + ' activities | ' + incoming + ' incoming | ' + outgoing + ' outgoing</div>' +
+                '</div>' +
+                '<div class="info-section">' +
+                    '<div class="info-label">Schedule</div>' +
+                    '<div class="info-value">' + scheduleText + '</div>' +
+                '</div>' +
+                activitiesHtml;
+            
+            document.getElementById('output').innerHTML = '<p style="color: #4fc3f7;">✓ Sidebar updated successfully!</p>';
+        }
+
+        function clearSidebar() {
+            document.getElementById('sidebar').innerHTML = '<h2>Pipeline Details</h2><div>Click the test button above</div>';
+            document.getElementById('output').innerHTML = '';
+        }
+    </script>
+</body>
+</html>

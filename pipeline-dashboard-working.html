@@ -1,0 +1,400 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fabric Pipeline Dashboard - dev-prescriptions-process</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            overflow: hidden;
+        }
+        #header {
+            background: #2d2d30;
+            padding: 15px 20px;
+            border-bottom: 2px solid #007acc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        h1 {
+            color: #4fc3f7;
+            font-size: 24px;
+            font-weight: 300;
+        }
+        #controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .filter-btn {
+            background: #0e639c;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+        .filter-btn:hover { background: #1177bb; }
+        .filter-btn.active { background: #007acc; box-shadow: 0 0 10px rgba(0,122,204,0.5); }
+        #search {
+            padding: 8px 12px;
+            border: 1px solid #3e3e42;
+            background: #252526;
+            color: #d4d4d4;
+            border-radius: 4px;
+            font-size: 13px;
+            width: 250px;
+        }
+        #container {
+            display: flex;
+            height: calc(100vh - 65px);
+        }
+        #graph {
+            flex: 1;
+            position: relative;
+        }
+        #sidebar {
+            width: 350px;
+            background: #252526;
+            border-left: 1px solid #3e3e42;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        #sidebar h2 {
+            color: #4fc3f7;
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+        .info-section {
+            margin-bottom: 20px;
+        }
+        .info-label {
+            color: #858585;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+        .info-value {
+            color: #d4d4d4;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        .legend {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(45, 45, 48, 0.95);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #3e3e42;
+        }
+        .legend-title {
+            color: #4fc3f7;
+            font-size: 14px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+        .stats {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(45, 45, 48, 0.95);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #3e3e42;
+            font-size: 12px;
+        }
+        .stat-item {
+            margin-bottom: 5px;
+        }
+        .stat-label {
+            color: #858585;
+        }
+        .stat-value {
+            color: #4fc3f7;
+            font-weight: 500;
+        }
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+        .node {
+            cursor: pointer;
+            stroke: #1e1e1e;
+            stroke-width: 2px;
+        }
+        .node:hover {
+            stroke: #4fc3f7;
+            stroke-width: 3px;
+        }
+        .node.selected {
+            stroke: #ffeb3b;
+            stroke-width: 4px;
+        }
+        .link {
+            stroke: #3e3e42;
+            stroke-opacity: 0.6;
+            stroke-width: 2px;
+            fill: none;
+        }
+        .link.highlighted {
+            stroke: #4fc3f7;
+            stroke-opacity: 1;
+            stroke-width: 3px;
+        }
+        .node-label {
+            fill: #d4d4d4;
+            font-size: 11px;
+            pointer-events: none;
+            text-anchor: middle;
+        }
+        .empty-state {
+            color: #858585;
+            font-style: italic;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>ðŸ“Š Fabric Pipeline Dashboard - dev-prescriptions-process</h1>
+        <div id="controls">
+            <input type="text" id="search" placeholder="Search pipelines...">
+            <button class="filter-btn active" data-category="all">All</button>
+            <button class="filter-btn" data-category="orchestrator">Orchestrators</button>
+            <button class="filter-btn" data-category="bronze">Bronze</button>
+            <button class="filter-btn" data-category="silver">Silver</button>
+            <button class="filter-btn" data-category="gold">Gold</button>
+            <button class="filter-btn" data-category="extract">Extracts</button>
+        </div>
+    </div>
+    <div id="container">
+        <div id="graph">
+            <div class="legend">
+                <div class="legend-title">Pipeline Types</div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #ff6b6b;"></div>
+                    <span>Orchestrator</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #cd7f32;"></div>
+                    <span>Bronze Layer</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #c0c0c0;"></div>
+                    <span>Silver Layer</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #ffd700;"></div>
+                    <span>Gold Layer</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #4fc3f7;"></div>
+                    <span>Extract</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #9575cd;"></div>
+                    <span>Utility</span>
+                </div>
+            </div>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-label">Total Pipelines: </span>
+                    <span class="stat-value" id="stat-total">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Visible: </span>
+                    <span class="stat-value" id="stat-visible">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Dependencies: </span>
+                    <span class="stat-value" id="stat-links">0</span>
+                </div>
+            </div>
+        </div>
+        <div id="sidebar">
+            <h2>Pipeline Details</h2>
+            <div class="empty-state">Select a pipeline node to view details</div>
+        </div>
+    </div>
+
+    <script>
+        const nodes = [{"id":"02d408ee-40b3-42f3-b12f-a695c8dad41d","name":"BAU CIP daily schema extract","schedule":{"enabled":true,"jobType":"Execute","configuration":{"type":"Weekly","startDateTime":"2026-04-22T00:00:00","endDateTime":"2031-10-22T23:59:00","localTimeZoneId":"GMT Standard Time","times":["04:00"],"weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"scheduleType":"Weekly","activityCount":9,"category":"extract"},{"id":"7822fe2d-efaf-4527-b3c8-f18523260bc9","name":"BAU CIP monthly schema extract OLD","schedule":{"enabled":false,"jobType":"Execute","configuration":{"type":"Weekly","startDateTime":"2026-03-16T00:00:00","endDateTime":"2026-03-20T23:59:00","localTimeZoneId":"GMT Standard Time","times":["01:00"],"weekdays":["Thursday"]}},"scheduleType":"Weekly","activityCount":4,"category":"extract"},{"id":"0cf551ca-559c-4f06-80a4-7bf8415c0335","name":"BAU CIP monthly schema extract","schedule":null,"scheduleType":"none","activityCount":9,"category":"extract"},{"id":"cd53b062-1b5e-48d7-9bd5-76f3b12cb1b6","name":"BAU DPC daily schema extract","schedule":{"enabled":true,"jobType":"Execute","configuration":{"type":"Weekly","startDateTime":"2026-04-22T00:00:00","endDateTime":"2035-11-22T23:59:00","localTimeZoneId":"GMT Standard Time","times":["04:30"],"weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"scheduleType":"Weekly","activityCount":9,"category":"extract"},{"id":"33d3cec9-855f-4236-87eb-111cecc10073","name":"BAU DPC monthly schema extract","schedule":null,"scheduleType":"none","activityCount":9,"category":"extract"},{"id":"534dcc61-3fe9-43ed-9c0b-89b838195b5d","name":"BAU HOT monthly schema extract","schedule":null,"scheduleType":"none","activityCount":8,"category":"extract"},{"id":"3b40d73b-5bf8-44cd-ad1f-1be89480d3ed","name":"BAU PCD monthly schema extract","schedule":null,"scheduleType":"none","activityCount":9,"category":"extract"},{"id":"e5eac4cb-a14d-4e69-902a-598a44b38276","name":"BAU PHA daily schema extract","schedule":{"enabled":true,"jobType":"Execute","configuration":{"type":"Weekly","startDateTime":"2026-04-22T00:00:00","endDateTime":"2027-04-22T00:00:00","localTimeZoneId":"GMT Standard Time","times":["04:45"],"weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"scheduleType":"Weekly","activityCount":9,"category":"extract"},{"id":"6a810d9e-12db-4756-9ad9-366ff702801c","name":"Data Gateway extract pipeline ETP","schedule":{"enabled":true,"jobType":"Execute","configuration":{"type":"Weekly","startDateTime":"2026-04-01T00:00:00","endDateTime":"2027-04-01T00:00:00","localTimeZoneId":"GMT Standard Time","times":["01:30"],"weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"scheduleType":"Weekly","activityCount":9,"category":"extract"},{"id":"67a594ba-edde-425b-8df0-f8f40e6ad1e5","name":"eps_process_all","schedule":{"enabled":true,"jobType":"Execute","configuration":{"type":"Daily","startDateTime":"2026-05-26T00:00:00","endDateTime":"9999-12-31T23:59:00","localTimeZoneId":"GMT Standard Time","times":["08:00"]}},"scheduleType":"Daily","activityCount":3,"category":"orchestrator"},{"id":"16290c10-7a20-46c2-9957-058c0d7c7a94","name":"eps_process_bronze","schedule":{"enabled":false,"jobType":"Execute","configuration":{"type":"Daily","startDateTime":"2026-02-05T00:00:00","endDateTime":"9999-12-31T23:59:00","localTimeZoneId":"GMT Standard Time","times":["08:00"]}},"scheduleType":"Daily","activityCount":17,"category":"bronze"},{"id":"72fcba30-0e7e-4000-abca-e2e00d332f95","name":"eps_process_bronze_copy2","schedule":{"enabled":false,"jobType":"Execute","configuration":{"type":"Daily","startDateTime":"2026-03-19T00:00:00","endDateTime":"9999-12-31T23:59:00","localTimeZoneId":"GMT Standard Time","times":["08:00"]}},"scheduleType":"Daily","activityCount":17,"category":"bronze"},{"id":"0311bc10-d8e8-48d5-be2c-71d493dd90b6","name":"eps_process_gold","schedule":null,"scheduleType":"none","activityCount":17,"category":"gold"},{"id":"be6e1f3e-6128-4467-a068-ca9d787462a7","name":"eps_process_silver","schedule":null,"scheduleType":"none","activityCount":30,"category":"silver"},{"id":"b7dbee0b-a511-48fe-a603-6e6895e09cb6","name":"mys_process_gold","schedule":null,"scheduleType":"none","activityCount":17,"category":"gold"},{"id":"9bec8d13-5743-4811-bcbf-d47ad4ada9a8","name":"mys_process_silver","schedule":null,"scheduleType":"none","activityCount":17,"category":"silver"},{"id":"dddd8a04-17e9-4d90-bf94-75b0af78f0cd","name":"pl_cip_bronze_monthly","schedule":null,"scheduleType":"none","activityCount":6,"category":"bronze"},{"id":"b5052907-f097-4bd8-ab44-4161f48e22ba","name":"Pl_Cip_Bronze_Monthly_Loader","schedule":null,"scheduleType":"none","activityCount":0,"category":"bronze"},{"id":"88427e21-52e0-499b-97c5-804bb5debf1c","name":"pl_cip_silver_layer_monthly","schedule":null,"scheduleType":"none","activityCount":6,"category":"silver"},{"id":"37f907f4-3ade-4a2f-952d-cff6187f87b0","name":"pl_csv_to_parquet","schedule":null,"scheduleType":"none","activityCount":0,"category":"utility"},{"id":"15c23efb-bacc-49e4-9f2a-3abb14d76c98","name":"pl_epact_monthly_master","schedule":null,"scheduleType":"none","activityCount":7,"category":"orchestrator"},{"id":"e13712d0-7aed-44ab-911a-ebed2e7e001b","name":"pl_etp_bronze_daily","schedule":{"enabled":false,"jobType":"Execute","configuration":{"type":"Daily","startDateTime":"2025-09-04T00:00:00","endDateTime":"2099-12-31T23:59:00","localTimeZoneId":"GMT Standard Time","times":["08:31"]}},"scheduleType":"Daily","activityCount":6,"category":"bronze"},{"id":"0b8fc312-b8b4-4bce-916b-52bd48338985","name":"pl_etp_bronze_daily_load","schedule":null,"scheduleType":"none","activityCount":6,"category":"bronze"},{"id":"1fc17ed3-2418-4284-8a67-e30ec502b2ce","name":"pl_finance_bronze_load","schedule":null,"scheduleType":"none","activityCount":7,"category":"bronze"},{"id":"7eb34e07-29ff-4980-b0eb-546a165fbc11","name":"pl_finance_bronze_load_test","schedule":null,"scheduleType":"none","activityCount":2,"category":"bronze"},{"id":"c8d8466e-0225-4f3c-8602-c42fb56c2061","name":"pl_finance_daily","schedule":null,"scheduleType":"none","activityCount":8,"category":"utility"},{"id":"a77e191b-bc0a-4bca-840c-5f506b0e86b1","name":"pl_finance_daily_master","schedule":null,"scheduleType":"none","activityCount":4,"category":"orchestrator"},{"id":"168342b0-ea22-432e-9587-8c05a3b5b764","name":"pl_finance_end_to_end","schedule":null,"scheduleType":"none","activityCount":17,"category":"utility"},{"id":"6c5f7d7a-77f8-422d-82dd-9574e53480cf","name":"pl_finance_gold_load","schedule":null,"scheduleType":"none","activityCount":7,"category":"gold"},{"id":"e4469e1b-469f-46e1-8ffc-d8ef7b67d064","name":"pl_finance_monthly","schedule":null,"scheduleType":"none","activityCount":12,"category":"utility"},{"id":"90819cdd-e94f-4f66-9c5d-592671e7eb2e","name":"pl_finance_monthly_master","schedule":null,"scheduleType":"none","activityCount":4,"category":"orchestrator"},{"id":"ce547c3d-8a19-42cc-a2e6-a89583141c78","name":"pl_finance_silver_load","schedule":null,"scheduleType":"none","activityCount":5,"category":"silver"},{"id":"fcccb6bf-0dcc-435a-b900-9e6d43a7f3e4","name":"pl_finance_test","schedule":null,"scheduleType":"none","activityCount":6,"category":"utility"},{"id":"1ca2e836-4b3c-4c37-aa04-2902018cf34a","name":"pl_finance_test2","schedule":null,"scheduleType":"none","activityCount":7,"category":"utility"},{"id":"371ceba8-6c45-4c69-9877-0f0793e95f0f","name":"pl_llf_bronze_load","schedule":null,"scheduleType":"none","activityCount":5,"category":"bronze"},{"id":"3e586a50-4557-4d13-96ad-550fb0e1e9dc","name":"pl_llf_gold_load","schedule":null,"scheduleType":"none","activityCount":5,"category":"gold"},{"id":"da8a3054-3049-4127-a1a5-c384c437652c","name":"pl_llf_silver_load","schedule":null,"scheduleType":"none","activityCount":5,"category":"silver"},{"id":"b8a3d4c1-01e8-4326-bd2a-2e195eeea91c","name":"pl_sow4_gold_load","schedule":null,"scheduleType":"none","activityCount":5,"category":"gold"},{"id":"9743e8c4-ae7d-4c4d-9298-dda8bd878c76","name":"Refresh semantic model","schedule":null,"scheduleType":"none","activityCount":1,"category":"utility"},{"id":"604623b4-b9fc-436c-a86a-52f936973b61","name":"sow11_create_semantic_model","schedule":null,"scheduleType":"none","activityCount":1,"category":"utility"},{"id":"45d1ff03-161e-46fd-9912-c1b5bfe183ff","name":"sow11_epact_sm_creation_pipeline","schedule":null,"scheduleType":"none","activityCount":3,"category":"utility"},{"id":"2e368a45-dbb3-4914-89f6-c0c1c741c375","name":"sow11_pipeline","schedule":null,"scheduleType":"none","activityCount":3,"category":"utility"},{"id":"c193f9c9-b53d-4b72-a3f6-b25dc9de4d72","name":"sow11_pipeline_copy1","schedule":null,"scheduleType":"none","activityCount":3,"category":"utility"},{"id":"789f6a1c-3742-440e-87e0-10eb82c79ed3","name":"Suture Run for 1.3","schedule":null,"scheduleType":"none","activityCount":1,"category":"utility"},{"id":"0452d601-f4cc-495a-896d-7c42451eac2b","name":"Table maintenance","schedule":null,"scheduleType":"none","activityCount":1,"category":"utility"}];
+        const links = [{"activityName":"eps_process_bronze","target":"72fcba30-0e7e-4000-abca-e2e00d332f95","source":"67a594ba-edde-425b-8df0-f8f40e6ad1e5"},{"activityName":"eps_process_silver","target":"be6e1f3e-6128-4467-a068-ca9d787462a7","source":"67a594ba-edde-425b-8df0-f8f40e6ad1e5"},{"activityName":"eps_process_gold","target":"0311bc10-d8e8-48d5-be2c-71d493dd90b6","source":"67a594ba-edde-425b-8df0-f8f40e6ad1e5"}];
+        
+        const categoryColors = {
+            orchestrator: '#ff6b6b',
+            bronze: '#cd7f32',
+            silver: '#c0c0c0',
+            gold: '#ffd700',
+            extract: '#4fc3f7',
+            utility: '#9575cd'
+        };
+
+        let currentFilter = 'all';
+        let selectedNode = null;
+
+        const container = d3.select('#graph');
+        const width = container.node().clientWidth;
+        const height = container.node().clientHeight;
+
+        const svg = container.append('svg').attr('width', width).attr('height', height);
+        const g = svg.append('g');
+
+        const zoom = d3.zoom().scaleExtent([0.1, 4]).on('zoom', (event) => {
+            g.attr('transform', event.transform);
+        });
+        svg.call(zoom);
+
+        const simulation = d3.forceSimulation(nodes)
+            .force('link', d3.forceLink(links).id(d => d.id).distance(150))
+            .force('charge', d3.forceManyBody().strength(-800))
+            .force('center', d3.forceCenter(width / 2, height / 2))
+            .force('collision', d3.forceCollide().radius(40));
+
+        const link = g.append('g').selectAll('path').data(links).join('path')
+            .attr('class', 'link').attr('marker-end', 'url(#arrowhead)');
+
+        svg.append('defs').append('marker').attr('id', 'arrowhead')
+            .attr('viewBox', '0 -5 10 10').attr('refX', 25).attr('refY', 0)
+            .attr('markerWidth', 6).attr('markerHeight', 6).attr('orient', 'auto')
+            .append('path').attr('d', 'M0,-5L10,0L0,5').attr('fill', '#3e3e42');
+
+        const node = g.append('g').selectAll('circle').data(nodes).join('circle')
+            .attr('class', 'node')
+            .attr('r', d => 15 + (d.activityCount * 0.5))
+            .attr('fill', d => categoryColors[d.category])
+            .call(d3.drag()
+                .on('start', dragstarted)
+                .on('drag', dragged)
+                .on('end', dragended))
+            .on('click', (event, d) => { event.stopPropagation(); selectNode(d); });
+
+        const label = g.append('g').selectAll('text').data(nodes).join('text')
+            .attr('class', 'node-label').attr('dy', 30)
+            .text(d => d.name.length > 25 ? d.name.substring(0, 25) + '...' : d.name);
+
+        simulation.on('tick', () => {
+            link.attr('d', d => {
+                const dx = d.target.x - d.source.x;
+                const dy = d.target.y - d.source.y;
+                const dr = Math.sqrt(dx * dx + dy * dy);
+                return `M${d.source.x},${d.source.y}A${dr},${dr} 0 0,1 ${d.target.x},${d.target.y}`;
+            });
+            node.attr('cx', d => d.x).attr('cy', d => d.y);
+            label.attr('x', d => d.x).attr('y', d => d.y);
+        });
+
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x; d.fy = d.y;
+        }
+        function dragged(event, d) { d.fx = event.x; d.fy = event.y; }
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null; d.fy = null;
+        }
+
+        function selectNode(d) {
+            selectedNode = d;
+            node.classed('selected', n => n.id === d.id);
+            link.classed('highlighted', l => l.source.id === d.id || l.target.id === d.id);
+            updateSidebar(d);
+        }
+
+        function updateSidebar(d) {
+            const sidebar = d3.select('#sidebar');
+            const scheduleText = d.schedule ? 
+                `${d.schedule.configuration.type} - ${d.schedule.configuration.times ? d.schedule.configuration.times.join(', ') : 'N/A'}` :
+                'No schedule';
+            const incoming = links.filter(l => l.target.id === d.id).length;
+            const outgoing = links.filter(l => l.source.id === d.id).length;
+            
+            sidebar.html(`
+                <h2>${d.name}</h2>
+                <div class="info-section">
+                    <div class="info-label">Category</div>
+                    <div class="info-value" style="color: ${categoryColors[d.category]}">${d.category.toUpperCase()}</div>
+                </div>
+                <div class="info-section">
+                    <div class="info-label">Activities</div>
+                    <div class="info-value">${d.activityCount} activities</div>
+                </div>
+                <div class="info-section">
+                    <div class="info-label">Dependencies</div>
+                    <div class="info-value">${incoming} incoming, ${outgoing} outgoing</div>
+                </div>
+                <div class="info-section">
+                    <div class="info-label">Schedule</div>
+                    <div class="info-value">${scheduleText}</div>
+                </div>
+                <div class="info-section">
+                    <div class="info-label">Pipeline ID</div>
+                    <div class="info-value" style="font-size: 10px; word-break: break-all;">${d.id}</div>
+                </div>
+            `);
+        }
+
+        d3.selectAll('.filter-btn').on('click', function() {
+            const category = d3.select(this).attr('data-category');
+            d3.selectAll('.filter-btn').classed('active', false);
+            d3.select(this).classed('active', true);
+            currentFilter = category;
+            applyFilter();
+        });
+
+        d3.select('#search').on('input', applyFilter);
+
+        function applyFilter() {
+            const searchTerm = d3.select('#search').property('value').toLowerCase();
+            node.style('opacity', d => {
+                const categoryMatch = currentFilter === 'all' || d.category === currentFilter;
+                const searchMatch = !searchTerm || d.name.toLowerCase().includes(searchTerm);
+                return (categoryMatch && searchMatch) ? 1 : 0.1;
+            });
+            label.style('opacity', d => {
+                const categoryMatch = currentFilter === 'all' || d.category === currentFilter;
+                const searchMatch = !searchTerm || d.name.toLowerCase().includes(searchTerm);
+                return (categoryMatch && searchMatch) ? 1 : 0.1;
+            });
+            const visibleCount = nodes.filter(d => {
+                const categoryMatch = currentFilter === 'all' || d.category === currentFilter;
+                const searchMatch = !searchTerm || d.name.toLowerCase().includes(searchTerm);
+                return categoryMatch && searchMatch;
+            }).length;
+            d3.select('#stat-visible').text(visibleCount);
+        }
+
+        svg.on('click', () => {
+            node.classed('selected', false);
+            link.classed('highlighted', false);
+            d3.select('#sidebar').html('<h2>Pipeline Details</h2><div class="empty-state">Select a pipeline node to view details</div>');
+        });
+
+        d3.select('#stat-total').text(nodes.length);
+        d3.select('#stat-visible').text(nodes.length);
+        d3.select('#stat-links').text(links.length);
+    </script>
+</body>
+</html>

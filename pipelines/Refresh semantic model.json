@@ -1,0 +1,23 @@
+﻿{
+    "metadata":  {
+                     "exportedAt":  "2026-07-14T09:51:42.2929909+01:00",
+                     "workspaceId":  "e8c421cf-979f-450a-94b4-e2010e807479",
+                     "name":  "Refresh semantic model",
+                     "id":  "9743e8c4-ae7d-4c4d-9298-dda8bd878c76",
+                     "type":  "DataPipeline"
+                 },
+    "definition":  {
+                       "parts":  [
+                                     {
+                                         "path":  "pipeline-content.json",
+                                         "payload":  "ewogICJwcm9wZXJ0aWVzIjogewogICAgImFjdGl2aXRpZXMiOiBbCiAgICAgIHsKICAgICAgICAibmFtZSI6ICJTZW1hbnRpYyBtb2RlbCByZWZyZXNoIC0gRXBhY3QgZm9ybSBpdGVtIGVsZW1lbnQiLAogICAgICAgICJ0eXBlIjogIlBCSVNlbWFudGljTW9kZWxSZWZyZXNoIiwKICAgICAgICAic3RhdGUiOiAiSW5hY3RpdmUiLAogICAgICAgICJvbkluYWN0aXZlTWFya0FzIjogIlN1Y2NlZWRlZCIsCiAgICAgICAgImRlcGVuZHNPbiI6IFtdLAogICAgICAgICJwb2xpY3kiOiB7CiAgICAgICAgICAidGltZW91dCI6ICIwLjEyOjAwOjAwIiwKICAgICAgICAgICJyZXRyeSI6IDAsCiAgICAgICAgICAicmV0cnlJbnRlcnZhbEluU2Vjb25kcyI6IDMwLAogICAgICAgICAgInNlY3VyZU91dHB1dCI6IGZhbHNlLAogICAgICAgICAgInNlY3VyZUlucHV0IjogZmFsc2UKICAgICAgICB9LAogICAgICAgICJ0eXBlUHJvcGVydGllcyI6IHsKICAgICAgICAgICJtZXRob2QiOiAiUE9TVCIsCiAgICAgICAgICAib3BlcmF0aW9uVHlwZSI6ICJTZW1hbnRpY01vZGVsUmVmcmVzaCIsCiAgICAgICAgICAiZ3JvdXBJZCI6ICI1N2FhNTBhYi1mMzUwLTQ3YTYtOGJjOS0yZjM1NDEyODVkYzciLAogICAgICAgICAgImRhdGFzZXRJZCI6ICIwM2QyMDMyNS02Yjk2LTQ3MTYtOWMyMS02Y2U3NTAzNDM0YWYiCiAgICAgICAgfQogICAgICB9CiAgICBdCiAgfQp9",
+                                         "payloadType":  "InlineBase64"
+                                     },
+                                     {
+                                         "path":  ".platform",
+                                         "payload":  "ewogICIkc2NoZW1hIjogImh0dHBzOi8vZGV2ZWxvcGVyLm1pY3Jvc29mdC5jb20vanNvbi1zY2hlbWFzL2ZhYnJpYy9naXRJbnRlZ3JhdGlvbi9wbGF0Zm9ybVByb3BlcnRpZXMvMi4wLjAvc2NoZW1hLmpzb24iLAogICJtZXRhZGF0YSI6IHsKICAgICJ0eXBlIjogIkRhdGFQaXBlbGluZSIsCiAgICAiZGlzcGxheU5hbWUiOiAiUmVmcmVzaCBzZW1hbnRpYyBtb2RlbCIKICB9LAogICJjb25maWciOiB7CiAgICAidmVyc2lvbiI6ICIyLjAiLAogICAgImxvZ2ljYWxJZCI6ICIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiCiAgfQp9",
+                                         "payloadType":  "InlineBase64"
+                                     }
+                                 ]
+                   }
+}

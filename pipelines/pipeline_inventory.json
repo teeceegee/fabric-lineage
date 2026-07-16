@@ -1,0 +1,280 @@
+{
+  "workspace": {
+    "id": "e8c421cf-979f-450a-94b4-e2010e807479",
+    "name": "dev-prescriptions-process"
+  },
+  "pipeline_count": 45,
+  "retrieved_at": "2026-07-14T08:38:31Z",
+  "pipelines": [
+    {
+      "id": "37f907f4-3ade-4a2f-952d-cff6187f87b0",
+      "name": "pl_csv_to_parquet",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "fcccb6bf-0dcc-435a-b900-9e6d43a7f3e4",
+      "name": "pl_finance_test",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "168342b0-ea22-432e-9587-8c05a3b5b764",
+      "name": "pl_finance_end_to_end",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "1ca2e836-4b3c-4c37-aa04-2902018cf34a",
+      "name": "pl_finance_test2",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "c8d8466e-0225-4f3c-8602-c42fb56c2061",
+      "name": "pl_finance_daily",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "e4469e1b-469f-46e1-8ffc-d8ef7b67d064",
+      "name": "pl_finance_monthly",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "7eb34e07-29ff-4980-b0eb-546a165fbc11",
+      "name": "pl_finance_bronze_load_test",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "e13712d0-7aed-44ab-911a-ebed2e7e001b",
+      "name": "pl_etp_bronze_daily",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "1fc17ed3-2418-4284-8a67-e30ec502b2ce",
+      "name": "pl_finance_bronze_load",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "a77e191b-bc0a-4bca-840c-5f506b0e86b1",
+      "name": "pl_finance_daily_master",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "ce547c3d-8a19-42cc-a2e6-a89583141c78",
+      "name": "pl_finance_silver_load",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "6c5f7d7a-77f8-422d-82dd-9574e53480cf",
+      "name": "pl_finance_gold_load",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "90819cdd-e94f-4f66-9c5d-592671e7eb2e",
+      "name": "pl_finance_monthly_master",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "15c23efb-bacc-49e4-9f2a-3abb14d76c98",
+      "name": "pl_epact_monthly_master",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "371ceba8-6c45-4c69-9877-0f0793e95f0f",
+      "name": "pl_llf_bronze_load",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "da8a3054-3049-4127-a1a5-c384c437652c",
+      "name": "pl_llf_silver_load",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "3e586a50-4557-4d13-96ad-550fb0e1e9dc",
+      "name": "pl_llf_gold_load",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "b8a3d4c1-01e8-4326-bd2a-2e195eeea91c",
+      "name": "pl_sow4_gold_load",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "0b8fc312-b8b4-4bce-916b-52bd48338985",
+      "name": "pl_etp_bronze_daily_load",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "0452d601-f4cc-495a-896d-7c42451eac2b",
+      "name": "Table maintenance",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "9743e8c4-ae7d-4c4d-9298-dda8bd878c76",
+      "name": "Refresh semantic model",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "789f6a1c-3742-440e-87e0-10eb82c79ed3",
+      "name": "Suture Run for 1.3",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "16290c10-7a20-46c2-9957-058c0d7c7a94",
+      "name": "eps_process_bronze",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "be6e1f3e-6128-4467-a068-ca9d787462a7",
+      "name": "eps_process_silver",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "0311bc10-d8e8-48d5-be2c-71d493dd90b6",
+      "name": "eps_process_gold",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "7822fe2d-efaf-4527-b3c8-f18523260bc9",
+      "name": "BAU CIP monthly schema extract OLD",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "72fcba30-0e7e-4000-abca-e2e00d332f95",
+      "name": "eps_process_bronze_copy2",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "dddd8a04-17e9-4d90-bf94-75b0af78f0cd",
+      "name": "pl_cip_bronze_monthly",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "b5052907-f097-4bd8-ab44-4161f48e22ba",
+      "name": "Pl_Cip_Bronze_Monthly_Loader",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "6a810d9e-12db-4756-9ad9-366ff702801c",
+      "name": "Data Gateway extract pipeline ETP",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "0cf551ca-559c-4f06-80a4-7bf8415c0335",
+      "name": "BAU CIP monthly schema extract",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "88427e21-52e0-499b-97c5-804bb5debf1c",
+      "name": "pl_cip_silver_layer_monthly",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "02d408ee-40b3-42f3-b12f-a695c8dad41d",
+      "name": "BAU CIP daily schema extract",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "e5eac4cb-a14d-4e69-902a-598a44b38276",
+      "name": "BAU PHA daily schema extract",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "3b40d73b-5bf8-44cd-ad1f-1be89480d3ed",
+      "name": "BAU PCD monthly schema extract",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "33d3cec9-855f-4236-87eb-111cecc10073",
+      "name": "BAU DPC monthly schema extract",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "cd53b062-1b5e-48d7-9bd5-76f3b12cb1b6",
+      "name": "BAU DPC daily schema extract",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "534dcc61-3fe9-43ed-9c0b-89b838195b5d",
+      "name": "BAU HOT monthly schema extract",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "9bec8d13-5743-4811-bcbf-d47ad4ada9a8",
+      "name": "mys_process_silver",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "67a594ba-edde-425b-8df0-f8f40e6ad1e5",
+      "name": "eps_process_all",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "2e368a45-dbb3-4914-89f6-c0c1c741c375",
+      "name": "sow11_pipeline",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "c193f9c9-b53d-4b72-a3f6-b25dc9de4d72",
+      "name": "sow11_pipeline_copy1",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "b7dbee0b-a511-48fe-a603-6e6895e09cb6",
+      "name": "mys_process_gold",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "45d1ff03-161e-46fd-9912-c1b5bfe183ff",
+      "name": "sow11_epact_sm_creation_pipeline",
+      "description": "",
+      "type": "DataPipeline"
+    },
+    {
+      "id": "604623b4-b9fc-436c-a86a-52f936973b61",
+      "name": "sow11_create_semantic_model",
+      "description": "",
+      "type": "DataPipeline"
+    }
+  ]
+}
