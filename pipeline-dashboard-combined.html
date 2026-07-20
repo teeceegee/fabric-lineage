@@ -110,6 +110,9 @@
         #schedule-panel {
             flex-direction: column;
         }
+        #lineage-panel {
+            flex-direction: column;
+        }
         #container { display: flex; height: calc(100vh - 56px - 40px); }
         #table-container {
             flex: 1;
@@ -792,6 +795,45 @@
         .tooltip.visible {
             display: block;
         }
+        .lineage-shell {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            height: calc(100vh - 56px);
+            padding: 16px 20px 20px 20px;
+            background: #f0f4f5;
+        }
+        .lineage-banner {
+            background: #ffffff;
+            border: 1px solid #d8dde0;
+            border-radius: 4px;
+            padding: 12px 16px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+        }
+        .lineage-banner h2 {
+            font-size: 16px;
+            color: #005eb8;
+            margin-bottom: 6px;
+        }
+        .lineage-banner p {
+            font-size: 13px;
+            color: #4a5860;
+            line-height: 1.5;
+        }
+        .lineage-frame-wrap {
+            flex: 1;
+            min-height: 0;
+            background: #ffffff;
+            border: 1px solid #d8dde0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .lineage-frame {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            background: #ffffff;
+        }
     </style>
 </head>
 <body>
@@ -799,8 +841,9 @@
     <div id="header" role="banner">
         <h1>[PIPELINES] Fabric Pipeline Dashboard - dev-prescriptions-process</h1>
         <div class="view-switcher" role="tablist" aria-label="View selection">
-            <button class="view-btn active" onclick="switchView('table', event)" role="tab" aria-selected="true" aria-controls="table-panel" aria-label="Switch to Table View">Table View</button>
-            <button class="view-btn" onclick="switchView('schedule', event)" role="tab" aria-selected="false" aria-controls="schedule-panel" aria-label="Switch to Schedule View">Schedule View</button>
+            <button id="table-view-btn" class="view-btn active" onclick="switchView('table', event)" role="tab" aria-selected="true" aria-controls="table-panel" aria-label="Switch to Table View">Table View</button>
+            <button id="schedule-view-btn" class="view-btn" onclick="switchView('schedule', event)" role="tab" aria-selected="false" aria-controls="schedule-panel" aria-label="Switch to Schedule View">Schedule View</button>
+            <button id="lineage-view-btn" class="view-btn" onclick="switchView('lineage', event)" role="tab" aria-selected="false" aria-controls="lineage-panel" aria-label="Switch to Lineage View">Lineage View</button>
         </div>
     </div>
 
@@ -844,6 +887,24 @@
             </div>
             <div id="sl-tab-inventory" class="sl-tab-panel" role="tabpanel" aria-labelledby="inventory-btn">
                 <div id="all-pipelines"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="lineage-panel" class="view-panel" role="tabpanel" aria-labelledby="lineage-view-btn">
+        <div class="lineage-shell">
+            <div class="lineage-banner">
+                <h2>Layer Lineage</h2>
+                <p>Browse how data moves between Extract, Bronze, Silver, and Gold in the same dashboard surface. This embedded view is generated from the exported Fabric pipeline definitions and stays focused on connected lineage paths.</p>
+            </div>
+            <div class="lineage-frame-wrap">
+                <iframe
+                    id="lineage-frame"
+                    class="lineage-frame"
+                    src="./pipeline-lineage.html?v=20260720"
+                    title="Pipeline lineage view"
+                    loading="lazy">
+                </iframe>
             </div>
         </div>
     </div>

@@ -1,0 +1,850 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipeline Layer Lineage</title>
+    <style>
+        :root {
+            --bg: #f0f4f5;
+            --panel: #ffffff;
+            --panel-2: #e7f1f8;
+            --panel-3: #f9fbfc;
+            --text: #212b32;
+            --muted: #5f6b73;
+            --line: #d8dde0;
+            --accent: #005eb8;
+            --accent-dark: #003087;
+            --extract: #4d7cfe;
+            --orchestrator: #00857c;
+            --bronze: #b26a2d;
+            --silver: #7b8794;
+            --gold: #b58900;
+            --utility: #6f7782;
+            --danger: #c43d2f;
+            --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        a { color: inherit; }
+
+        .shell {
+            max-width: 1480px;
+            margin: 0 auto;
+            padding: 0 20px 28px 20px;
+        }
+
+        .hero {
+            background: var(--panel);
+            border-bottom: 2px solid var(--accent-dark);
+            border-left: 1px solid var(--line);
+            border-right: 1px solid var(--line);
+            border-radius: 0 0 10px 10px;
+            padding: 18px 20px 20px 20px;
+            box-shadow: var(--shadow);
+            position: static;
+            margin-bottom: 20px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 22px;
+            align-items: start;
+        }
+
+        .eyebrow {
+            color: var(--accent);
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 18px;
+            line-height: 1.2;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.55;
+            margin-top: 10px;
+            max-width: 88ch;
+        }
+
+        .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .meta-chip {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            color: var(--muted);
+            border-radius: 999px;
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .summary-card {
+            background: var(--panel-3);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .summary-card strong {
+            display: block;
+            font-size: 24px;
+            margin-bottom: 6px;
+            color: var(--accent);
+        }
+
+        .summary-card span {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .legend,
+        .transition-grid,
+        .domain-nav,
+        .domain-list {
+            margin-top: 22px;
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .legend-chip,
+        .jump-link,
+        .path-chip,
+        .badge {
+            border-radius: 4px;
+            padding: 8px 12px;
+            font-size: 12px;
+            border: 1px solid transparent;
+        }
+
+        .legend-chip {
+            background: #ffffff;
+            color: var(--text);
+        }
+
+        .legend-chip[data-category="extract"] { border-color: rgba(77, 124, 254, 0.55); }
+        .legend-chip[data-category="orchestrator"] { border-color: rgba(32, 180, 134, 0.55); }
+        .legend-chip[data-category="bronze"] { border-color: rgba(185, 122, 61, 0.55); }
+        .legend-chip[data-category="silver"] { border-color: rgba(184, 195, 209, 0.55); }
+        .legend-chip[data-category="gold"] { border-color: rgba(226, 185, 59, 0.55); }
+        .legend-chip[data-category="utility"] { border-color: rgba(138, 147, 164, 0.55); }
+
+        .transition-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 14px;
+        }
+
+        .transition-card {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .transition-card h3 {
+            margin: 0 0 6px 0;
+            font-size: 16px;
+        }
+
+        .transition-card .count {
+            color: var(--accent);
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .transition-card p {
+            color: var(--muted);
+            margin: 10px 0 0 0;
+            font-size: 13px;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .domain-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .jump-link {
+            background: #ffffff;
+            border-color: var(--line);
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .jump-link:hover {
+            border-color: var(--accent);
+            background: var(--panel-2);
+            transform: translateY(-1px);
+        }
+
+        .domain-list {
+            display: grid;
+            gap: 24px;
+            padding-bottom: 40px;
+        }
+
+        .domain-card {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .domain-head {
+            padding: 24px 24px 0 24px;
+            display: flex;
+            justify-content: space-between;
+            gap: 18px;
+            align-items: flex-start;
+        }
+
+        .domain-head h2 {
+            margin: 0;
+            font-size: 18px;
+            color: var(--accent);
+        }
+
+        .domain-head p {
+            margin: 8px 0 0 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .path {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        .path-chip {
+            background: #ffffff;
+            border-color: var(--line);
+            color: var(--text);
+        }
+
+        .domain-body {
+            display: grid;
+            grid-template-columns: 1.7fr 1fr;
+            gap: 18px;
+            padding: 20px 24px 24px 24px;
+        }
+
+        .side-stack {
+            display: grid;
+            gap: 18px;
+            align-content: start;
+        }
+
+        .panel {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 18px;
+        }
+
+        .panel h3 {
+            margin: 0 0 14px 0;
+            font-size: 16px;
+            letter-spacing: 0.01em;
+        }
+
+        .panel p,
+        .empty-note {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .connection-key {
+            display: grid;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .connection-item {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 13px;
+            line-height: 1.45;
+            color: var(--text);
+        }
+
+        .connection-item strong {
+            font-weight: 600;
+        }
+
+        .diagram-wrap {
+            overflow: auto;
+            border-radius: 6px;
+            border: 1px solid var(--line);
+            background: #f9fbfc;
+            min-height: 320px;
+        }
+
+        .diagram-wrap.compact {
+            min-height: 0;
+        }
+
+        .generic-diagram {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+            padding: 14px;
+            min-height: 0;
+            background: #f9fbfc;
+        }
+
+        .generic-node {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 14px;
+            min-height: 118px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .generic-node .node-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.35;
+        }
+
+        .generic-node .node-meta {
+            margin-top: auto;
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.45;
+        }
+
+        .diagram-wrap svg {
+            display: block;
+            width: 100%;
+        }
+
+        .pipeline-grid,
+        .link-list,
+        .gap-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .section-note {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 12px 0;
+            line-height: 1.5;
+        }
+
+        .pipeline-item,
+        .link-item,
+        .gap-item {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 12px 14px;
+        }
+
+        .pipeline-item strong,
+        .link-item strong,
+        .gap-item strong {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 6px;
+            overflow-wrap: anywhere;
+        }
+
+        .pipeline-meta,
+        .gap-meta,
+        .link-meta {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 9px;
+            margin-right: 8px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-size: 11px;
+        }
+
+        .badge.extract { background: #eef3ff; color: #254eda; }
+        .badge.orchestrator { background: #e5f6f2; color: #00655f; }
+        .badge.bronze { background: #f7eee7; color: #8c4d16; }
+        .badge.silver { background: #edf1f4; color: #4b5968; }
+        .badge.gold { background: #fff6da; color: #8a6700; }
+        .badge.utility { background: #f1f3f5; color: #4f5965; }
+
+        .gap-item {
+            border-color: #f0c6bf;
+            background: #fff7f5;
+        }
+
+        .footer-note {
+            color: var(--muted);
+            text-align: center;
+            margin: 26px 0 10px 0;
+            font-size: 13px;
+        }
+
+        @media (max-width: 1120px) {
+            .hero-grid,
+            .domain-body {
+                grid-template-columns: 1fr;
+            }
+
+            .path {
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .shell {
+                padding: 0 12px 18px 12px;
+            }
+
+            h1 {
+                font-size: 18px;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .domain-head,
+            .domain-body {
+                padding-left: 18px;
+                padding-right: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <section class="hero">
+            <div class="hero-grid">
+                <div>
+                    <div class="eyebrow">Fabric Pipeline Explorer</div>
+                    <h1>Layer Lineage View</h1>
+                    <p class="subtitle">Browse how orchestration and medallion-layer pipelines hand work between Extract, Bronze, Silver, and Gold. Explicit child-pipeline handoffs are drawn directly; domains that rely on lookup-driven notebooks are marked so you know where table-level lineage still needs notebook or metadata inspection.</p>
+                    <div class="meta" id="meta"></div>
+                </div>
+                <div class="summary-grid" id="summary-grid"></div>
+            </div>
+            <div class="legend" id="legend"></div>
+            <div class="transition-grid" id="transition-grid"></div>
+            <div class="domain-nav" id="domain-nav"></div>
+        </section>
+
+        <main class="domain-list" id="domain-list"></main>
+        <p class="footer-note">Generated from exported Fabric pipeline definitions. Notebook-internal and metadata-driven table movement is summarized as a gap, not guessed.</p>
+    </div>
+
+    <script>
+        const data = {"generatedAt":"2026-07-20 10:48:21","pipelineCount":45,"linkCount":10,"categories":[{"category":"bronze","count":9},{"category":"extract","count":9},{"category":"gold","count":5},{"category":"orchestrator","count":4},{"category":"silver","count":5},{"category":"utility","count":13}],"transitions":[{"source":"orchestrator","target":"bronze","count":3,"samples":["eps_process_all -\u003e eps_process_bronze_copy2","pl_epact_monthly_master -\u003e pl_llf_bronze_load","pl_finance_daily_master -\u003e pl_finance_bronze_load"]},{"source":"orchestrator","target":"gold","count":4,"samples":["eps_process_all -\u003e eps_process_gold","pl_epact_monthly_master -\u003e pl_llf_gold_load","pl_epact_monthly_master -\u003e pl_sow4_gold_load"]},{"source":"orchestrator","target":"silver","count":3,"samples":["eps_process_all -\u003e eps_process_silver","pl_epact_monthly_master -\u003e pl_llf_silver_load","pl_finance_monthly_master -\u003e pl_finance_silver_load"]}],"domains":[{"name":"BAU Extracts","inferredPath":["extract"],"lineagePipelines":[{"name":"BAU DPC daily schema extract","category":"extract","activityCount":9,"fileName":"BAU DPC daily schema extract.json"},{"name":"BAU DPC monthly schema extract","category":"extract","activityCount":9,"fileName":"BAU DPC monthly schema extract.json"},{"name":"BAU HOT monthly schema extract","category":"extract","activityCount":8,"fileName":"BAU HOT monthly schema extract.json"},{"name":"BAU PCD monthly schema extract","category":"extract","activityCount":9,"fileName":"BAU PCD monthly schema extract.json"},{"name":"BAU PHA daily schema extract","category":"extract","activityCount":9,"fileName":"BAU PHA daily schema extract.json"}],"supportingPipelines":[],"graphPipelines":[{"name":"BAU DPC daily schema extract","category":"extract","domain":"BAU Extracts","activityCount":9},{"name":"BAU DPC monthly schema extract","category":"extract","domain":"BAU Extracts","activityCount":9},{"name":"BAU HOT monthly schema extract","category":"extract","domain":"BAU Extracts","activityCount":8},{"name":"BAU PCD monthly schema extract","category":"extract","domain":"BAU Extracts","activityCount":9},{"name":"BAU PHA daily schema extract","category":"extract","domain":"BAU Extracts","activityCount":9}],"links":[],"gapPipelines":[]},{"name":"CIP","inferredPath":["extract","bronze","silver"],"lineagePipelines":[{"name":"BAU CIP daily schema extract","category":"extract","activityCount":9,"fileName":"BAU CIP daily schema extract.json"},{"name":"BAU CIP monthly schema extract","category":"extract","activityCount":9,"fileName":"BAU CIP monthly schema extract.json"},{"name":"BAU CIP monthly schema extract OLD","category":"extract","activityCount":4,"fileName":"BAU CIP monthly schema extract OLD.json"},{"name":"pl_cip_bronze_monthly","category":"bronze","activityCount":6,"fileName":"pl_cip_bronze_monthly.json"},{"name":"Pl_Cip_Bronze_Monthly_Loader","category":"bronze","activityCount":0,"fileName":"Pl_Cip_Bronze_Monthly_Loader.json"},{"name":"pl_cip_silver_layer_monthly","category":"silver","activityCount":6,"fileName":"pl_cip_silver_layer_monthly.json"}],"supportingPipelines":[],"graphPipelines":[{"name":"BAU CIP daily schema extract","category":"extract","domain":"CIP","activityCount":9},{"name":"BAU CIP monthly schema extract","category":"extract","domain":"CIP","activityCount":9},{"name":"BAU CIP monthly schema extract OLD","category":"extract","domain":"CIP","activityCount":4},{"name":"pl_cip_bronze_monthly","category":"bronze","domain":"CIP","activityCount":6},{"name":"Pl_Cip_Bronze_Monthly_Loader","category":"bronze","domain":"CIP","activityCount":0},{"name":"pl_cip_silver_layer_monthly","category":"silver","domain":"CIP","activityCount":6}],"links":[],"gapPipelines":[{"name":"pl_cip_bronze_monthly","category":"bronze","activityTypes":["TridentNotebook","Lookup","ForEach","SetVariable"]},{"name":"pl_cip_silver_layer_monthly","category":"silver","activityTypes":["TridentNotebook","Lookup","ForEach","SetVariable"]}]},{"name":"CSV Utility","inferredPath":[],"lineagePipelines":[],"supportingPipelines":[{"name":"pl_csv_to_parquet","category":"utility","activityCount":0,"fileName":"pl_csv_to_parquet.json"}],"graphPipelines":[],"links":[],"gapPipelines":[]},{"name":"ePACT","inferredPath":["orchestrator"],"lineagePipelines":[{"name":"pl_epact_monthly_master","category":"orchestrator","activityCount":7,"fileName":"pl_epact_monthly_master.json"}],"supportingPipelines":[{"name":"sow11_epact_sm_creation_pipeline","category":"utility","activityCount":3,"fileName":"sow11_epact_sm_creation_pipeline.json"}],"graphPipelines":[{"name":"pl_epact_monthly_master","category":"orchestrator","domain":"ePACT","activityCount":7},{"name":"pl_llf_bronze_load","category":"bronze","domain":"LLF","activityCount":5},{"name":"pl_llf_silver_load","category":"silver","domain":"LLF","activityCount":5},{"name":"pl_llf_gold_load","category":"gold","domain":"LLF","activityCount":5},{"name":"pl_sow4_gold_load","category":"gold","domain":"SOW4","activityCount":5}],"links":[{"sourceName":"pl_epact_monthly_master","sourceCategory":"orchestrator","targetName":"pl_llf_silver_load","targetCategory":"silver","activityName":"Invoke llf silver pipeline"},{"sourceName":"pl_epact_monthly_master","sourceCategory":"orchestrator","targetName":"pl_llf_gold_load","targetCategory":"gold","activityName":"Invoke llf gold pipeline"},{"sourceName":"pl_epact_monthly_master","sourceCategory":"orchestrator","targetName":"pl_llf_bronze_load","targetCategory":"bronze","activityName":"Invoke llf bronze pipeline"},{"sourceName":"pl_epact_monthly_master","sourceCategory":"orchestrator","targetName":"pl_sow4_gold_load","targetCategory":"gold","activityName":"Invoke Sow4 pipeline"}],"gapPipelines":[]},{"name":"EPS","inferredPath":["orchestrator","bronze","silver","gold"],"lineagePipelines":[{"name":"eps_process_all","category":"orchestrator","activityCount":3,"fileName":"eps_process_all.json"},{"name":"eps_process_bronze_copy2","category":"bronze","activityCount":17,"fileName":"eps_process_bronze_copy2.json"},{"name":"eps_process_silver","category":"silver","activityCount":30,"fileName":"eps_process_silver.json"},{"name":"eps_process_gold","category":"gold","activityCount":17,"fileName":"eps_process_gold.json"}],"supportingPipelines":[{"name":"eps_process_bronze","category":"bronze","activityCount":17,"fileName":"eps_process_bronze.json"}],"graphPipelines":[{"name":"eps_process_all","category":"orchestrator","domain":"EPS","activityCount":3},{"name":"eps_process_bronze_copy2","category":"bronze","domain":"EPS","activityCount":17},{"name":"eps_process_silver","category":"silver","domain":"EPS","activityCount":30},{"name":"eps_process_gold","category":"gold","domain":"EPS","activityCount":17}],"links":[{"sourceName":"eps_process_all","sourceCategory":"orchestrator","targetName":"eps_process_bronze_copy2","targetCategory":"bronze","activityName":"eps_process_bronze"},{"sourceName":"eps_process_all","sourceCategory":"orchestrator","targetName":"eps_process_silver","targetCategory":"silver","activityName":"eps_process_silver"},{"sourceName":"eps_process_all","sourceCategory":"orchestrator","targetName":"eps_process_gold","targetCategory":"gold","activityName":"eps_process_gold"}],"gapPipelines":[{"name":"eps_process_bronze","category":"bronze","activityTypes":["TridentNotebook","ForEach","IfCondition","Office365Outlook","Fail"]},{"name":"eps_process_bronze_copy2","category":"bronze","activityTypes":["TridentNotebook","ForEach","IfCondition","Office365Outlook","Fail"]},{"name":"eps_process_gold","category":"gold","activityTypes":["TridentNotebook","ForEach","IfCondition","Office365Outlook","Fail"]},{"name":"eps_process_silver","category":"silver","activityTypes":["TridentNotebook","ForEach","IfCondition","Office365Outlook","Fail"]}]},{"name":"ETP","inferredPath":["extract","bronze"],"lineagePipelines":[{"name":"Data Gateway extract pipeline ETP","category":"extract","activityCount":9,"fileName":"Data Gateway extract pipeline ETP.json"},{"name":"pl_etp_bronze_daily","category":"bronze","activityCount":6,"fileName":"pl_etp_bronze_daily.json"},{"name":"pl_etp_bronze_daily_load","category":"bronze","activityCount":6,"fileName":"pl_etp_bronze_daily_load.json"}],"supportingPipelines":[],"graphPipelines":[{"name":"Data Gateway extract pipeline ETP","category":"extract","domain":"ETP","activityCount":9},{"name":"pl_etp_bronze_daily","category":"bronze","domain":"ETP","activityCount":6},{"name":"pl_etp_bronze_daily_load","category":"bronze","domain":"ETP","activityCount":6}],"links":[],"gapPipelines":[{"name":"pl_etp_bronze_daily","category":"bronze","activityTypes":["TridentNotebook","Lookup","ForEach","SetVariable"]},{"name":"pl_etp_bronze_daily_load","category":"bronze","activityTypes":["TridentNotebook","Lookup","ForEach","SetVariable"]}]},{"name":"Finance","inferredPath":["orchestrator","bronze","silver","gold"],"lineagePipelines":[{"name":"pl_finance_daily_master","category":"orchestrator","activityCount":4,"fileName":"pl_finance_daily_master.json"},{"name":"pl_finance_monthly_master","category":"orchestrator","activityCount":4,"fileName":"pl_finance_monthly_master.json"},{"name":"pl_finance_bronze_load","category":"bronze","activityCount":7,"fileName":"pl_finance_bronze_load.json"},{"name":"pl_finance_silver_load","category":"silver","activityCount":5,"fileName":"pl_finance_silver_load.json"},{"name":"pl_finance_gold_load","category":"gold","activityCount":7,"fileName":"pl_finance_gold_load.json"}],"supportingPipelines":[{"name":"pl_finance_bronze_load_test","category":"bronze","activityCount":2,"fileName":"pl_finance_bronze_load_test.json"},{"name":"pl_finance_daily","category":"utility","activityCount":8,"fileName":"pl_finance_daily.json"},{"name":"pl_finance_end_to_end","category":"utility","activityCount":17,"fileName":"pl_finance_end_to_end.json"},{"name":"pl_finance_monthly","category":"utility","activityCount":12,"fileName":"pl_finance_monthly.json"},{"name":"pl_finance_test","category":"utility","activityCount":6,"fileName":"pl_finance_test.json"},{"name":"pl_finance_test2","category":"utility","activityCount":7,"fileName":"pl_finance_test2.json"}],"graphPipelines":[{"name":"pl_finance_daily_master","category":"orchestrator","domain":"Finance","activityCount":4},{"name":"pl_finance_monthly_master","category":"orchestrator","domain":"Finance","activityCount":4},{"name":"pl_finance_bronze_load","category":"bronze","domain":"Finance","activityCount":7},{"name":"pl_finance_silver_load","category":"silver","domain":"Finance","activityCount":5},{"name":"pl_finance_gold_load","category":"gold","domain":"Finance","activityCount":7}],"links":[{"sourceName":"pl_finance_daily_master","sourceCategory":"orchestrator","targetName":"pl_finance_bronze_load","targetCategory":"bronze","activityName":"Invoke finance bronze pipeline"},{"sourceName":"pl_finance_monthly_master","sourceCategory":"orchestrator","targetName":"pl_finance_silver_load","targetCategory":"silver","activityName":"Invoke silver pipeline"},{"sourceName":"pl_finance_monthly_master","sourceCategory":"orchestrator","targetName":"pl_finance_gold_load","targetCategory":"gold","activityName":"Invoke gold pipeline"}],"gapPipelines":[{"name":"pl_finance_bronze_load","category":"bronze","activityTypes":["Lookup","ForEach","TridentNotebook","Office365Outlook","SetVariable"]},{"name":"pl_finance_bronze_load_test","category":"bronze","activityTypes":["TridentNotebook"]},{"name":"pl_finance_gold_load","category":"gold","activityTypes":["Lookup","ForEach","TridentNotebook","SetVariable","Office365Outlook"]},{"name":"pl_finance_silver_load","category":"silver","activityTypes":["Lookup","ForEach","TridentNotebook","SetVariable","Office365Outlook"]}]},{"name":"LLF","inferredPath":["bronze","silver","gold"],"lineagePipelines":[{"name":"pl_llf_bronze_load","category":"bronze","activityCount":5,"fileName":"pl_llf_bronze_load.json"},{"name":"pl_llf_silver_load","category":"silver","activityCount":5,"fileName":"pl_llf_silver_load.json"},{"name":"pl_llf_gold_load","category":"gold","activityCount":5,"fileName":"pl_llf_gold_load.json"}],"supportingPipelines":[],"graphPipelines":[{"name":"pl_epact_monthly_master","category":"orchestrator","domain":"ePACT","activityCount":7},{"name":"pl_llf_bronze_load","category":"bronze","domain":"LLF","activityCount":5},{"name":"pl_llf_silver_load","category":"silver","domain":"LLF","activityCount":5},{"name":"pl_llf_gold_load","category":"gold","domain":"LLF","activityCount":5}],"links":[{"sourceName":"pl_epact_monthly_master","sourceCategory":"orchestrator","targetName":"pl_llf_silver_load","targetCategory":"silver","activityName":"Invoke llf silver pipeline"},{"sourceName":"pl_epact_monthly_master","sourceCategory":"orchestrator","targetName":"pl_llf_gold_load","targetCategory":"gold","activityName":"Invoke llf gold pipeline"},{"sourceName":"pl_epact_monthly_master","sourceCategory":"orchestrator","targetName":"pl_llf_bronze_load","targetCategory":"bronze","activityName":"Invoke llf bronze pipeline"}],"gapPipelines":[{"name":"pl_llf_bronze_load","category":"bronze","activityTypes":["Lookup","ForEach","TridentNotebook","Office365Outlook","SetVariable"]},{"name":"pl_llf_gold_load","category":"gold","activityTypes":["Lookup","ForEach","TridentNotebook","SetVariable","Office365Outlook"]},{"name":"pl_llf_silver_load","category":"silver","activityTypes":["Lookup","ForEach","TridentNotebook","SetVariable","Office365Outlook"]}]},{"name":"Maintenance","inferredPath":[],"lineagePipelines":[],"supportingPipelines":[{"name":"Table maintenance","category":"utility","activityCount":null,"fileName":"Table maintenance.json"}],"graphPipelines":[],"links":[],"gapPipelines":[]},{"name":"MYS","inferredPath":["silver","gold"],"lineagePipelines":[{"name":"mys_process_silver","category":"silver","activityCount":17,"fileName":"mys_process_silver.json"},{"name":"mys_process_gold","category":"gold","activityCount":17,"fileName":"mys_process_gold.json"}],"supportingPipelines":[],"graphPipelines":[{"name":"mys_process_silver","category":"silver","domain":"MYS","activityCount":17},{"name":"mys_process_gold","category":"gold","domain":"MYS","activityCount":17}],"links":[],"gapPipelines":[{"name":"mys_process_gold","category":"gold","activityTypes":["TridentNotebook","ForEach","IfCondition","Office365Outlook","Fail"]},{"name":"mys_process_silver","category":"silver","activityTypes":["TridentNotebook","ForEach","IfCondition","Office365Outlook","Fail"]}]},{"name":"Semantic Model","inferredPath":[],"lineagePipelines":[],"supportingPipelines":[{"name":"Refresh semantic model","category":"utility","activityCount":null,"fileName":"Refresh semantic model.json"}],"graphPipelines":[],"links":[],"gapPipelines":[]},{"name":"Shared or Utility","inferredPath":[],"lineagePipelines":[],"supportingPipelines":[{"name":"Suture Run for 1.3","category":"utility","activityCount":null,"fileName":"Suture Run for 1.3.json"}],"graphPipelines":[],"links":[],"gapPipelines":[]},{"name":"SOW11","inferredPath":[],"lineagePipelines":[],"supportingPipelines":[{"name":"sow11_create_semantic_model","category":"utility","activityCount":null,"fileName":"sow11_create_semantic_model.json"},{"name":"sow11_pipeline","category":"utility","activityCount":3,"fileName":"sow11_pipeline.json"},{"name":"sow11_pipeline_copy1","category":"utility","activityCount":3,"fileName":"sow11_pipeline_copy1.json"}],"graphPipelines":[],"links":[],"gapPipelines":[]},{"name":"SOW4","inferredPath":["gold"],"lineagePipelines":[{"name":"pl_sow4_gold_load","category":"gold","activityCount":5,"fileName":"pl_sow4_gold_load.json"}],"supportingPipelines":[],"graphPipelines":[{"name":"pl_epact_monthly_master","category":"orchestrator","domain":"ePACT","activityCount":7},{"name":"pl_sow4_gold_load","category":"gold","domain":"SOW4","activityCount":5}],"links":[{"sourceName":"pl_epact_monthly_master","sourceCategory":"orchestrator","targetName":"pl_sow4_gold_load","targetCategory":"gold","activityName":"Invoke Sow4 pipeline"}],"gapPipelines":[{"name":"pl_sow4_gold_load","category":"gold","activityTypes":["Lookup","ForEach","TridentNotebook","SetVariable","Office365Outlook"]}]}]};
+        const categoryOrder = ['extract', 'orchestrator', 'bronze', 'silver', 'gold', 'utility'];
+        const categoryColors = {
+            extract: '#4d7cfe',
+            orchestrator: '#20b486',
+            bronze: '#b97a3d',
+            silver: '#b8c3d1',
+            gold: '#e2b93b',
+            utility: '#8a93a4'
+        };
+
+        function titleCase(value) {
+            return value.charAt(0).toUpperCase() + value.slice(1);
+        }
+
+        function escapeHtml(value) {
+            return String(value)
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;');
+        }
+
+        function wrapText(value, maxCharsPerLine, maxLines) {
+            const words = String(value).split(/\s+/).filter(Boolean);
+            const lines = [];
+            let current = '';
+
+            words.forEach(word => {
+                const next = current ? `${current} ${word}` : word;
+                if (next.length <= maxCharsPerLine) {
+                    current = next;
+                    return;
+                }
+
+                if (current) {
+                    lines.push(current);
+                }
+
+                current = word;
+            });
+
+            if (current) {
+                lines.push(current);
+            }
+
+            if (!lines.length) {
+                return [''];
+            }
+
+            if (lines.length > maxLines) {
+                const trimmed = lines.slice(0, maxLines);
+                let lastLine = trimmed[maxLines - 1];
+                if (lastLine.length > maxCharsPerLine - 3) {
+                    lastLine = `${lastLine.slice(0, maxCharsPerLine - 3)}...`;
+                } else {
+                    lastLine = `${lastLine}...`;
+                }
+                trimmed[maxLines - 1] = lastLine;
+                return trimmed;
+            }
+
+            return lines;
+        }
+
+        function renderTspans(lines, x, startY, lineHeight, anchor = 'start') {
+            return lines.map((line, index) => {
+                const dy = index === 0 ? 0 : lineHeight;
+                return `<tspan x="${x}" dy="${dy}" text-anchor="${anchor}">${escapeHtml(line)}</tspan>`;
+            }).join('');
+        }
+
+        function slugify(value) {
+            return value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        }
+
+        function buildMeta() {
+            const meta = document.getElementById('meta');
+            meta.innerHTML = `
+                <span class="meta-chip">Generated ${escapeHtml(data.generatedAt)}</span>
+                <span class="meta-chip">${data.pipelineCount} pipelines parsed</span>
+                <span class="meta-chip">${data.linkCount} explicit inter-pipeline links</span>
+                <span class="meta-chip">${data.domains.length} domains</span>
+            `;
+        }
+
+        function buildSummary() {
+            const cards = [
+                { value: data.pipelineCount, label: 'Pipelines parsed' },
+                { value: data.linkCount, label: 'Explicit handoffs found' },
+                { value: data.domains.filter(d => d.links.length > 0).length, label: 'Domains with explicit flows' },
+                { value: data.domains.reduce((sum, d) => sum + d.gapPipelines.length, 0), label: 'Pipelines needing deeper lineage' }
+            ];
+
+            document.getElementById('summary-grid').innerHTML = cards.map(card => `
+                <div class="summary-card">
+                    <strong>${card.value}</strong>
+                    <span>${escapeHtml(card.label)}</span>
+                </div>
+            `).join('');
+        }
+
+        function buildLegend() {
+            document.getElementById('legend').innerHTML = data.categories.map(item => `
+                <span class="legend-chip" data-category="${escapeHtml(item.category)}">${escapeHtml(titleCase(item.category))}: ${item.count}</span>
+            `).join('');
+        }
+
+        function buildTransitions() {
+            const container = document.getElementById('transition-grid');
+            container.innerHTML = data.transitions.map(item => `
+                <article class="transition-card">
+                    <h3>${escapeHtml(titleCase(item.source))} -> ${escapeHtml(titleCase(item.target))}</h3>
+                    <div class="count">${item.count}</div>
+                    <p>${escapeHtml(item.samples.join('; '))}</p>
+                </article>
+            `).join('');
+        }
+
+        function buildDomainNav() {
+            document.getElementById('domain-nav').innerHTML = data.domains.map(domain => `
+                <a class="jump-link" href="#${slugify(domain.name)}">${escapeHtml(domain.name)}</a>
+            `).join('');
+        }
+
+        function renderPipelineList(pipelines) {
+            if (!pipelines.length) {
+                return '<p class="empty-note">No pipelines in this section.</p>';
+            }
+
+            return pipelines.map(pipeline => `
+                <div class="pipeline-item">
+                    <span class="badge ${escapeHtml(pipeline.category)}">${escapeHtml(pipeline.category)}</span>
+                    <strong>${escapeHtml(pipeline.name)}</strong>
+                    <div class="pipeline-meta">Activities: ${pipeline.activityCount} | Source file: ${escapeHtml(pipeline.fileName)}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderLinkList(links) {
+            if (!links.length) {
+                return '<p class="empty-note">No explicit child-pipeline links were found for this domain in the exported definitions. Movement here is probably inside notebooks or metadata-driven foreach jobs.</p>';
+            }
+
+            return `<div class="connection-key">${links.map(link => `
+                <div class="connection-item"><strong>${escapeHtml(link.sourceName)}</strong> -> <strong>${escapeHtml(link.targetName)}</strong><br>${escapeHtml(link.sourceCategory)} -> ${escapeHtml(link.targetCategory)} via ${escapeHtml(link.activityName)}</div>
+            `).join('')}</div>`;
+        }
+
+        function renderGapList(gaps) {
+            if (!gaps.length) {
+                return '<p class="empty-note">No major notebook-driven lineage gaps detected at the pipeline level for this domain.</p>';
+            }
+
+            return `<div class="gap-list">${gaps.map(gap => `
+                <div class="gap-item">
+                    <span class="badge ${escapeHtml(gap.category)}">${escapeHtml(gap.category)}</span>
+                    <strong>${escapeHtml(gap.name)}</strong>
+                    <div class="gap-meta">Internal movement likely happens inside these activity types: ${escapeHtml(gap.activityTypes.map(type => type === 'TridentNotebook' ? 'Notebook' : type).join(', '))}</div>
+                </div>
+            `).join('')}</div>`;
+        }
+
+        function createSvgNode(x, y, width, height, label, category, domain) {
+            const color = categoryColors[category] || categoryColors.utility;
+            const isExternal = Boolean(domain);
+            const wrappedLabel = wrapText(label, 24, 3);
+            const labelStartY = y + 54;
+            const labelTspans = renderTspans(wrappedLabel, x + 16, labelStartY, 16);
+            const domainText = isExternal ? `<text x="${x + 16}" y="${y + height - 14}" fill="#5f6b73" font-size="11">${escapeHtml(domain)}</text>` : '';
+            return `
+                <g>
+                    <rect x="${x}" y="${y}" rx="10" ry="10" width="${width}" height="${height}" fill="#ffffff" stroke="${color}" stroke-width="1.5"></rect>
+                    <rect x="${x + 14}" y="${y + 14}" rx="6" ry="6" width="84" height="24" fill="${color}" opacity="0.12"></rect>
+                    <text x="${x + 24}" y="${y + 31}" fill="${color}" font-size="11" font-weight="600">${escapeHtml(titleCase(category))}</text>
+                    <text x="${x + 16}" y="${labelStartY}" fill="#212b32" font-size="13" font-weight="600">${labelTspans}</text>
+                    ${domainText}
+                </g>
+            `;
+        }
+
+        function createLaneLabel(x, label, lineWidth = 140) {
+            return `
+                <g>
+                    <text x="${x}" y="26" fill="#5f6b73" font-size="12" font-weight="600">${escapeHtml(titleCase(label))}</text>
+                    <line x1="${x}" y1="36" x2="${x + lineWidth}" y2="36" stroke="#d8dde0" stroke-width="1"></line>
+                </g>
+            `;
+        }
+
+        function createEdge(fromNode, toNode, label) {
+            const startX = fromNode.x + fromNode.width;
+            const endX = toNode.x;
+            const laneGap = Math.max(0, (toNode.laneIndex ?? 0) - (fromNode.laneIndex ?? 0));
+            const sourceBias = (fromNode.laneIndex ?? 0) * 10;
+            const targetBias = (toNode.laneIndex ?? 0) * 18;
+            const startY = fromNode.y + (fromNode.height / 2) + sourceBias;
+            const endY = toNode.y + (toNode.height / 2) + targetBias;
+            const dx = Math.max(72, (endX - startX) * 0.42);
+            const curveLift = Math.min(82, laneGap * 28);
+            const path = `M ${startX} ${startY} C ${startX + dx} ${startY - curveLift}, ${endX - dx} ${endY + curveLift}, ${endX} ${endY}`;
+            return `<path d="${path}" fill="none" stroke="#6aa3d8" stroke-opacity="0.9" stroke-width="1.8"></path>`;
+        }
+
+        function renderGenericDiagram(domain) {
+            const nodes = domain.lineagePipelines.length ? domain.lineagePipelines : domain.supportingPipelines;
+            if (!nodes.length) {
+                return '<p class="empty-note">No pipelines to render.</p>';
+            }
+
+            return `
+                <div class="generic-diagram">
+                    ${nodes.map(node => `
+                        <div class="generic-node">
+                            <span class="badge ${escapeHtml(node.category)}">${escapeHtml(titleCase(node.category))}</span>
+                            <div class="node-title">${escapeHtml(node.name)}</div>
+                            <div class="node-meta">Activities: ${node.activityCount}<br>Source file: ${escapeHtml(node.fileName)}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function buildDiagram(domain) {
+            if (domain.links.length === 0) {
+                return renderGenericDiagram(domain);
+            }
+
+            const lanes = categoryOrder.filter(category => domain.graphPipelines.some(pipeline => pipeline.category === category));
+            if (!lanes.length) {
+                return '<p class="empty-note">No graphable pipelines for this domain.</p>';
+            }
+
+            const laneCount = lanes.length;
+            const maxNodesInLane = Math.max(...lanes.map(lane => domain.graphPipelines.filter(pipeline => pipeline.category === lane).length));
+            const compactSingleLane = domain.links.length === 0 && laneCount === 1 && domain.graphPipelines.length >= 2;
+            const compactColumns = compactSingleLane ? 2 : 1;
+            const nodeWidth = compactSingleLane ? 236 : (laneCount <= 3 ? 232 : (laneCount === 4 ? 220 : 204));
+            const laneWidth = compactSingleLane ? ((nodeWidth * compactColumns) + 28) : (nodeWidth + 36);
+            const leftPad = 28;
+            const topPad = 56;
+            const laneYOffsetStep = compactSingleLane ? 0 : 112;
+            const nodeHeight = compactSingleLane ? 92 : (maxNodesInLane <= 2 ? 118 : 110);
+            const laneNodeGap = compactSingleLane ? 18 : (maxNodesInLane <= 2 ? 26 : 34);
+            const positions = new Map();
+            const laneHtml = [];
+            const nodeHtml = [];
+
+            lanes.forEach((lane, laneIndex) => {
+                const lanePipelines = domain.graphPipelines.filter(pipeline => pipeline.category === lane);
+                const laneX = leftPad + (laneIndex * laneWidth);
+                const laneY = topPad + (laneIndex * laneYOffsetStep);
+                laneHtml.push(createLaneLabel(laneX, lane, compactSingleLane ? laneWidth - 24 : 140));
+                lanePipelines.forEach((pipeline, pipelineIndex) => {
+                    let x = laneX;
+                    let y = laneY + (pipelineIndex * (nodeHeight + laneNodeGap));
+
+                    if (compactSingleLane) {
+                        const columnIndex = pipelineIndex % compactColumns;
+                        const rowIndex = Math.floor(pipelineIndex / compactColumns);
+                        x = laneX + (columnIndex * (nodeWidth + 28));
+                        y = laneY + (rowIndex * (nodeHeight + laneNodeGap));
+                    }
+
+                    const node = { x, y, width: nodeWidth, height: nodeHeight, category: lane, laneIndex };
+                    positions.set(pipeline.name, node);
+                    nodeHtml.push(createSvgNode(x, y, nodeWidth, nodeHeight, pipeline.name, pipeline.category, pipeline.domain !== domain.name ? pipeline.domain : ''));
+                });
+            });
+
+            const heightCandidates = Array.from(positions.values()).map(item => item.y + item.height + 24);
+            const width = compactSingleLane
+                ? Math.max(780, (leftPad * 2) + (compactColumns * (nodeWidth + 28)))
+                : ((leftPad * 2) + (lanes.length * laneWidth));
+            const height = compactSingleLane
+                ? Math.max(240, ...heightCandidates)
+                : Math.max(320, ...heightCandidates);
+
+            const edgeHtml = domain.links
+                .map(link => {
+                    const fromNode = positions.get(link.sourceName);
+                    const toNode = positions.get(link.targetName);
+                    if (!fromNode || !toNode) {
+                        return '';
+                    }
+                    return createEdge(fromNode, toNode, link.activityName);
+                })
+                .join('');
+
+            return `
+                <div class="diagram-wrap${compactSingleLane ? ' compact' : ''}">
+                    <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(domain.name)} lineage diagram">
+                        <defs>
+                            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#6aa3d8"></path>
+                            </marker>
+                        </defs>
+                        ${edgeHtml}
+                        ${laneHtml.join('')}
+                        ${nodeHtml.join('')}
+                    </svg>
+                </div>
+            `;
+        }
+
+        function buildDomains() {
+            const container = document.getElementById('domain-list');
+            container.innerHTML = data.domains.map(domain => {
+                const inferred = domain.inferredPath.length
+                    ? `<div class="path">${domain.inferredPath.map(item => `<span class="path-chip">${escapeHtml(titleCase(item))}</span>`).join('')}</div>`
+                    : '<div class="path"><span class="path-chip">No inferred layer path</span></div>';
+
+                return `
+                    <section class="domain-card" id="${slugify(domain.name)}">
+                        <div class="domain-head">
+                            <div>
+                                <!-- Removed arrow marker for clearer lineage -->
+                            ${inferred}
+                        </div>
+                        <div class="domain-body">
+                            <div class="panel">
+                                <h3>Flow Diagram</h3>
+                                ${buildDiagram(domain)}
+                            </div>
+                            <div class="side-stack">
+                                <div class="panel">
+                                    <h3>Lineage Pipelines</h3>
+                                    <p class="section-note">Pipelines that participate directly in the layer path or explicit handoff chain.</p>
+                                    <div class="pipeline-grid">${renderPipelineList(domain.lineagePipelines)}</div>
+                                </div>
+                                <div class="panel">
+                                    <h3>Supporting Pipelines</h3>
+                                    <p class="section-note">Related utilities and non-path pipelines for this domain.</p>
+                                    <div class="pipeline-grid">${renderPipelineList(domain.supportingPipelines)}</div>
+                                </div>
+                                <div class="panel">
+                                    <h3>Explicit Handoffs</h3>
+                                    ${renderLinkList(domain.links)}
+                                </div>
+                                <div class="panel">
+                                    <h3>Notebook-Driven Gaps</h3>
+                                    ${renderGapList(domain.gapPipelines)}
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                `;
+            }).join('');
+        }
+
+        buildMeta();
+        buildSummary();
+        buildLegend();
+        buildTransitions();
+        buildDomainNav();
+        buildDomains();
+    </script>
+</body>
+</html>
