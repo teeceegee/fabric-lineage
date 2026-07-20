@@ -805,7 +805,9 @@
                     <section class="domain-card" id="${slugify(domain.name)}">
                         <div class="domain-head">
                             <div>
-                                <!-- Removed arrow marker for clearer lineage -->
+                                <h2>${escapeHtml(domain.name)}</h2>
+                                <p>${domain.links.length ? 'Explicit handoffs are drawn from exported child-pipeline references.' : 'This domain currently needs notebook or metadata inspection for deeper lineage.'}</p>
+                            </div>
                             ${inferred}
                         </div>
                         <div class="domain-body">
