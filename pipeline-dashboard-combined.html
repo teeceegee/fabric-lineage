@@ -113,6 +113,9 @@
         #lineage-panel {
             flex-direction: column;
         }
+        #mapping-panel {
+            flex-direction: column;
+        }
         #container { display: flex; height: calc(100vh - 56px - 40px); }
         #table-container {
             flex: 1;
@@ -844,6 +847,7 @@
             <button id="table-view-btn" class="view-btn active" onclick="switchView('table', event)" role="tab" aria-selected="true" aria-controls="table-panel" aria-label="Switch to Table View">Table View</button>
             <button id="schedule-view-btn" class="view-btn" onclick="switchView('schedule', event)" role="tab" aria-selected="false" aria-controls="schedule-panel" aria-label="Switch to Schedule View">Schedule View</button>
             <button id="lineage-view-btn" class="view-btn" onclick="switchView('lineage', event)" role="tab" aria-selected="false" aria-controls="lineage-panel" aria-label="Switch to Lineage View">Lineage View</button>
+            <button id="mapping-view-btn" class="view-btn" onclick="switchView('mapping', event)" role="tab" aria-selected="false" aria-controls="mapping-panel" aria-label="Switch to Finance Mapping View">Mapping View</button>
         </div>
     </div>
 
@@ -901,8 +905,26 @@
                 <iframe
                     id="lineage-frame"
                     class="lineage-frame"
-                    src="./pipeline-lineage.html?v=707c13d"
+                    src="./pipeline-lineage.html?v=finance20260720"
                     title="Pipeline lineage view"
+                    loading="lazy">
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <div id="mapping-panel" class="view-panel" role="tabpanel" aria-labelledby="mapping-view-btn">
+        <div class="lineage-shell">
+            <div class="lineage-banner">
+                <h2>Finance Mapping</h2>
+                <p>Explore extracted Finance table and column mappings on a dedicated page.</p>
+            </div>
+            <div class="lineage-frame-wrap">
+                <iframe
+                    id="mapping-frame"
+                    class="lineage-frame"
+                    src="./pipeline-finance-mapping.html?v=finance20260720c"
+                    title="Finance mapping view"
                     loading="lazy">
                 </iframe>
             </div>

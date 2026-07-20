@@ -1,0 +1,23 @@
+﻿{
+    "generated_at":  "2026-07-20T14:18:53.8018225+01:00",
+    "notebook_count":  11,
+    "table_mapping_count":  19,
+    "column_mapping_count":  5,
+    "notebooks":  [
+                      "nb_dpc_expense_tot_ora_to_fin",
+                      "nb_dpc_schedule_fact_ora_to_fin",
+                      "nb_expense_total_fact_ora_to_fin",
+                      "nb_fareshare_calc_perc_fact_ora_to_fin",
+                      "nb_finance_silver_tables_parition_load",
+                      "nb_int_expense_tot_ora_to_fin",
+                      "nb_not_drctly_attrb_cst_pres_fact_ora_to_fin",
+                      "nb_not_drctly_attrb_cst_remu_fact_ora_to_fin",
+                      "nb_remu_at_stp_actuals_fact_ora_to_fin",
+                      "nb_remuneration_fact_ora_to_fin",
+                      "nb_unmapped_pharm_pay_fact_ora_to_fin"
+                  ],
+    "output_files":  [
+                         "C:\\Users\\TCAGR\\vscode\\mapping\\output\\lineage\\finance_table_lineage.csv",
+                         "C:\\Users\\TCAGR\\vscode\\mapping\\output\\lineage\\finance_column_lineage.csv"
+                     ]
+}

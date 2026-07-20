@@ -1,0 +1,21 @@
+﻿{
+    "generated_at":  "2026-07-20T14:52:47.5959301+01:00",
+    "notebook_fullpath_count":  12,
+    "notebook_unique_name_count":  11,
+    "duplicate_notebook_names":  {
+                                     "notebook":  "nb_fareshare_calc_perc_fact_ora_to_fin",
+                                     "count":  2
+                                 },
+    "derived_column_mapping_count":  66,
+    "methods":  [
+                    {
+                        "method":  "compare_cols_identity",
+                        "count":  61
+                    },
+                    {
+                        "method":  "rename_map",
+                        "count":  5
+                    }
+                ],
+    "output_file":  "C:\\Users\\TCAGR\\vscode\\mapping\\output\\lineage\\finance_column_lineage_deep.csv"
+}

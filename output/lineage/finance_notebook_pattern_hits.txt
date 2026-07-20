@@ -1,0 +1,157 @@
+﻿NOTEBOOK_PATTERN_HITS
+
+### nb_fareshare_calc_perc_fact_ora_to_fin
+rename_map : 0
+withColumnRenamed : 0
+selectExpr\( : 0
+\.alias\( : 0
+withColumn\( : 1
+fin_table_name\s*= : 1
+silver_table_map\s*= : 0
+SELECT\s+ : 1
+information_schema : 0
+all_tab_columns : 0
+metadata : 1
+
+### nb_fareshare_calc_perc_fact_ora_to_fin
+rename_map : 0
+withColumnRenamed : 0
+selectExpr\( : 0
+\.alias\( : 0
+withColumn\( : 1
+fin_table_name\s*= : 1
+silver_table_map\s*= : 0
+SELECT\s+ : 1
+information_schema : 0
+all_tab_columns : 0
+metadata : 1
+
+### nb_not_drctly_attrb_cst_pres_fact_ora_to_fin
+rename_map : 0
+withColumnRenamed : 0
+selectExpr\( : 0
+\.alias\( : 0
+withColumn\( : 1
+fin_table_name\s*= : 1
+silver_table_map\s*= : 0
+SELECT\s+ : 0
+information_schema : 0
+all_tab_columns : 0
+metadata : 1
+
+### nb_int_expense_tot_ora_to_fin
+rename_map : 0
+withColumnRenamed : 0
+selectExpr\( : 0
+\.alias\( : 0
+withColumn\( : 1
+fin_table_name\s*= : 1
+silver_table_map\s*= : 0
+SELECT\s+ : 0
+information_schema : 0
+all_tab_columns : 0
+metadata : 1
+
+### nb_dpc_schedule_fact_ora_to_fin
+rename_map : 0
+withColumnRenamed : 0
+selectExpr\( : 0
+\.alias\( : 0
+withColumn\( : 1
+fin_table_name\s*= : 1
+silver_table_map\s*= : 0
+SELECT\s+ : 0
+information_schema : 0
+all_tab_columns : 0
+metadata : 1
+
+### nb_not_drctly_attrb_cst_remu_fact_ora_to_fin
+rename_map : 0
+withColumnRenamed : 0
+selectExpr\( : 0
+\.alias\( : 0
+withColumn\( : 1
+fin_table_name\s*= : 1
+silver_table_map\s*= : 0
+SELECT\s+ : 0
+information_schema : 0
+all_tab_columns : 0
+metadata : 1
+
+### nb_unmapped_pharm_pay_fact_ora_to_fin
+rename_map : 0
+withColumnRenamed : 0
+selectExpr\( : 0
+\.alias\( : 0
+withColumn\( : 1
+fin_table_name\s*= : 1
+silver_table_map\s*= : 0
+SELECT\s+ : 0
+information_schema : 0
+all_tab_columns : 0
+metadata : 1
+
+### nb_remu_at_stp_actuals_fact_ora_to_fin
+rename_map : 0
+withColumnRenamed : 0
+selectExpr\( : 0
+\.alias\( : 1
+withColumn\( : 1
+fin_table_name\s*= : 1
+silver_table_map\s*= : 0
+SELECT\s+ : 0
+information_schema : 0
+all_tab_columns : 0
+metadata : 1
+
+### nb_expense_total_fact_ora_to_fin
+rename_map : 0
+withColumnRenamed : 0
+selectExpr\( : 0
+\.alias\( : 0
+withColumn\( : 1
+fin_table_name\s*= : 1
+silver_table_map\s*= : 0
+SELECT\s+ : 0
+information_schema : 0
+all_tab_columns : 0
+metadata : 1
+
+### nb_finance_silver_tables_parition_load
+rename_map : 0
+withColumnRenamed : 0
+selectExpr\( : 0
+\.alias\( : 0
+withColumn\( : 0
+fin_table_name\s*= : 0
+silver_table_map\s*= : 1
+SELECT\s+ : 0
+information_schema : 0
+all_tab_columns : 0
+metadata : 1
+
+### nb_dpc_expense_tot_ora_to_fin
+rename_map : 0
+withColumnRenamed : 0
+selectExpr\( : 0
+\.alias\( : 0
+withColumn\( : 1
+fin_table_name\s*= : 1
+silver_table_map\s*= : 0
+SELECT\s+ : 0
+information_schema : 0
+all_tab_columns : 0
+metadata : 1
+
+### nb_remuneration_fact_ora_to_fin
+rename_map : 1
+withColumnRenamed : 1
+selectExpr\( : 0
+\.alias\( : 0
+withColumn\( : 1
+fin_table_name\s*= : 1
+silver_table_map\s*= : 0
+SELECT\s+ : 0
+information_schema : 0
+all_tab_columns : 0
+metadata : 1

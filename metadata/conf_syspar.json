@@ -1,0 +1,1594 @@
+{
+    "columns": [
+        {
+            "source_column_name": "RECTYPE",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "rectype",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "ACTIVE_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "active_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "COM_NO",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "com_no",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "COM_NAME",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "com_name",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "COM_ADDR_0",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "com_addr_0",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "COM_ADDR_1",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "com_addr_1",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "COM_ADDR_2",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "com_addr_2",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "COM_ADDR_3",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "com_addr_3",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "COM_TEL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "com_tel",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "COM_TELEX",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "com_telex",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "COMPANY_MASK",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "company_mask",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "COM_FAX",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "com_fax",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "CONFIG_0",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "config_0",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "GEN_LED",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "gen_led",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "SALES_LED",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "sales_led",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "SALES_ORD",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "sales_ord",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "PUR_LED",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "pur_led",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "PUR_ORD",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "pur_ord",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "STOCK_CON",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "stock_con",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "PAYROLL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "payroll",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "BANK_REC",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "bank_rec",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "FIX_ASSET",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "fix_asset",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "PERSONNEL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "personnel",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "CONFIG_11",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "config_11",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "CONFIG_12",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "config_12",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "GL_SEPARATOR",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "gl_separator",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "COSTC_MASK",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "costc_mask",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "EXPH_MASK",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "exph_mask",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "COSTC_LEVELS",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "costc_levels",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "EXPH_LEVELS",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "exph_levels",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "VAT_CODE",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "vat_code",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "BACKSTOP_DATE",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "backstop_date",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "AUTO_LOGOUT_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "auto_logout_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "AUDIT_CREATE_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "audit_create_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "AUDIT_SPOOLER_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "audit_spooler_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "FIRST_PART",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "first_part",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "SECOND_PART",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "second_part",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "GL_STRUCTURE",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "gl_structure",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "NUM_PERIODS",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "num_periods",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "END_DATES_0",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "end_dates_0",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "END_DATES_1",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "end_dates_1",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "END_DATES_2",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "end_dates_2",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "END_DATES_3",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "end_dates_3",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "END_DATES_4",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "end_dates_4",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "END_DATES_5",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "end_dates_5",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "END_DATES_6",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "end_dates_6",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "END_DATES_7",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "end_dates_7",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "END_DATES_8",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "end_dates_8",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "END_DATES_9",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "end_dates_9",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "END_DATES_10",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "end_dates_10",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "END_DATES_11",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "end_dates_11",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "END_DATES_12",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "end_dates_12",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "END_DATES_13",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "end_dates_13",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "NEXT_YEAR_DATES_1",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "next_year_dates_1",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "NEXT_YEAR_DATES_2",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "next_year_dates_2",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "NEXT_YEAR_DATES_3",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "next_year_dates_3",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "CURR_YEAR",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "curr_year",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "NEXT_YEAR",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "next_year",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "INST_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "inst_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "SMS_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "sms_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "WAREHOUSING_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "warehousing_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "INTRA_CONF_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "intra_conf_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "PREV_YEAR",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "prev_year",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "YEAR_FORMAT",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "year_format",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "VAT_REC",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "vat_rec",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "VAT_REC_BY_GL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "vat_rec_by_gl",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REC_CODE_FORMAT",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "rec_code_format",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "NEXT_YEAR_DATES_4",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "next_year_dates_4",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "NEXT_YEAR_DATES_5",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "next_year_dates_5",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "NEXT_YEAR_DATES_6",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "next_year_dates_6",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "NEXT_YEAR_DATES_7",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "next_year_dates_7",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "NEXT_YEAR_DATES_8",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "next_year_dates_8",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "NEXT_YEAR_DATES_9",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "next_year_dates_9",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "NEXT_YEAR_DATES_10",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "next_year_dates_10",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "NEXT_YEAR_DATES_11",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "next_year_dates_11",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "NEXT_YEAR_DATES_12",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "next_year_dates_12",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "NEXT_YEAR_DATES_13",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "next_year_dates_13",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "JCL_CONFIG",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "jcl_config",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "FMS_CONFIG",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "fms_config",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "SALES_TAX_LABEL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "sales_tax_label",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "BSCODE_LABEL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "bscode_label",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "BACS_LABEL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "bacs_label",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "PRL_SLS_INT",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "prl_sls_int",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "PRL_SLS_INTERIM_GL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "prl_sls_interim_gl",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "GLCODE_LABEL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "glcode_label",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "U_FORMAT",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "u_format",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "FORSYNC_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "forsync_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "MAIN_EMAIL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "main_email",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "ACCOUNTS_EMAIL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "accounts_email",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "WEBSITE",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "website",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_1",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_1",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_2",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_2",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_3",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_3",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "WEEKLY_CALENDAR_REQ",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "weekly_calendar_req",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "PAYROLL_CALENDAR_REQ",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "payroll_calendar_req",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "BANK_ACCOUNT_CODE_LABEL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "bank_account_code_label",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_1_LABEL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_1_label",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_2_LABEL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_2_label",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_3_LABEL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_3_label",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "BANK_SORT_CODE_FORMAT",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "bank_sort_code_format",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "BANK_ACCOUNT_CODE_FORMAT",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "bank_account_code_format",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "MULTI_CURRENCY",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "multi_currency",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "COMPANY_ID_LABEL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "company_id_label",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "NUMBER_BASE_CURRENCY",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "number_base_currency",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "BASE_CURRENCY_1",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "base_currency_1",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "BASE_CURRENCY_2",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "base_currency_2",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "BASE_CURRENCY_3",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "base_currency_3",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "MAX_PAYPERIOD",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "max_payperiod",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "ORG_COMPANY_ID",
+            "source_column_type": "string",
+            "source_pk": true,
+            "target_column_name": "org_company_id",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": true,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "COMPANY_ID_FORMAT",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "company_id_format",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "DISPLAY_COMPANY_CODE",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "display_company_code",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "DISPLAY_SHORTNAME",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "display_shortname",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "VAT_REG_FORMAT",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "vat_reg_format",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "POSTCODE",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "postcode",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "COM_ADDR_4",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "com_addr_4",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_4_LABEL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_4_label",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_4_MAND_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_4_mand_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_4_INCL_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_4_incl_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_4_LIST_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_4_list_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_5_LABEL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_5_label",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_5_MAND_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_5_mand_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_5_INCL_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_5_incl_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_5_LIST_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_5_list_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_6_LABEL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_6_label",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_6_MAND_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_6_mand_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_6_INCL_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_6_incl_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_6_LIST_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_6_list_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_7_LABEL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_7_label",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_7_MAND_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_7_mand_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_7_INCL_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_7_incl_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_7_LIST_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_7_list_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_8_LABEL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_8_label",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_8_MAND_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_8_mand_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_8_INCL_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_8_incl_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_8_LIST_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_8_list_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_9_LABEL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_9_label",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_9_MAND_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_9_mand_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_9_INCL_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_9_incl_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_9_LIST_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_9_list_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_10_LABEL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_10_label",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_10_MAND_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_10_mand_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_10_INCL_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_10_incl_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_10_LIST_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_10_list_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_1_MAND_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_1_mand_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_1_INCL_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_1_incl_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_1_LIST_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_1_list_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_2_MAND_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_2_mand_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_2_INCL_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_2_incl_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_2_LIST_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_2_list_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_3_MAND_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_3_mand_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_3_INCL_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_3_incl_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_3_LIST_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_3_list_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_4",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_4",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_5",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_5",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_6",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_6",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_7",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_7",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_8",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_8",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_9",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_9",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REFERENCE_10",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "reference_10",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        }
+    ]
+}

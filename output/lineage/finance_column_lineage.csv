@@ -1,0 +1,6 @@
+﻿"notebook","source_column","target_column"
+"nb_remuneration_fact_ora_to_fin","amount_value","remuneration"
+"nb_remuneration_fact_ora_to_fin","amount_value_fytd","remuneration_year_to_date"
+"nb_remuneration_fact_ora_to_fin","count_value","number_of_fees"
+"nb_remuneration_fact_ora_to_fin","percentage_value","share_paid_percent"
+"nb_remuneration_fact_ora_to_fin","recharge_record","recharge_record_yes_no"

@@ -1,0 +1,514 @@
+{
+    "columns": [
+        {
+            "source_column_name": "RECTYPE",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "rectype",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "ACTIVE_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "active_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "JVC_SEQ_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "jvc_seq_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "TRX_NARR_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "trx_narr_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "CONTROLS_JVC_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "controls_jvc_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "DESC_JVC_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "desc_jvc_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "AUTO_REV_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "auto_rev_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "DESC_FORMS_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "desc_forms_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "PRT_ZEROBAL_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "prt_zerobal_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "UNBAL_JM_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "unbal_jm_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "UNBAL_JS_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "unbal_js_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "DEACT_ENQUIRY_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "deact_enquiry_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "DEACT_RPW_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "deact_rpw_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "IMMD_BACK_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "immd_back_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "DEACT_TB_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "deact_tb_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "DEACT_SUMM_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "deact_summ_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "REVALUE_PER_END_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "revalue_per_end_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "APPORT_IN_CURRENT",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "apport_in_current",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "MULTIPLE_APPORT",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "multiple_apport",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "SUMM_SOURCE_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "summ_source_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "AUTO_NUM_SRCE_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "auto_num_srce_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "PRIOR_PERIOD_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "prior_period_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "CALC_METHOD",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "calc_method",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "POST_METHOD",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "post_method",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "PER_END_STAGE",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "per_end_stage",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "LAST_PERIOD",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "last_period",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "LAST_CONSOL_REF",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "last_consol_ref",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "PRIOR_PERIODS",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "prior_periods",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "FORWARD_PERIODS",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "forward_periods",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "CURRENT_ORGSUMMV",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "current_orgsummv",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "NO_TRANS_ACS",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "no_trans_acs",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "CONSOL_TO_INACT",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "consol_to_inact",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "ENQ_SHOW_GL_DESC",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "enq_show_gl_desc",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "ENQ_DEFAULT_GST",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "enq_default_gst",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "UPDATE_IN_PROG",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "update_in_prog",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "MAINT_ORGVIEW_INT",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "maint_orgview_int",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "NUM_RECS_IN_ENQ",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "num_recs_in_enq",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "INCLUDE_MATCHED",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "include_matched",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "MATCH_ACCOUNT_TYPE",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "match_account_type",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "YEAR_LAST_PROCESSED",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "year_last_processed",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "YEND_STAGE_COMPLETED",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "yend_stage_completed",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "YEARS_RETAINED",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "years_retained",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "OVERRIDE_YEARS_RET",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "override_years_ret",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "LAST_RECON_YEAR",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "last_recon_year",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "OBAL_CALC_YEAR",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "obal_calc_year",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "RETAIN_ACC_BAL_YEARS",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "retain_acc_bal_years",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "USE_REV_FOR_AUTO",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "use_rev_for_auto",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "COMPANY_ID",
+            "source_column_type": "string",
+            "source_pk": true,
+            "target_column_name": "company_id",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": true,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "ARCHIVE_BY_YEAR",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "archive_by_year",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "SELECT_AUTHORISER",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "select_authoriser",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "RETAIN_CONSOL_PERIODS",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "retain_consol_periods",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        }
+    ]
+}

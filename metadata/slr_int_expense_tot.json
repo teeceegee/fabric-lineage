@@ -1,0 +1,84 @@
+{
+    "columns": [
+        {
+            "source_column_name": "level_4_alt_cde",
+            "source_column_type": "string",
+            "source_pk": true,
+            "target_column_name": "level_4_alt_cde",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": true,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "eh_code",
+            "source_column_type": "string",
+            "source_pk": true,
+            "target_column_name": "eh_code",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": true,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "posting_year",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "posting_year",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "dset",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "dset",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "posting_year_month",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "posting_year_month",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "epact_year_month",
+            "source_column_type": "integer",
+            "source_pk": true,
+            "target_column_name": "epact_year_month",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": true,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "year_month",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "year_month",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "amount",
+            "source_column_type": "decimal",
+            "source_pk": false,
+            "target_column_name": "amount",
+            "target_column_type": "decimal",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        }		
+    ]
+}

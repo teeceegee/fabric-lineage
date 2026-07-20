@@ -1,0 +1,42 @@
+{
+  "jobs": [
+    {
+      "job_name": "slr_int_expense_tot",
+      "job_dependancies": null,
+      "source_name": "slr_int_expense_tot_v",
+      "source_type": "view",
+      "source_lh": "bronze",
+      "source_path": "/lakehouse/default/Files/sql_scripts",
+      "target_name": "slr_int_expense_tot",
+      "target_lh": "silver",
+      "target_path": "dev-prescriptions-silver.prescriptions_silver.silver_fin",
+      "target_type": "table",
+      "target_description": "Silver Table",
+      "target_filter": "YEAR_MONTH",
+      "add_metadata_dates": false,
+      "add_metadata_rownum": true,	  
+      "target_reload": true,
+      "load_type": "append",
+      "column_mapping": "slr_int_expense_tot.json"
+    },
+    {
+      "job_name": "nb_slr_int_expense_tot",
+      "job_dependancies": null,
+      "source_name": "nb_slr_int_expense_tot",
+      "source_type": "notebook",
+      "source_lh": "bronze",
+      "source_path": "Files/json_result_set",
+      "target_name": "nb_slr_int_expense_tot",
+      "target_lh": "silver",
+      "target_path": "dev-prescriptions-silver.prescriptions_silver.silver_fin",
+      "target_type": "table",
+      "target_description": "Silver Table",
+      "target_filter": "YEAR_MONTH",
+      "add_metadata_dates": false,
+      "add_metadata_rownum": true,	  
+      "target_reload": true,
+      "load_type": "append",
+      "column_mapping": "slr_int_expense_tot.json"
+    }	
+  ]
+}

@@ -428,6 +428,93 @@
             background: #fff7f5;
         }
 
+        .finance-map {
+            margin-top: 22px;
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 18px;
+        }
+
+        .finance-map h2 {
+            margin: 0;
+            font-size: 18px;
+            color: var(--accent);
+        }
+
+        .finance-map .summary {
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .finance-kpis {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .finance-kpi {
+            background: #f7fafc;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: 12px;
+            color: var(--text);
+        }
+
+        .finance-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 14px;
+        }
+
+        .finance-panel {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #f9fbfc;
+            padding: 12px;
+            min-height: 220px;
+        }
+
+        .finance-panel h3 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+        }
+
+        .finance-table-list,
+        .finance-column-list {
+            display: grid;
+            gap: 8px;
+            max-height: 360px;
+            overflow: auto;
+        }
+
+        .finance-row {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 8px 10px;
+            font-size: 12px;
+            line-height: 1.45;
+        }
+
+        .finance-row strong {
+            color: var(--text);
+            font-size: 13px;
+        }
+
+        .finance-row .meta {
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 11px;
+            gap: 6px;
+        }
+
         .footer-note {
             color: var(--muted);
             text-align: center;
@@ -464,6 +551,10 @@
                 padding-left: 18px;
                 padding-right: 18px;
             }
+
+            .finance-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -490,6 +581,41 @@
 
     <script>
         const data = {"generatedAt":"2026-07-20 10:48:21","pipelineCount":45,"linkCount":10,"categories":[{"category":"bronze","count":9},{"category":"extract","count":9},{"category":"gold","count":5},{"category":"orchestrator","count":4},{"category":"silver","count":5},{"category":"utility","count":13}],"transitions":[{"source":"orchestrator","target":"bronze","count":3,"samples":["eps_process_all -\u003e eps_process_bronze_copy2","pl_epact_monthly_master -\u003e pl_llf_bronze_load","pl_finance_daily_master -\u003e pl_finance_bronze_load"]},{"source":"orchestrator","target":"gold","count":4,"samples":["eps_process_all -\u003e eps_process_gold","pl_epact_monthly_master -\u003e pl_llf_gold_load","pl_epact_monthly_master -\u003e pl_sow4_gold_load"]},{"source":"orchestrator","target":"silver","count":3,"samples":["eps_process_all -\u003e eps_process_silver","pl_epact_monthly_master -\u003e pl_llf_silver_load","pl_finance_monthly_master -\u003e pl_finance_silver_load"]}],"domains":[{"name":"BAU Extracts","inferredPath":["extract"],"lineagePipelines":[{"name":"BAU DPC daily schema extract","category":"extract","activityCount":9,"fileName":"BAU DPC daily schema extract.json"},{"name":"BAU DPC monthly schema extract","category":"extract","activityCount":9,"fileName":"BAU DPC monthly schema extract.json"},{"name":"BAU HOT monthly schema extract","category":"extract","activityCount":8,"fileName":"BAU HOT monthly schema extract.json"},{"name":"BAU PCD monthly schema extract","category":"extract","activityCount":9,"fileName":"BAU PCD monthly schema extract.json"},{"name":"BAU PHA daily schema extract","category":"extract","activityCount":9,"fileName":"BAU PHA daily schema extract.json"}],"supportingPipelines":[],"graphPipelines":[{"name":"BAU DPC daily schema extract","category":"extract","domain":"BAU Extracts","activityCount":9},{"name":"BAU DPC monthly schema extract","category":"extract","domain":"BAU Extracts","activityCount":9},{"name":"BAU HOT monthly schema extract","category":"extract","domain":"BAU Extracts","activityCount":8},{"name":"BAU PCD monthly schema extract","category":"extract","domain":"BAU Extracts","activityCount":9},{"name":"BAU PHA daily schema extract","category":"extract","domain":"BAU Extracts","activityCount":9}],"links":[],"gapPipelines":[]},{"name":"CIP","inferredPath":["extract","bronze","silver"],"lineagePipelines":[{"name":"BAU CIP daily schema extract","category":"extract","activityCount":9,"fileName":"BAU CIP daily schema extract.json"},{"name":"BAU CIP monthly schema extract","category":"extract","activityCount":9,"fileName":"BAU CIP monthly schema extract.json"},{"name":"BAU CIP monthly schema extract OLD","category":"extract","activityCount":4,"fileName":"BAU CIP monthly schema extract OLD.json"},{"name":"pl_cip_bronze_monthly","category":"bronze","activityCount":6,"fileName":"pl_cip_bronze_monthly.json"},{"name":"Pl_Cip_Bronze_Monthly_Loader","category":"bronze","activityCount":0,"fileName":"Pl_Cip_Bronze_Monthly_Loader.json"},{"name":"pl_cip_silver_layer_monthly","category":"silver","activityCount":6,"fileName":"pl_cip_silver_layer_monthly.json"}],"supportingPipelines":[],"graphPipelines":[{"name":"BAU CIP daily schema extract","category":"extract","domain":"CIP","activityCount":9},{"name":"BAU CIP monthly schema extract","category":"extract","domain":"CIP","activityCount":9},{"name":"BAU CIP monthly schema extract OLD","category":"extract","domain":"CIP","activityCount":4},{"name":"pl_cip_bronze_monthly","category":"bronze","domain":"CIP","activityCount":6},{"name":"Pl_Cip_Bronze_Monthly_Loader","category":"bronze","domain":"CIP","activityCount":0},{"name":"pl_cip_silver_layer_monthly","category":"silver","domain":"CIP","activityCount":6}],"links":[],"gapPipelines":[{"name":"pl_cip_bronze_monthly","category":"bronze","activityTypes":["TridentNotebook","Lookup","ForEach","SetVariable"]},{"name":"pl_cip_silver_layer_monthly","category":"silver","activityTypes":["TridentNotebook","Lookup","ForEach","SetVariable"]}]},{"name":"CSV Utility","inferredPath":[],"lineagePipelines":[],"supportingPipelines":[{"name":"pl_csv_to_parquet","category":"utility","activityCount":0,"fileName":"pl_csv_to_parquet.json"}],"graphPipelines":[],"links":[],"gapPipelines":[]},{"name":"ePACT","inferredPath":["orchestrator"],"lineagePipelines":[{"name":"pl_epact_monthly_master","category":"orchestrator","activityCount":7,"fileName":"pl_epact_monthly_master.json"}],"supportingPipelines":[{"name":"sow11_epact_sm_creation_pipeline","category":"utility","activityCount":3,"fileName":"sow11_epact_sm_creation_pipeline.json"}],"graphPipelines":[{"name":"pl_epact_monthly_master","category":"orchestrator","domain":"ePACT","activityCount":7},{"name":"pl_llf_bronze_load","category":"bronze","domain":"LLF","activityCount":5},{"name":"pl_llf_silver_load","category":"silver","domain":"LLF","activityCount":5},{"name":"pl_llf_gold_load","category":"gold","domain":"LLF","activityCount":5},{"name":"pl_sow4_gold_load","category":"gold","domain":"SOW4","activityCount":5}],"links":[{"sourceName":"pl_epact_monthly_master","sourceCategory":"orchestrator","targetName":"pl_llf_silver_load","targetCategory":"silver","activityName":"Invoke llf silver pipeline"},{"sourceName":"pl_epact_monthly_master","sourceCategory":"orchestrator","targetName":"pl_llf_gold_load","targetCategory":"gold","activityName":"Invoke llf gold pipeline"},{"sourceName":"pl_epact_monthly_master","sourceCategory":"orchestrator","targetName":"pl_llf_bronze_load","targetCategory":"bronze","activityName":"Invoke llf bronze pipeline"},{"sourceName":"pl_epact_monthly_master","sourceCategory":"orchestrator","targetName":"pl_sow4_gold_load","targetCategory":"gold","activityName":"Invoke Sow4 pipeline"}],"gapPipelines":[]},{"name":"EPS","inferredPath":["orchestrator","bronze","silver","gold"],"lineagePipelines":[{"name":"eps_process_all","category":"orchestrator","activityCount":3,"fileName":"eps_process_all.json"},{"name":"eps_process_bronze_copy2","category":"bronze","activityCount":17,"fileName":"eps_process_bronze_copy2.json"},{"name":"eps_process_silver","category":"silver","activityCount":30,"fileName":"eps_process_silver.json"},{"name":"eps_process_gold","category":"gold","activityCount":17,"fileName":"eps_process_gold.json"}],"supportingPipelines":[{"name":"eps_process_bronze","category":"bronze","activityCount":17,"fileName":"eps_process_bronze.json"}],"graphPipelines":[{"name":"eps_process_all","category":"orchestrator","domain":"EPS","activityCount":3},{"name":"eps_process_bronze_copy2","category":"bronze","domain":"EPS","activityCount":17},{"name":"eps_process_silver","category":"silver","domain":"EPS","activityCount":30},{"name":"eps_process_gold","category":"gold","domain":"EPS","activityCount":17}],"links":[{"sourceName":"eps_process_all","sourceCategory":"orchestrator","targetName":"eps_process_bronze_copy2","targetCategory":"bronze","activityName":"eps_process_bronze"},{"sourceName":"eps_process_all","sourceCategory":"orchestrator","targetName":"eps_process_silver","targetCategory":"silver","activityName":"eps_process_silver"},{"sourceName":"eps_process_all","sourceCategory":"orchestrator","targetName":"eps_process_gold","targetCategory":"gold","activityName":"eps_process_gold"}],"gapPipelines":[{"name":"eps_process_bronze","category":"bronze","activityTypes":["TridentNotebook","ForEach","IfCondition","Office365Outlook","Fail"]},{"name":"eps_process_bronze_copy2","category":"bronze","activityTypes":["TridentNotebook","ForEach","IfCondition","Office365Outlook","Fail"]},{"name":"eps_process_gold","category":"gold","activityTypes":["TridentNotebook","ForEach","IfCondition","Office365Outlook","Fail"]},{"name":"eps_process_silver","category":"silver","activityTypes":["TridentNotebook","ForEach","IfCondition","Office365Outlook","Fail"]}]},{"name":"ETP","inferredPath":["extract","bronze"],"lineagePipelines":[{"name":"Data Gateway extract pipeline ETP","category":"extract","activityCount":9,"fileName":"Data Gateway extract pipeline ETP.json"},{"name":"pl_etp_bronze_daily","category":"bronze","activityCount":6,"fileName":"pl_etp_bronze_daily.json"},{"name":"pl_etp_bronze_daily_load","category":"bronze","activityCount":6,"fileName":"pl_etp_bronze_daily_load.json"}],"supportingPipelines":[],"graphPipelines":[{"name":"Data Gateway extract pipeline ETP","category":"extract","domain":"ETP","activityCount":9},{"name":"pl_etp_bronze_daily","category":"bronze","domain":"ETP","activityCount":6},{"name":"pl_etp_bronze_daily_load","category":"bronze","domain":"ETP","activityCount":6}],"links":[],"gapPipelines":[{"name":"pl_etp_bronze_daily","category":"bronze","activityTypes":["TridentNotebook","Lookup","ForEach","SetVariable"]},{"name":"pl_etp_bronze_daily_load","category":"bronze","activityTypes":["TridentNotebook","Lookup","ForEach","SetVariable"]}]},{"name":"Finance","inferredPath":["orchestrator","bronze","silver","gold"],"lineagePipelines":[{"name":"pl_finance_daily_master","category":"orchestrator","activityCount":4,"fileName":"pl_finance_daily_master.json"},{"name":"pl_finance_monthly_master","category":"orchestrator","activityCount":4,"fileName":"pl_finance_monthly_master.json"},{"name":"pl_finance_bronze_load","category":"bronze","activityCount":7,"fileName":"pl_finance_bronze_load.json"},{"name":"pl_finance_silver_load","category":"silver","activityCount":5,"fileName":"pl_finance_silver_load.json"},{"name":"pl_finance_gold_load","category":"gold","activityCount":7,"fileName":"pl_finance_gold_load.json"}],"supportingPipelines":[{"name":"pl_finance_bronze_load_test","category":"bronze","activityCount":2,"fileName":"pl_finance_bronze_load_test.json"},{"name":"pl_finance_daily","category":"utility","activityCount":8,"fileName":"pl_finance_daily.json"},{"name":"pl_finance_end_to_end","category":"utility","activityCount":17,"fileName":"pl_finance_end_to_end.json"},{"name":"pl_finance_monthly","category":"utility","activityCount":12,"fileName":"pl_finance_monthly.json"},{"name":"pl_finance_test","category":"utility","activityCount":6,"fileName":"pl_finance_test.json"},{"name":"pl_finance_test2","category":"utility","activityCount":7,"fileName":"pl_finance_test2.json"}],"graphPipelines":[{"name":"pl_finance_daily_master","category":"orchestrator","domain":"Finance","activityCount":4},{"name":"pl_finance_monthly_master","category":"orchestrator","domain":"Finance","activityCount":4},{"name":"pl_finance_bronze_load","category":"bronze","domain":"Finance","activityCount":7},{"name":"pl_finance_silver_load","category":"silver","domain":"Finance","activityCount":5},{"name":"pl_finance_gold_load","category":"gold","domain":"Finance","activityCount":7}],"links":[{"sourceName":"pl_finance_daily_master","sourceCategory":"orchestrator","targetName":"pl_finance_bronze_load","targetCategory":"bronze","activityName":"Invoke finance bronze pipeline"},{"sourceName":"pl_finance_monthly_master","sourceCategory":"orchestrator","targetName":"pl_finance_silver_load","targetCategory":"silver","activityName":"Invoke silver pipeline"},{"sourceName":"pl_finance_monthly_master","sourceCategory":"orchestrator","targetName":"pl_finance_gold_load","targetCategory":"gold","activityName":"Invoke gold pipeline"}],"gapPipelines":[{"name":"pl_finance_bronze_load","category":"bronze","activityTypes":["Lookup","ForEach","TridentNotebook","Office365Outlook","SetVariable"]},{"name":"pl_finance_bronze_load_test","category":"bronze","activityTypes":["TridentNotebook"]},{"name":"pl_finance_gold_load","category":"gold","activityTypes":["Lookup","ForEach","TridentNotebook","SetVariable","Office365Outlook"]},{"name":"pl_finance_silver_load","category":"silver","activityTypes":["Lookup","ForEach","TridentNotebook","SetVariable","Office365Outlook"]}]},{"name":"LLF","inferredPath":["bronze","silver","gold"],"lineagePipelines":[{"name":"pl_llf_bronze_load","category":"bronze","activityCount":5,"fileName":"pl_llf_bronze_load.json"},{"name":"pl_llf_silver_load","category":"silver","activityCount":5,"fileName":"pl_llf_silver_load.json"},{"name":"pl_llf_gold_load","category":"gold","activityCount":5,"fileName":"pl_llf_gold_load.json"}],"supportingPipelines":[],"graphPipelines":[{"name":"pl_epact_monthly_master","category":"orchestrator","domain":"ePACT","activityCount":7},{"name":"pl_llf_bronze_load","category":"bronze","domain":"LLF","activityCount":5},{"name":"pl_llf_silver_load","category":"silver","domain":"LLF","activityCount":5},{"name":"pl_llf_gold_load","category":"gold","domain":"LLF","activityCount":5}],"links":[{"sourceName":"pl_epact_monthly_master","sourceCategory":"orchestrator","targetName":"pl_llf_silver_load","targetCategory":"silver","activityName":"Invoke llf silver pipeline"},{"sourceName":"pl_epact_monthly_master","sourceCategory":"orchestrator","targetName":"pl_llf_gold_load","targetCategory":"gold","activityName":"Invoke llf gold pipeline"},{"sourceName":"pl_epact_monthly_master","sourceCategory":"orchestrator","targetName":"pl_llf_bronze_load","targetCategory":"bronze","activityName":"Invoke llf bronze pipeline"}],"gapPipelines":[{"name":"pl_llf_bronze_load","category":"bronze","activityTypes":["Lookup","ForEach","TridentNotebook","Office365Outlook","SetVariable"]},{"name":"pl_llf_gold_load","category":"gold","activityTypes":["Lookup","ForEach","TridentNotebook","SetVariable","Office365Outlook"]},{"name":"pl_llf_silver_load","category":"silver","activityTypes":["Lookup","ForEach","TridentNotebook","SetVariable","Office365Outlook"]}]},{"name":"Maintenance","inferredPath":[],"lineagePipelines":[],"supportingPipelines":[{"name":"Table maintenance","category":"utility","activityCount":null,"fileName":"Table maintenance.json"}],"graphPipelines":[],"links":[],"gapPipelines":[]},{"name":"MYS","inferredPath":["silver","gold"],"lineagePipelines":[{"name":"mys_process_silver","category":"silver","activityCount":17,"fileName":"mys_process_silver.json"},{"name":"mys_process_gold","category":"gold","activityCount":17,"fileName":"mys_process_gold.json"}],"supportingPipelines":[],"graphPipelines":[{"name":"mys_process_silver","category":"silver","domain":"MYS","activityCount":17},{"name":"mys_process_gold","category":"gold","domain":"MYS","activityCount":17}],"links":[],"gapPipelines":[{"name":"mys_process_gold","category":"gold","activityTypes":["TridentNotebook","ForEach","IfCondition","Office365Outlook","Fail"]},{"name":"mys_process_silver","category":"silver","activityTypes":["TridentNotebook","ForEach","IfCondition","Office365Outlook","Fail"]}]},{"name":"Semantic Model","inferredPath":[],"lineagePipelines":[],"supportingPipelines":[{"name":"Refresh semantic model","category":"utility","activityCount":null,"fileName":"Refresh semantic model.json"}],"graphPipelines":[],"links":[],"gapPipelines":[]},{"name":"Shared or Utility","inferredPath":[],"lineagePipelines":[],"supportingPipelines":[{"name":"Suture Run for 1.3","category":"utility","activityCount":null,"fileName":"Suture Run for 1.3.json"}],"graphPipelines":[],"links":[],"gapPipelines":[]},{"name":"SOW11","inferredPath":[],"lineagePipelines":[],"supportingPipelines":[{"name":"sow11_create_semantic_model","category":"utility","activityCount":null,"fileName":"sow11_create_semantic_model.json"},{"name":"sow11_pipeline","category":"utility","activityCount":3,"fileName":"sow11_pipeline.json"},{"name":"sow11_pipeline_copy1","category":"utility","activityCount":3,"fileName":"sow11_pipeline_copy1.json"}],"graphPipelines":[],"links":[],"gapPipelines":[]},{"name":"SOW4","inferredPath":["gold"],"lineagePipelines":[{"name":"pl_sow4_gold_load","category":"gold","activityCount":5,"fileName":"pl_sow4_gold_load.json"}],"supportingPipelines":[],"graphPipelines":[{"name":"pl_epact_monthly_master","category":"orchestrator","domain":"ePACT","activityCount":7},{"name":"pl_sow4_gold_load","category":"gold","domain":"SOW4","activityCount":5}],"links":[{"sourceName":"pl_epact_monthly_master","sourceCategory":"orchestrator","targetName":"pl_sow4_gold_load","targetCategory":"gold","activityName":"Invoke Sow4 pipeline"}],"gapPipelines":[{"name":"pl_sow4_gold_load","category":"gold","activityTypes":["Lookup","ForEach","TridentNotebook","SetVariable","Office365Outlook"]}]}]};
+        const financeMapping = {
+            generatedAt: '2026-07-20T14:18:53.8018225+01:00',
+            notebookCount: 11,
+            tableMappingCount: 19,
+            columnMappingCount: 5,
+            tableMappings: [
+                { notebook: 'nb_dpc_expense_tot_ora_to_fin', sourceTable: 'oracle_csv_file', targetTable: 'finance.fin_dpc_expense_tot', pattern: 'fin_table_name' },
+                { notebook: 'nb_dpc_schedule_fact_ora_to_fin', sourceTable: 'oracle_csv_file', targetTable: 'finance.fin_dpc_schedule_fact', pattern: 'fin_table_name' },
+                { notebook: 'nb_expense_total_fact_ora_to_fin', sourceTable: 'oracle_csv_file', targetTable: 'finance.fin_expense_total_fact', pattern: 'fin_table_name' },
+                { notebook: 'nb_fareshare_calc_perc_fact_ora_to_fin', sourceTable: 'oracle_csv_file', targetTable: 'finance.fin_fareshare_calc_perc_fact', pattern: 'fin_table_name' },
+                { notebook: 'nb_finance_silver_tables_parition_load', sourceTable: 'edw_dpc_expense_tot', targetTable: 'fin_dpc_expense_tot', pattern: 'silver_table_map' },
+                { notebook: 'nb_finance_silver_tables_parition_load', sourceTable: 'edw_dpc_schedule_fact', targetTable: 'fin_dpc_schedule_fact', pattern: 'silver_table_map' },
+                { notebook: 'nb_finance_silver_tables_parition_load', sourceTable: 'edw_expense_total_fact', targetTable: 'fin_expense_total_fact', pattern: 'silver_table_map' },
+                { notebook: 'nb_finance_silver_tables_parition_load', sourceTable: 'edw_fareshare_calc_perc_fact', targetTable: 'fin_fareshare_calc_perc_fact', pattern: 'silver_table_map' },
+                { notebook: 'nb_finance_silver_tables_parition_load', sourceTable: 'edw_int_expense_tot', targetTable: 'fin_int_expense_tot', pattern: 'silver_table_map' },
+                { notebook: 'nb_finance_silver_tables_parition_load', sourceTable: 'edw_not_drctly_attrb_cst_pres_fact', targetTable: 'fin_not_directly_attrib_cst_presc_fact', pattern: 'silver_table_map' },
+                { notebook: 'nb_finance_silver_tables_parition_load', sourceTable: 'edw_not_drctly_attrb_cst_remu_fact', targetTable: 'fin_not_directly_attrib_cst_remu_fact', pattern: 'silver_table_map' },
+                { notebook: 'nb_finance_silver_tables_parition_load', sourceTable: 'edw_remu_at_stp_actuals_fact', targetTable: 'fin_remu_at_stp_actuals_fact', pattern: 'silver_table_map' },
+                { notebook: 'nb_finance_silver_tables_parition_load', sourceTable: 'edw_unmapped_pharm_pay_fact', targetTable: 'fin_unmapped_pharm_pay_fact', pattern: 'silver_table_map' },
+                { notebook: 'nb_int_expense_tot_ora_to_fin', sourceTable: 'oracle_csv_file', targetTable: 'finance.fin_int_expense_tot', pattern: 'fin_table_name' },
+                { notebook: 'nb_not_drctly_attrb_cst_pres_fact_ora_to_fin', sourceTable: 'oracle_csv_file', targetTable: 'finance.fin_not_directly_attrib_cst_presc_fact', pattern: 'fin_table_name' },
+                { notebook: 'nb_not_drctly_attrb_cst_remu_fact_ora_to_fin', sourceTable: 'oracle_csv_file', targetTable: 'finance.fin_not_directly_attrib_cst_remu_fact', pattern: 'fin_table_name' },
+                { notebook: 'nb_remu_at_stp_actuals_fact_ora_to_fin', sourceTable: 'oracle_csv_file', targetTable: 'finance.fin_remu_at_stp_actuals_fact', pattern: 'fin_table_name' },
+                { notebook: 'nb_remuneration_fact_ora_to_fin', sourceTable: 'oracle_csv_file', targetTable: 'finance.fin_remuneration_fact', pattern: 'fin_table_name' },
+                { notebook: 'nb_unmapped_pharm_pay_fact_ora_to_fin', sourceTable: 'oracle_csv_file', targetTable: 'finance.fin_unmapped_pharm_pay_fact', pattern: 'fin_table_name' }
+            ],
+            columnMappings: [
+                { notebook: 'nb_remuneration_fact_ora_to_fin', sourceColumn: 'amount_value', targetColumn: 'remuneration' },
+                { notebook: 'nb_remuneration_fact_ora_to_fin', sourceColumn: 'amount_value_fytd', targetColumn: 'remuneration_year_to_date' },
+                { notebook: 'nb_remuneration_fact_ora_to_fin', sourceColumn: 'count_value', targetColumn: 'number_of_fees' },
+                { notebook: 'nb_remuneration_fact_ora_to_fin', sourceColumn: 'percentage_value', targetColumn: 'share_paid_percent' },
+                { notebook: 'nb_remuneration_fact_ora_to_fin', sourceColumn: 'recharge_record', targetColumn: 'recharge_record_yes_no' }
+            ]
+        };
+
         const categoryOrder = ['extract', 'orchestrator', 'bronze', 'silver', 'gold', 'utility'];
         const categoryColors = {
             extract: '#4d7cfe',
@@ -611,6 +737,62 @@
         function buildDomainNav() {
             document.getElementById('domain-nav').innerHTML = data.domains.map(domain => `
                 <a class="jump-link" href="#${slugify(domain.name)}">${escapeHtml(domain.name)}</a>
+            `).join('');
+        }
+
+        function buildFinanceMapping() {
+            const summary = document.getElementById('finance-map-summary');
+            const kpis = document.getElementById('finance-kpis');
+            const tableList = document.getElementById('finance-table-list');
+            const columnList = document.getElementById('finance-column-list');
+
+            function inferLayer(tableName, pattern, side) {
+                if (pattern === 'silver_table_map') {
+                    return side === 'source' ? 'bronze' : 'silver';
+                }
+
+                if (pattern === 'fin_table_name') {
+                    return side === 'source' ? 'extract' : 'silver';
+                }
+
+                const name = String(tableName || '').toLowerCase();
+                if (name.includes('oracle_csv_file')) {
+                    return 'extract';
+                }
+                if (name.startsWith('edw_')) {
+                    return 'bronze';
+                }
+                if (name.startsWith('fin_') || name.startsWith('finance.')) {
+                    return 'silver';
+                }
+                return 'unknown';
+            }
+
+            function withLayer(tableName, pattern, side) {
+                const layer = inferLayer(tableName, pattern, side);
+                return `${layer}.${tableName}`;
+            }
+
+            summary.textContent = `Embedded from notebook extraction output generated ${financeMapping.generatedAt}.`;
+
+            kpis.innerHTML = [
+                `${financeMapping.notebookCount} notebooks scanned`,
+                `${financeMapping.tableMappingCount} table mappings`,
+                `${financeMapping.columnMappingCount} column mappings`
+            ].map(text => `<span class="finance-kpi">${escapeHtml(text)}</span>`).join('');
+
+            tableList.innerHTML = financeMapping.tableMappings.map(item => `
+                <div class="finance-row">
+                    <strong>${escapeHtml(withLayer(item.sourceTable, item.pattern, 'source'))} -> ${escapeHtml(withLayer(item.targetTable, item.pattern, 'target'))}</strong>
+                    <div class="meta">Notebook: ${escapeHtml(item.notebook)} | Pattern: ${escapeHtml(item.pattern)}</div>
+                </div>
+            `).join('');
+
+            columnList.innerHTML = financeMapping.columnMappings.map(item => `
+                <div class="finance-row">
+                    <strong>${escapeHtml(item.sourceColumn)} -> ${escapeHtml(item.targetColumn)}</strong>
+                    <div class="meta">Notebook: ${escapeHtml(item.notebook)}</div>
+                </div>
             `).join('');
         }
 

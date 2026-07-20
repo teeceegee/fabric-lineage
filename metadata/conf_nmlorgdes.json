@@ -1,0 +1,284 @@
+{
+    "columns": [
+        {
+            "source_column_name": "CE_IND",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "ce_ind",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "CODE",
+            "source_column_type": "string",
+            "source_pk": true,
+            "target_column_name": "code",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": true,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "ACTIVE_YN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "active_yn",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "DESCR",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "descr",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "SHORTNAME",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "shortname",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "ACCTYPE",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "acctype",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "CONSOL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "consol",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "RETAIN_TRX",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "retain_trx",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "EMPTY_FIELD",
+            "source_column_type": "integer",
+            "source_pk": false,
+            "target_column_name": "empty_field",
+            "target_column_type": "integer",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "SECURITY_LEVEL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "security_level",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "RECOVER_VAT",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "recover_vat",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "NON_REC_VAT_CODE",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "non_rec_vat_code",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "USER_AREA",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "user_area",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "BUD_MAN",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "bud_man",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "BUD_HOLD",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "bud_hold",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "MAN_ACC",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "man_acc",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "CREATED_BY",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "created_by",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "CREATED_DATE",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "created_date",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "CREATED_TIME",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "created_time",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "AMENDED_BY",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "amended_by",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "AMENDED_DATE",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "amended_date",
+            "target_column_type": "date",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "AMENDED_TIME",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "amended_time",
+            "target_column_type": "timestamp",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "DEACTIVE_BY",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "deactive_by",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "DEACTIVE_DATE",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "deactive_date",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "DEACTIVE_TIME",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "deactive_time",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "COMPANY_ID",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "company_id",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "CENTRAL",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "central",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        },
+        {
+            "source_column_name": "BUSINESS_CODE",
+            "source_column_type": "string",
+            "source_pk": false,
+            "target_column_name": "business_code",
+            "target_column_type": "string",
+            "target_column_description": null,
+            "target_pk": false,
+            "column_functions": null
+        }
+    ]
+}

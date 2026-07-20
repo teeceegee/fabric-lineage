@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Mapping</title>
+    <style>
+        :root {
+            --bg: #f0f4f5;
+            --panel: #ffffff;
+            --line: #d8dde0;
+            --text: #212b32;
+            --muted: #5f6b73;
+            --accent: #005eb8;
+            --shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .shell {
+            max-width: 1480px;
+            margin: 0 auto;
+            padding: 16px 20px 24px 20px;
+        }
+
+        .hero {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .hero h1 {
+            margin: 0;
+            color: var(--accent);
+            font-size: 22px;
+        }
+
+        .hero p {
+            margin: 8px 0 0 0;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .kpis {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .kpi {
+            background: #f7fafc;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+
+        .panel {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--panel);
+            padding: 12px;
+            box-shadow: var(--shadow);
+            margin-top: 14px;
+        }
+
+        .panel h2 {
+            margin: 0 0 10px 0;
+            color: var(--accent);
+            font-size: 16px;
+        }
+
+        .table-wrap {
+            max-height: 74vh;
+            overflow: auto;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background: #ffffff;
+        }
+
+        .mapping-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .mapping-table thead th {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background: #f7fafc;
+            color: #22303a;
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid var(--line);
+            font-size: 12px;
+        }
+
+        .mapping-table tbody td {
+            vertical-align: top;
+            padding: 10px;
+            border-bottom: 1px solid #edf1f4;
+            color: var(--text);
+            line-height: 1.45;
+        }
+
+        .mapping-table tbody tr:nth-child(even) {
+            background: #fbfcfd;
+        }
+
+        .columns-cell {
+            min-width: 320px;
+        }
+
+        .columns-toggle {
+            border: 0;
+            background: transparent;
+            color: var(--accent);
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 0;
+            text-decoration: underline;
+        }
+
+        .columns-toggle:hover {
+            color: #003f7f;
+        }
+
+        .columns-content {
+            margin-top: 8px;
+        }
+
+        .columns-content.hidden {
+            display: none;
+        }
+
+        .subtable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2px;
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 4px;
+        }
+
+        .subtable th,
+        .subtable td {
+            padding: 6px 8px;
+            border-bottom: 1px solid #edf1f4;
+            font-size: 11px;
+            text-align: left;
+        }
+
+        .subtable th {
+            background: #f3f7fa;
+            color: #33424d;
+        }
+
+        .subtable tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .no-columns {
+            color: var(--muted);
+            font-size: 11px;
+            font-style: italic;
+        }
+
+        .map-type {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .map-type.inferred {
+            background: #fff4d6;
+            color: #7a5a00;
+        }
+
+        .map-type.explicit {
+            background: #e5f6f2;
+            color: #0b6059;
+        }
+
+        .mono {
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 11px;
+            overflow-wrap: anywhere;
+        }
+
+        .layer-prefix {
+            font-style: italic;
+            color: var(--muted);
+            margin-right: 4px;
+        }
+
+        @media (max-width: 960px) {
+            .table-wrap {
+                max-height: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <section class="hero">
+            <h1>Finance Mapping</h1>
+            <p id="summary"></p>
+            <div class="kpis" id="kpis"></div>
+        </section>
+
+        <section class="panel">
+            <h2>Table Mappings With Nested Columns</h2>
+            <div class="table-wrap">
+                <table class="mapping-table">
+                    <thead>
+                        <tr>
+                            <th>Source Table</th>
+                            <th>Target Table</th>
+                            <th>Notebook</th>
+                            <th>Pattern</th>
+                            <th>Column Mapping Subtable</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mapping-body"></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script src="./pipeline-finance-mapping-data.js?v=20260720c"></script>
+    <script>
+        const deepMappingData = window.financeColumnLineageDeep || null;
+
+        const financeMapping = {
+            generatedAt: deepMappingData ? deepMappingData.generatedAt : '2026-07-20T14:18:53.8018225+01:00',
+            notebookCount: deepMappingData ? deepMappingData.notebookUniqueNameCount : 11,
+            tableMappingCount: 0,
+            columnMappingCount: deepMappingData ? deepMappingData.derivedColumnMappingCount : 5,
+            tableMappings: [
+                { notebook: 'nb_dpc_expense_tot_ora_to_fin', sourceTable: 'oracle_csv_file', targetTable: 'finance.fin_dpc_expense_tot', pattern: 'fin_table_name' },
+                { notebook: 'nb_dpc_schedule_fact_ora_to_fin', sourceTable: 'oracle_csv_file', targetTable: 'finance.fin_dpc_schedule_fact', pattern: 'fin_table_name' },
+                { notebook: 'nb_expense_total_fact_ora_to_fin', sourceTable: 'oracle_csv_file', targetTable: 'finance.fin_expense_total_fact', pattern: 'fin_table_name' },
+                { notebook: 'nb_fareshare_calc_perc_fact_ora_to_fin', sourceTable: 'oracle_csv_file', targetTable: 'finance.fin_fareshare_calc_perc_fact', pattern: 'fin_table_name' },
+                { notebook: 'nb_finance_silver_tables_parition_load', sourceTable: 'edw_dpc_expense_tot', targetTable: 'fin_dpc_expense_tot', pattern: 'silver_table_map' },
+                { notebook: 'nb_finance_silver_tables_parition_load', sourceTable: 'edw_dpc_schedule_fact', targetTable: 'fin_dpc_schedule_fact', pattern: 'silver_table_map' },
+                { notebook: 'nb_finance_silver_tables_parition_load', sourceTable: 'edw_expense_total_fact', targetTable: 'fin_expense_total_fact', pattern: 'silver_table_map' },
+                { notebook: 'nb_finance_silver_tables_parition_load', sourceTable: 'edw_fareshare_calc_perc_fact', targetTable: 'fin_fareshare_calc_perc_fact', pattern: 'silver_table_map' },
+                { notebook: 'nb_finance_silver_tables_parition_load', sourceTable: 'edw_int_expense_tot', targetTable: 'fin_int_expense_tot', pattern: 'silver_table_map' },
+                { notebook: 'nb_finance_silver_tables_parition_load', sourceTable: 'edw_not_drctly_attrb_cst_pres_fact', targetTable: 'fin_not_directly_attrib_cst_presc_fact', pattern: 'silver_table_map' },
+                { notebook: 'nb_finance_silver_tables_parition_load', sourceTable: 'edw_not_drctly_attrb_cst_remu_fact', targetTable: 'fin_not_directly_attrib_cst_remu_fact', pattern: 'silver_table_map' },
+                { notebook: 'nb_finance_silver_tables_parition_load', sourceTable: 'edw_remu_at_stp_actuals_fact', targetTable: 'fin_remu_at_stp_actuals_fact', pattern: 'silver_table_map' },
+                { notebook: 'nb_finance_silver_tables_parition_load', sourceTable: 'edw_unmapped_pharm_pay_fact', targetTable: 'fin_unmapped_pharm_pay_fact', pattern: 'silver_table_map' },
+                { notebook: 'nb_int_expense_tot_ora_to_fin', sourceTable: 'oracle_csv_file', targetTable: 'finance.fin_int_expense_tot', pattern: 'fin_table_name' },
+                { notebook: 'nb_not_drctly_attrb_cst_pres_fact_ora_to_fin', sourceTable: 'oracle_csv_file', targetTable: 'finance.fin_not_directly_attrib_cst_presc_fact', pattern: 'fin_table_name' },
+                { notebook: 'nb_not_drctly_attrb_cst_remu_fact_ora_to_fin', sourceTable: 'oracle_csv_file', targetTable: 'finance.fin_not_directly_attrib_cst_remu_fact', pattern: 'fin_table_name' },
+                { notebook: 'nb_remu_at_stp_actuals_fact_ora_to_fin', sourceTable: 'oracle_csv_file', targetTable: 'finance.fin_remu_at_stp_actuals_fact', pattern: 'fin_table_name' },
+                { notebook: 'nb_remuneration_fact_ora_to_fin', sourceTable: 'oracle_csv_file', targetTable: 'finance.fin_remuneration_fact', pattern: 'fin_table_name' },
+                { notebook: 'nb_unmapped_pharm_pay_fact_ora_to_fin', sourceTable: 'oracle_csv_file', targetTable: 'finance.fin_unmapped_pharm_pay_fact', pattern: 'fin_table_name' },
+                { notebook: 'nmlaccmf_d', sourceTable: 'nmlaccmf_d', targetTable: 'bnz_nmlaccmf_d', pattern: 'metadata_job_config', sourceLayer: 'bronze', targetLayer: 'bronze' },
+                { notebook: 'nmlorgdes', sourceTable: 'nmlorgdes', targetTable: 'bnz_nmlorgdes', pattern: 'metadata_job_config', sourceLayer: 'bronze', targetLayer: 'bronze' },
+                { notebook: 'syspar', sourceTable: 'syspar', targetTable: 'bnz_syspar', pattern: 'metadata_job_config', sourceLayer: 'bronze', targetLayer: 'bronze' },
+                { notebook: 'syspar_nml1', sourceTable: 'syspar_nml1', targetTable: 'bnz_syspar_nml1', pattern: 'metadata_job_config', sourceLayer: 'bronze', targetLayer: 'bronze' },
+                { notebook: 'slr_int_expense_tot', sourceTable: 'slr_int_expense_tot_v', targetTable: 'slr_int_expense_tot', pattern: 'metadata_job_config', sourceLayer: 'bronze', targetLayer: 'silver' },
+                { notebook: 'nb_slr_int_expense_tot', sourceTable: 'nb_slr_int_expense_tot', targetTable: 'nb_slr_int_expense_tot', pattern: 'metadata_job_config', sourceLayer: 'bronze', targetLayer: 'silver' }
+            ],
+            columnMappings: deepMappingData ? deepMappingData.columnMappings : [
+                { notebook: 'nb_remuneration_fact_ora_to_fin', sourceColumn: 'amount_value', targetColumn: 'remuneration' },
+                { notebook: 'nb_remuneration_fact_ora_to_fin', sourceColumn: 'amount_value_fytd', targetColumn: 'remuneration_year_to_date' },
+                { notebook: 'nb_remuneration_fact_ora_to_fin', sourceColumn: 'count_value', targetColumn: 'number_of_fees' },
+                { notebook: 'nb_remuneration_fact_ora_to_fin', sourceColumn: 'percentage_value', targetColumn: 'share_paid_percent' },
+                { notebook: 'nb_remuneration_fact_ora_to_fin', sourceColumn: 'recharge_record', targetColumn: 'recharge_record_yes_no' }
+            ]
+        };
+
+        financeMapping.tableMappingCount = financeMapping.tableMappings.length;
+
+        function escapeHtml(value) {
+            return String(value)
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;');
+        }
+
+        function inferLayer(tableName, pattern, side, layerOverride) {
+            if (layerOverride) {
+                return String(layerOverride).toLowerCase();
+            }
+
+            if (pattern === 'silver_table_map') {
+                return side === 'source' ? 'bronze' : 'silver';
+            }
+
+            if (pattern === 'fin_table_name') {
+                return side === 'source' ? 'extract' : 'silver';
+            }
+
+            if (pattern === 'metadata_job_config') {
+                return side === 'source' ? 'bronze' : 'silver';
+            }
+
+            const name = String(tableName || '').toLowerCase();
+            if (name.includes('oracle_csv_file')) {
+                return 'extract';
+            }
+            if (name.startsWith('bnz_') || name.startsWith('nml') || name.startsWith('syspar')) {
+                return 'bronze';
+            }
+            if (name.startsWith('slr_') || name.startsWith('nb_slr_')) {
+                return 'silver';
+            }
+            if (name.startsWith('edw_')) {
+                return 'bronze';
+            }
+            if (name.startsWith('fin_') || name.startsWith('finance.')) {
+                return 'silver';
+            }
+            return 'unknown';
+        }
+
+        function withLayer(tableName, pattern, side, layerOverride) {
+            const layer = inferLayer(tableName, pattern, side, layerOverride);
+            return {
+                layer,
+                tableName: String(tableName || '')
+            };
+        }
+
+        function renderLayeredTable(tableName, pattern, side, layerOverride) {
+            const layered = withLayer(tableName, pattern, side, layerOverride);
+            return `<span class="layer-prefix">${escapeHtml(layered.layer)}:</span><span class="mono">${escapeHtml(layered.tableName)}</span>`;
+        }
+
+        document.getElementById('summary').textContent =
+            `Embedded from notebook and metadata extraction output generated ${financeMapping.generatedAt}.`;
+
+        const inferredCount = financeMapping.columnMappings.filter(item => item.isInferred === true || item.method === 'compare_cols_identity').length;
+        const explicitCount = financeMapping.columnMappings.length - inferredCount;
+
+        document.getElementById('kpis').innerHTML = [
+            `${financeMapping.notebookCount} notebooks scanned`,
+            `${financeMapping.tableMappingCount} table mappings`,
+            `${financeMapping.columnMappingCount} column mappings`,
+            `${inferredCount} inferred`,
+            `${explicitCount} explicit`
+        ].map(text => `<span class="kpi">${escapeHtml(text)}</span>`).join('');
+
+        function getColumnsForMapping(notebook, targetTable) {
+            return financeMapping.columnMappings.filter(item =>
+                item.notebook === notebook &&
+                (!item.targetTable || item.targetTable === targetTable)
+            );
+        }
+
+        function renderColumnSubtable(notebook, targetTable) {
+            const columns = getColumnsForMapping(notebook, targetTable);
+            if (!columns.length) {
+                return '<div class="no-columns">No explicit column mappings captured for this table mapping.</div>';
+            }
+
+            return `
+                <table class="subtable">
+                    <thead>
+                        <tr>
+                            <th>Source Column</th>
+                            <th>Target Column</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${columns.map(item => `
+                            <tr>
+                                <td class="mono">${escapeHtml(item.sourceColumn)}</td>
+                                <td class="mono">${escapeHtml(item.targetColumn)}</td>
+                                <td>${(() => {
+                                    const inferred = item.isInferred === true || item.method === 'compare_cols_identity';
+                                    return inferred
+                                        ? '<span class="map-type inferred">Inferred</span>'
+                                        : '<span class="map-type explicit">Explicit</span>';
+                                })()}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function toggleColumns(id) {
+            const content = document.getElementById(id);
+            if (!content) {
+                return;
+            }
+
+            content.classList.toggle('hidden');
+        }
+
+        function renderColumnsCell(notebook, targetTable, contentId) {
+            const columns = getColumnsForMapping(notebook, targetTable);
+            if (!columns.length) {
+                return '<div class="no-columns">No explicit column mappings captured for this table mapping.</div>';
+            }
+
+            return `
+                <button type="button" class="columns-toggle" onclick="toggleColumns('${contentId}')">Columns...</button>
+                <div id="${contentId}" class="columns-content hidden">${renderColumnSubtable(notebook, targetTable)}</div>
+            `;
+        }
+
+        document.getElementById('mapping-body').innerHTML = financeMapping.tableMappings.map((item, index) => {
+            const contentId = `columns-${index}`;
+            return `
+            <tr>
+                <td>${renderLayeredTable(item.sourceTable, item.pattern, 'source', item.sourceLayer)}</td>
+                <td>${renderLayeredTable(item.targetTable, item.pattern, 'target', item.targetLayer)}</td>
+                <td class="mono">${escapeHtml(item.notebook)}</td>
+                <td>${escapeHtml(item.pattern)}</td>
+                <td class="columns-cell">${renderColumnsCell(item.notebook, item.targetTable, contentId)}</td>
+            </tr>
+        `;
+        }).join('');
+    </script>
+</body>
+</html>
